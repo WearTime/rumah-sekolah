@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(uuid())
+  username String
+  password String
+  role     String
+  profile  String?
+}
+
+model DataSiswa {
+  nisn    String  @id
+  nis     String  @unique
+  nama    String
+  kelas   String
+  jurusan String
+  no_hp   String?
+  alamat  String?
+
+  @@map(name: "data_siswa")
+}
+
+model DataGuru {
+  nip    String  @id
+  nama   String
+  no_hp  String?
+  alamat String?
+  mapel  String?
+
+  @@map(name: "data_guru")
+}
+
+model Mapel {
+  kode_mapel String @id
+  nama_mapel String
+  fase       String
+  tipe_mapel String
+
+  @@map(name: "mapel")
+}
