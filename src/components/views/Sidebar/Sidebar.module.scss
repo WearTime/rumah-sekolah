@@ -1,0 +1,67 @@
+.sidebar {
+  //   background-color: black;
+  height: 100dvh;
+  border-right: 3px solid #d0cbcb;
+  &_logo {
+    text-align: center;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &_list {
+    display: flex;
+    flex-direction: column;
+    &_section {
+      margin: 5px 25px;
+      h3 {
+        color: #868282;
+        font-size: 14px;
+      }
+      &_list {
+        list-style: none;
+        width: 170px;
+        &_add {
+          gap: 8px !important;
+          margin: 10px 15px !important;
+        }
+        &_all {
+          gap: 17px !important;
+          margin: 1px 15px !important;
+        }
+        &_plus {
+          gap: 13px !important;
+        }
+        &_active {
+          box-sizing: border-box;
+          padding: 12px 0 12px 15px;
+          border-radius: 10px;
+          color: white;
+          display: flex;
+          align-items: center;
+          font-weight: 600;
+          margin: 10px 0px !important;
+          background-color: #e88513;
+          svg {
+            font-size: 20px;
+          }
+          a {
+            width: 100%;
+          }
+        }
+        li {
+          margin: 15px 15px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          &_icon {
+            font-size: 30px;
+          }
+          svg {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+.dashboard {
+  &_content {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    &_item {
+      width: 350px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      background-color: #28a745;
+      padding: 45px 30px;
+      border-radius: 20px;
+      gap: 25px;
+      svg {
+        font-size: 75px;
+      }
+      &:first-child {
+        background-color: #17a2b8;
+      }
+      &:last-child {
+        background-color: #e88513;
+      }
+      &_text {
+        &_title {
+          font-size: 30px;
+        }
+        &_count {
+          margin-top: 10px;
+          font-size: 25px;
+        }
+      }
+    }
+  }
+  &_welcome {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #666262;
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    h2 {
+      font-size: 30px;
+    }
+
+    p {
+      font-size: 25px;
+      margin-top: 10px;
+    }
+  }
+}

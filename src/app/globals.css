@@ -14,8 +14,12 @@ body {
   display: flex;
   flex-direction: row;
   gap: 10px;
+  width: 100%;
 }
 
+.navbar {
+  width: 80vw;
+}
 .nav {
   width: 19%;
 }

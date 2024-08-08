@@ -2,7 +2,7 @@ import NavbarView from "@/components/views/Navbar";
 
 const Navbar = () => {
   return (
-    <div className="nav">
+    <div className="navbar">
       <NavbarView />
     </div>
   );
