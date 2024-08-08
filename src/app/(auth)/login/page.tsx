@@ -1,9 +1,9 @@
 import LoginView from "@/components/views/Login";
 
-const loginPage = () => {
+const loginPage = ({ searchParams }: any) => {
   return (
     <div>
-      <LoginView />
+      <LoginView searchParams={searchParams} />
     </div>
   );
 };

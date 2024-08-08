@@ -1,0 +1,55 @@
+/* General styles */
+
+.login {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  height: 100dvh;
+  padding: 20px;
+  text-align: center; /* Center align content */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &_title {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  &_form {
+    width: 300px;
+    margin: 0 auto; /* Center align form */
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    &_item {
+      &_label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333333;
+      }
+      &_input {
+        width: calc(100% - 20px); /* Full width input minus padding */
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+      }
+    }
+    &_button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: #007bff; /* Bootstrap primary color */
+      color: #ffffff;
+      cursor: pointer;
+      border-radius: 4px;
+      &:hover {
+        background-color: #0056b3; /* Darker shade of primary color on hover */
+      }
+    }
+  }
+  &_error {
+    color: red;
+    margin-bottom: 5px;
+  }
+}
