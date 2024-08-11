@@ -17,18 +17,25 @@ const instance = axios.create({
 instance.interceptors.request.use(
   async (request) => {
     const session: any = await getSession();
-    if (!session) return request;
+    if (!session) {
+      return request;
+    }
 
     const token = `Bearer ${session?.accessToken}`;
 
     request.headers.Authorization = token;
     return request;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
+
 instance.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 export default instance;

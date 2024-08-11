@@ -29,7 +29,6 @@ const NavbarView = () => {
         (item) => pathname == item.url && <h1 key={item.title}>{item.title}</h1>
       )}
       {/* <h1>Gest</h1> */}
-
       {session ? (
         <div className={styles.navbar_profile}>
           <Image
