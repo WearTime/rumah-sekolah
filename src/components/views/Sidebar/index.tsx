@@ -2,8 +2,11 @@ import Image from "next/image";
 import styles from "./Sidebar.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const SidebarView = () => {
+  const pathname = usePathname();
+
   return (
     <div className={styles.sidebar}>
       <div className={styles.sidebar_logo}>
@@ -15,7 +18,11 @@ const SidebarView = () => {
         <div className={styles.sidebar_list_section}>
           <h3>MAIN</h3>
           <ul className={styles.sidebar_list_section_list}>
-            <li className={`${styles.sidebar_list_section_list_active}`}>
+            <li
+              className={`${
+                pathname == "/" ? styles.sidebar_list_section_list_active : ""
+              }`}
+            >
               <FontAwesomeIcon
                 icon={["fas", "home"]}
                 className={styles.sidebar_list_section_list_icon}
@@ -27,19 +34,31 @@ const SidebarView = () => {
         <div className={styles.sidebar_list_section}>
           <h3>SISWA SECTION</h3>
           <ul className={styles.sidebar_list_section_list}>
-            <li>
+            <li
+              className={`${
+                pathname == "/listsiswa"
+                  ? styles.sidebar_list_section_list_active
+                  : ""
+              }`}
+            >
               <FontAwesomeIcon
                 icon={["fas", "user-graduate"]}
                 className={styles.sidebar_list_section_list_icon}
               />{" "}
-              <Link href="/">List siswa</Link>
+              <Link href="/listsiswa">List siswa</Link>
             </li>
-            <li className={`${styles.sidebar_list_section_list_add}`}>
+            <li
+              className={`${styles.sidebar_list_section_list_add} ${
+                pathname == "/addsiswa"
+                  ? styles.sidebar_list_section_list_active
+                  : ""
+              }`}
+            >
               <FontAwesomeIcon
                 icon={["fas", "user-plus"]}
                 className={styles.sidebar_list_section_list_icon_plus}
               />{" "}
-              <Link href="/">Tambah siswa</Link>
+              <Link href="/addsiswa">Tambah siswa</Link>
             </li>
           </ul>
         </div>
@@ -86,6 +105,9 @@ const SidebarView = () => {
               <FontAwesomeIcon
                 icon={["fas", "square-plus"]}
                 className={styles.sidebar_list_section_list_icon_plus}
+                size="4x"
+                fontSize={"5px"}
+                style={{ fontSize: "4px" }}
               />{" "}
               <Link href="/">Tambah Mapel</Link>
             </li>

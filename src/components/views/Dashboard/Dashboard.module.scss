@@ -2,19 +2,20 @@
   &_content {
     display: flex;
     flex-direction: row;
-    gap: 15px;
+    gap: 10px;
     &_item {
-      width: 350px;
+      width: 35%;
       display: flex;
       justify-content: center;
       align-items: center;
       color: white;
+      height: 29vh;
       background-color: #28a745;
       padding: 45px 30px;
       border-radius: 20px;
       gap: 25px;
-      svg {
-        font-size: 75px;
+      &_icon {
+        font-size: 12vh !important;
       }
       &:first-child {
         background-color: #17a2b8;
@@ -24,11 +25,11 @@
       }
       &_text {
         &_title {
-          font-size: 30px;
+          font-size: 4.8vh;
         }
         &_count {
           margin-top: 10px;
-          font-size: 25px;
+          font-size: 4vh;
         }
       }
     }

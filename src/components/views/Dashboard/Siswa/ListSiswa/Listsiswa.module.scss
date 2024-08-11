@@ -1,0 +1,59 @@
+.listsiswa {
+  width: 100%;
+  &_search {
+
+    &_input {
+      border-radius: 10px;
+      padding: 5px;
+      width: 20%;
+      margin: 10px 0;
+      font-weight: 600;
+    }
+  }
+  &_table {
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+    * {
+      position: relative;
+    }
+
+    td,
+    th {
+      padding-left: 8px;
+    }
+
+    thead {
+      background-color: #e88513;
+      border: 1px solid #e88513;
+      color: white;
+      tr {
+        height: 50px;
+        text-align: center;
+        font-size: 16px;
+      }
+    }
+
+    &_body {
+      border: 1px solid #cfb9a0;
+      &_icon {
+        &:hover {
+          color: #4e4b4b;
+        }
+        font-size: 20px;
+        cursor: pointer;
+        padding-right: 20px;
+      }
+      td {
+        text-align: center;
+        height: 48px;
+        font-weight: 600;
+        border-bottom: 1px solid #cfb9a0;
+      }
+    }
+  }
+}

@@ -1,29 +1,28 @@
-import NextAuth from "next-auth";
+// src/types/next-auth.d.ts
+import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 
 declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
+  interface Session {
+    user: {
+      id: string;
+      username: string;
+      role: string;
+      profile: string;
+    } & DefaultSession["user"];
+    accessToken?: string;
+  }
 
-  interface User {
+  interface User extends DefaultUser {
     id: string;
     username: string;
     role: string;
     profile: string;
   }
-  interface Session {
-    user: User & {
-      /** The user's postal address. */
-      id: string;
-      username: string;
-      role: string;
-      profile: string;
-    };
-    accessToken: string;
-    token: {
-      username: string;
-      role: "Admin" | "Member";
-      profile: string;
-    };
+
+  interface JWT {
+    id: string;
+    username: string;
+    role: string;
+    profile: string;
   }
 }

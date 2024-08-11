@@ -1,7 +1,12 @@
+"use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./Dashboard.module.scss";
 
-const DashboardView = () => {
+type PropTypes = {
+  totalData: { totalSiswa: number; totalGuru: number; totalMapel: number };
+};
+
+const DashboardView = ({ totalData }: PropTypes) => {
   return (
     <div className={styles.dashboard}>
       <div className={styles.dashboard_content}>
@@ -11,7 +16,7 @@ const DashboardView = () => {
               Jumlah Siswa
             </h1>
             <p className={styles.dashboard_content_item_text_count}>
-              2000 Siswa
+              {totalData.totalSiswa} Siswa
             </p>
           </div>
 
@@ -25,12 +30,16 @@ const DashboardView = () => {
             <h1 className={styles.dashboard_content_item_text_title}>
               Jumlah Guru
             </h1>
-            <p className={styles.dashboard_content_item_text_count}>200 Guru</p>
+            <p className={styles.dashboard_content_item_text_count}>
+              {totalData.totalGuru} Guru
+            </p>
           </div>
 
           <FontAwesomeIcon
             icon={["fas", "user-tie"]}
             className={styles.dashboard_content_item_icon}
+            fontSize={"75px"}
+            size="3x"
           />
         </div>
         <div className={styles.dashboard_content_item}>
@@ -38,7 +47,9 @@ const DashboardView = () => {
             <h1 className={styles.dashboard_content_item_text_title}>
               Jumlah Mapel
             </h1>
-            <p className={styles.dashboard_content_item_text_count}>20 Mapel</p>
+            <p className={styles.dashboard_content_item_text_count}>
+              {totalData.totalMapel} Mapel
+            </p>
           </div>
 
           <FontAwesomeIcon

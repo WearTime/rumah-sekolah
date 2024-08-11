@@ -2,15 +2,33 @@ import Image from "next/image";
 import styles from "./Navbar.module.scss";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
+const listTitleNavbar = [
+  {
+    title: "Dashboard",
+    url: "/",
+  },
+  {
+    title: "List Siswa",
+    url: "/listsiswa",
+  },
+  {
+    title: "Add Siswa",
+    url: "/addsiswa",
+  },
+];
 const NavbarView = () => {
   const { data: session, status } = useSession();
-
+  const pathname = usePathname();
   // console.log(session.user.username);
 
   return (
     <div className={styles.navbar}>
-      <h1>Dashboard</h1>
+      {listTitleNavbar.map(
+        (item) => pathname == item.url && <h1 key={item.title}>{item.title}</h1>
+      )}
+      {/* <h1>Gest</h1> */}
 
       {session ? (
         <div className={styles.navbar_profile}>
