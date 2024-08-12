@@ -36,6 +36,9 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    getAllData();
+  }, []);
   return (
     <main>
       <DashboardView totalData={totalData} />

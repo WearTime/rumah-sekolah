@@ -1,26 +1,38 @@
-import jwt from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
-export const verify = (
+export const verifyToken = async (
   req: NextRequest,
   isAdmin: boolean,
   callback: Function
 ) => {
   const token = req.headers.get("Authorization")?.split(" ")[1] || "";
 
-  if (token) {
-    jwt.verify(
-      token,
-      process.env.NEXTAUTH_SECRET || "",
-      async (err: any, decoded: any) => {
-        if (decoded && (isAdmin ? decoded.role == "Admin" : true)) {
-          callback(decoded);
-        } else {
-          NextResponse.json({ message: "Access Denied" }, { status: 403 });
+  if (!token) {
+    return NextResponse.json({ message: "Access Denied" }, { status: 403 });
+  }
+
+  try {
+    const decoded: any = await new Promise((resolve, reject) => {
+      verify(
+        token,
+        process.env.NEXTAUTH_SECRET || "",
+        (err: any, decoded: any) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(decoded);
+          }
         }
-      }
-    );
-  } else {
-    NextResponse.json({ message: "Access Denied" }, { status: 403 });
+      );
+    });
+
+    if (decoded && (isAdmin ? decoded.role == "Admin" : true)) {
+      return callback(decoded);
+    } else {
+      return NextResponse.json({ message: "Access Denied" }, { status: 403 });
+    }
+  } catch (error) {
+    return NextResponse.json({ message: "Access Denied" }, { status: 403 });
   }
 };

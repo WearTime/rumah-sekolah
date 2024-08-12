@@ -3,9 +3,11 @@ import styles from "./Sidebar.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const SidebarView = () => {
   const pathname = usePathname();
+  const session = useSession();
 
   return (
     <div className={styles.sidebar}>
@@ -47,19 +49,21 @@ const SidebarView = () => {
               />{" "}
               <Link href="/listsiswa">List siswa</Link>
             </li>
-            <li
-              className={`${styles.sidebar_list_section_list_add} ${
-                pathname == "/addsiswa"
-                  ? styles.sidebar_list_section_list_active
-                  : ""
-              }`}
-            >
-              <FontAwesomeIcon
-                icon={["fas", "user-plus"]}
-                className={styles.sidebar_list_section_list_icon_plus}
-              />{" "}
-              <Link href="/addsiswa">Tambah siswa</Link>
-            </li>
+            {session.data?.user.role == "Admin" && (
+              <li
+                className={`${styles.sidebar_list_section_list_add} ${
+                  pathname == "/addsiswa"
+                    ? styles.sidebar_list_section_list_active
+                    : ""
+                }`}
+              >
+                <FontAwesomeIcon
+                  icon={["fas", "user-plus"]}
+                  className={styles.sidebar_list_section_list_icon_plus}
+                />{" "}
+                <Link href="/addsiswa">Tambah siswa</Link>
+              </li>
+            )}
           </ul>
         </div>
         <div className={styles.sidebar_list_section}>
@@ -80,14 +84,15 @@ const SidebarView = () => {
               />{" "}
               <Link href="/">Beranda Guru</Link>
             </li>
-
-            <li className={`${styles.sidebar_list_section_list_add}`}>
-              <FontAwesomeIcon
-                icon={["fas", "user-plus"]}
-                className={styles.sidebar_list_section_list_icon_plus}
-              />{" "}
-              <Link href="/">Tambah Guru</Link>
-            </li>
+            {session.data?.user.role == "Admin" && (
+              <li className={`${styles.sidebar_list_section_list_add}`}>
+                <FontAwesomeIcon
+                  icon={["fas", "user-plus"]}
+                  className={styles.sidebar_list_section_list_icon_plus}
+                />{" "}
+                <Link href="/">Tambah Guru</Link>
+              </li>
+            )}
           </ul>
         </div>
         <div className={styles.sidebar_list_section}>
@@ -100,17 +105,15 @@ const SidebarView = () => {
               />{" "}
               <Link href="/">List Mapel</Link>
             </li>
-
-            <li className={`${styles.sidebar_list_section_list_plus}`}>
-              <FontAwesomeIcon
-                icon={["fas", "square-plus"]}
-                className={styles.sidebar_list_section_list_icon_plus}
-                size="4x"
-                fontSize={"5px"}
-                style={{ fontSize: "4px" }}
-              />{" "}
-              <Link href="/">Tambah Mapel</Link>
-            </li>
+            {session.data?.user.role == "Admin" && (
+              <li className={`${styles.sidebar_list_section_list_plus}`}>
+                <FontAwesomeIcon
+                  icon={["fas", "square-plus"]}
+                  className={styles.sidebar_list_section_list_icon_plus}
+                />{" "}
+                <Link href="/">Tambah Mapel</Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

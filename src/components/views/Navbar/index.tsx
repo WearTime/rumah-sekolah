@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./Navbar.module.scss";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -26,7 +26,12 @@ const NavbarView = () => {
   return (
     <div className={styles.navbar}>
       {listTitleNavbar.map(
-        (item) => pathname == item.url && <h1 key={item.title}>{item.title}</h1>
+        (item) =>
+          pathname == item.url && (
+            <h1 onClick={() => signOut()} key={item.title}>
+              {item.title}
+            </h1>
+          )
       )}
       {/* <h1>Gest</h1> */}
       {session ? (

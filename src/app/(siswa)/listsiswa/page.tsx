@@ -15,8 +15,11 @@ const ListSiswaPage = () => {
 
   useEffect(() => {
     const getSiswaData = async () => {
-      const { data } = await dataSiswaServices.getAllSiswa();
-      setSiswaDataResponse(data);
+      try {
+        const { data } = await dataSiswaServices.getAllSiswa();
+
+        setSiswaDataResponse(data);
+      } catch (error) {}
     };
 
     getSiswaData();
@@ -25,7 +28,7 @@ const ListSiswaPage = () => {
   return (
     <div>
       {siswaDataResponse && (
-        <ListSiswaView siswaData={siswaDataResponse.data} />
+        <ListSiswaView siswa={siswaDataResponse.data} />
       )}
     </div>
   );

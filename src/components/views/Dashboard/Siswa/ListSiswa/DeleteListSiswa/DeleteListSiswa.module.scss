@@ -1,0 +1,21 @@
+.modal {
+  text-align: left;
+  &_title {
+    margin-bottom: 10px;
+  }
+  p {
+    margin-bottom: 10px;
+  }
+  &_action {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    &_delete {
+      width: 24%;
+      background-color: #d10505 !important;
+    }
+    &_cancel {
+      width: 24%;
+    }
+  }
+}

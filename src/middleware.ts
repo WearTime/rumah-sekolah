@@ -6,9 +6,4 @@ export function mainMiddleware(request: NextRequest) {
   return res;
 }
 
-export default withAuth(mainMiddleware, [
-  "/dashboard",
-  "/profile",
-  "/login",
-  "/register",
-]);
+export default withAuth(mainMiddleware, ["/addsiswa", "/login", "/register"]);

@@ -26,11 +26,13 @@ export default function withAuth(
         return NextResponse.redirect(url);
       }
 
+      console.log(token);
+
       if (token) {
         if (authPage.includes(pathname)) {
           return NextResponse.redirect(new URL("/", req.url));
         }
-        if (token.role != "admin" && onlyAdminPage.includes(pathname)) {
+        if (token.role != "Admin" && onlyAdminPage.includes(pathname)) {
           return NextResponse.redirect(new URL("/", req.url));
         }
       }

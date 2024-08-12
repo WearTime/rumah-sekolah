@@ -2,9 +2,14 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  width: 80vw;
+  position: fixed;
   align-items: center;
   margin: 10px 0;
+  background-color: white;
+  z-index: 99;
+  top: -10px;
+  left: 19vw;
   padding: 10px 20px 10px 0;
   &_profile {
     display: flex;
