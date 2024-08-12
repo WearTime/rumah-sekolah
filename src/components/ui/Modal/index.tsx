@@ -1,16 +1,18 @@
-import { Dispatch, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./Moda.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type PropsTypes = {
   children: React.ReactNode;
-  onClose: any;
+  onClose: () => void;
 };
+
 const Modal = ({ children, onClose }: PropsTypes) => {
-  const ref: any = useRef();
+  const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (ref.current && !ref.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
         onClose();
       }
     };
@@ -19,6 +21,7 @@ const Modal = ({ children, onClose }: PropsTypes) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
+
   return (
     <div className={styles.modal}>
       <div className={styles.modal__main} ref={ref}>
