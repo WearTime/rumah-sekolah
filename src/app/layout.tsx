@@ -19,6 +19,8 @@ const disableSidebar = ["/login", "/register"];
 import { config, dom, library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import Head from "next/head";
+import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
 library.add(fas);
 config.autoAddCss = false;
@@ -28,6 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+
   return (
     <html lang="en">
       <Head>
@@ -39,7 +42,10 @@ export default function RootLayout({
             {!disableNavbar.includes(pathname) && <Sidebar />}
             <div>
               {!disableNavbar.includes(pathname) && <Navbar />}
-              {children}
+              <div className="content">
+                <Toaster position="top-right" />
+                {children}
+              </div>
             </div>
           </div>
         </SessionProvider>

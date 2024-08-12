@@ -23,13 +23,11 @@ const ListSiswaPage = () => {
     };
 
     getSiswaData();
-  }, []);
+  }, [siswaDataResponse]);
 
   return (
     <div>
-      {siswaDataResponse && (
-        <ListSiswaView siswa={siswaDataResponse.data} />
-      )}
+      {siswaDataResponse && <ListSiswaView siswa={siswaDataResponse.data} />}
     </div>
   );
 };

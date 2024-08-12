@@ -3,6 +3,7 @@ import React, { useState, useEffect, FormEvent } from "react";
 import styles from "./AddSiswa.module.scss";
 import siswaSchema from "@/validation/siswaSchema.validation";
 import dataSiswaServices from "@/services/dataSiswa";
+import toast from "react-hot-toast";
 
 const AddSiswaView = () => {
   const [jurusan, setJurusan] = useState("");
@@ -47,6 +48,7 @@ const AddSiswaView = () => {
     setJurusan("");
     setIsLoading(false);
     setMessages({ success: "", errors: "" });
+    toast.success("Berhasil Tambah Data");
   };
 
   useEffect(() => {

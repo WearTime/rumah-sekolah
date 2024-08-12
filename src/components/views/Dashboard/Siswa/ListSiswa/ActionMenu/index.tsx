@@ -8,6 +8,7 @@ type PropTypes = {
   actionMenu: Siswa | {};
   setSiswaData: Dispatch<SetStateAction<Siswa[]>>;
 };
+
 const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
   const [deletedSiswa, setDeletedSiswa] = useState<Siswa | {}>({});
 
@@ -24,6 +25,11 @@ const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
     };
   }, [setActionMenu]);
 
+  const handleItemClick = (action: () => void) => {
+    action();
+    setActionMenu({});
+  };
+
   return (
     <>
       <div
@@ -34,14 +40,39 @@ const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
           <h1 className={styles.actionmenu_header_title}>Actions</h1>
         </div>
         <div className={styles.actionmenu_content}>
-          <button type="button" className={styles.actionmenu_content_list}>
+          <button
+            type="button"
+            className={styles.actionmenu_content_list}
+            onClick={() =>
+              handleItemClick(() => {
+                // Logic for "Detail item"
+              })
+            }
+          >
             <p>Detail item</p>
           </button>
-          <button type="button" className={styles.actionmenu_content_list}>
+          <button
+            type="button"
+            className={styles.actionmenu_content_list}
+            onClick={() =>
+              handleItemClick(() => {
+                // Logic for "Edit item"
+              })
+            }
+          >
             <p>Edit item</p>
           </button>
-          <button type="button" className={styles.actionmenu_content_list}>
-            <p onClick={() => setDeletedSiswa(actionMenu)}>Delete item</p>
+          <button
+            type="button"
+            className={styles.actionmenu_content_list}
+            onClick={() => {
+              setDeletedSiswa(actionMenu);
+              setTimeout(() => {
+                setActionMenu({});
+              }, 1000);
+            }}
+          >
+            <p>Delete item</p>
           </button>
         </div>
       </div>

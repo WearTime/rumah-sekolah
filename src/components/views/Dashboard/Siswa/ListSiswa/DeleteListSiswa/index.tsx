@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import styles from "./DeleteListSiswa.module.scss";
 import Button from "@/components/ui/Button";
 import dataSiswaServices from "@/services/dataSiswa";
+import toast from "react-hot-toast";
 
 type PropTypes = {
   deletedSiswa: Siswa | any;
@@ -18,8 +19,19 @@ const DeleteListSiswa = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
-    const result = dataSiswaServices.deleteDataSiswa(deletedSiswa.nisn);
     setIsLoading(true);
+    const result = await dataSiswaServices.deleteDataSiswa(deletedSiswa.nisn);
+    if (result.status == 200) {
+      setIsLoading(false);
+      setDeletedSiswa({});
+      toast.success("Berhasil Hapus Data");
+      const { data } = await dataSiswaServices.getAllSiswa();
+      setSiswaData(data);
+    } else {
+      setIsLoading(false);
+      setDeletedSiswa({});
+      toast.error("Gagal Hapus Data");
+    }
   };
   return (
     <Modal onClose={() => console.log("dada")}>

@@ -65,12 +65,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
-export async function DELETE(req: NextRequest) {
-  try {
-    return await verifyToken(req, true, async () => {
-      const { searchParams } = new URL(req.url);
-      console.log(searchParams);
-    });
-  } catch (error) {}
-}
