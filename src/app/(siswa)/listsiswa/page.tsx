@@ -23,7 +23,7 @@ const ListSiswaPage = () => {
     };
 
     getSiswaData();
-  }, [siswaDataResponse]);
+  }, []);
 
   return (
     <div>

@@ -7,10 +7,11 @@ import dataSiswaServices from "@/services/dataSiswa";
 import toast from "react-hot-toast";
 
 type PropTypes = {
-  deletedSiswa: Siswa | any;
+  deletedSiswa: Siswa | null;
   setSiswaData: Dispatch<SetStateAction<Siswa[]>>;
-  setDeletedSiswa: Dispatch<SetStateAction<Siswa | {}>>;
+  setDeletedSiswa: Dispatch<SetStateAction<Siswa | null>>;
 };
+
 const DeleteListSiswa = ({
   deletedSiswa,
   setSiswaData,
@@ -19,42 +20,48 @@ const DeleteListSiswa = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
+    if (!deletedSiswa) return;
+
     setIsLoading(true);
     const result = await dataSiswaServices.deleteDataSiswa(deletedSiswa.nisn);
-    if (result.status == 200) {
+
+    if (result.status === 200) {
       setIsLoading(false);
-      setDeletedSiswa({});
+      setDeletedSiswa(null);
       toast.success("Berhasil Hapus Data");
       const { data } = await dataSiswaServices.getAllSiswa();
-      setSiswaData(data);
+      setSiswaData(data.data);
     } else {
       setIsLoading(false);
-      setDeletedSiswa({});
+      setDeletedSiswa(null);
       toast.error("Gagal Hapus Data");
     }
   };
+
   return (
-    <Modal onClose={() => console.log("dada")}>
-      <div className={styles.modal}>
-        <h1 className={styles.modal_title}>Delete Data?</h1>
-        <p>
-          Apakah kamu yakin ingin menghapus data dengan nisn{" "}
-          <strong>{deletedSiswa?.nisn}</strong>?
-        </p>
-        <div className={styles.modal_action}>
-          <Button
-            type="button"
-            className={styles.modal_action_delete}
-            onClick={async () => handleDelete()}
-          >
-            {isLoading ? "Deleting..." : "Delete Data"}
-          </Button>
-          <Button type="button" className={styles.modal_action_cancel}>
-            Cancel
-          </Button>
-        </div>
+    <div className={styles.modal}>
+      <h1 className={styles.modal_title}>Delete Data?</h1>
+      <p>
+        Apakah kamu yakin ingin menghapus data dengan NISN{" "}
+        <strong>{deletedSiswa?.nisn}</strong>?
+      </p>
+      <div className={styles.modal_action}>
+        <Button
+          type="button"
+          className={styles.modal_action_delete}
+          onClick={handleDelete}
+        >
+          {isLoading ? "Deleting..." : "Delete Data"}
+        </Button>
+        <Button
+          type="button"
+          className={styles.modal_action_cancel}
+          onClick={() => setDeletedSiswa(null)}
+        >
+          Cancel
+        </Button>
       </div>
-    </Modal>
+    </div>
   );
 };
 

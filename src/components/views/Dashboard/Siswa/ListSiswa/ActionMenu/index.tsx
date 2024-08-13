@@ -3,38 +3,31 @@ import styles from "./ActionMenu.module.scss";
 import { Siswa } from "@/types/siswa.type";
 import DeleteListSiswa from "../DeleteListSiswa";
 import Modal from "@/components/ui/Modal";
+import EditListSiswa from "../EditListSiswa";
+import DetailListSiswa from "../DetailListSiswa";
 
 type PropTypes = {
-  setActionMenu: Dispatch<SetStateAction<Siswa | {}>>;
-  actionMenu: Siswa | {};
+  setActionMenu: Dispatch<SetStateAction<Siswa | null>>;
+  actionMenu: Siswa;
   setSiswaData: Dispatch<SetStateAction<Siswa[]>>;
 };
 
 const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
-  const [deletedSiswa, setDeletedSiswa] = useState<Siswa | {}>({});
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+  const [deletedSiswa, setDeletedSiswa] = useState<Siswa | null>(null);
+  const [editSiswa, setEditSiswa] = useState<Siswa | null>(null);
+  const [detailSiswa, setDetailSiswa] = useState<Siswa | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<{
+    deleteModal: boolean;
+    editModal: boolean;
+    detailModal: boolean;
+  }>({ deleteModal: false, editModal: false, detailModal: false });
   const ref = useRef<HTMLDivElement>(null);
+
   const handleDeleteItem = () => {
     setDeletedSiswa(actionMenu);
-    setIsModalOpen(true); // Open the modal
-    // setActionMenu({}); // Close the ActionMenu
+    setIsModalOpen({ deleteModal: true, editModal: false, detailModal: false });
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        // setActionMenu({});
-        console.log(ref.current.hasAttribute("data-actionmenu-active"));
-        console.log(ref.current);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setActionMenu]);
-
+  
   return (
     <>
       <div
@@ -49,7 +42,12 @@ const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
             type="button"
             className={styles.actionmenu_content_list}
             onClick={() => {
-              // Logic for "Detail item"
+              setDetailSiswa(actionMenu);
+              setIsModalOpen({
+                deleteModal: false,
+                editModal: false,
+                detailModal: true,
+              });
             }}
           >
             <p>Detail item</p>
@@ -58,14 +56,18 @@ const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
             type="button"
             className={styles.actionmenu_content_list}
             onClick={() => {
-              // Logic for "Edit item"
+              setEditSiswa(actionMenu);
+              setIsModalOpen({
+                deleteModal: false,
+                editModal: true,
+                detailModal: false,
+              });
             }}
           >
             <p>Edit item</p>
           </button>
           <button
             type="button"
-            data-actionmenu-active
             className={styles.actionmenu_content_list}
             onClick={handleDeleteItem}
           >
@@ -73,12 +75,54 @@ const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
           </button>
         </div>
       </div>
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
+      {isModalOpen.deleteModal && (
+        <Modal
+          onClose={() =>
+            setIsModalOpen({
+              deleteModal: false,
+              editModal: false,
+              detailModal: false,
+            })
+          }
+        >
           <DeleteListSiswa
             deletedSiswa={deletedSiswa}
             setSiswaData={setSiswaData}
             setDeletedSiswa={setDeletedSiswa}
+          />
+        </Modal>
+      )}
+      {isModalOpen.editModal && (
+        <Modal
+          onClose={() =>
+            setIsModalOpen({
+              deleteModal: false,
+              editModal: false,
+              detailModal: false,
+            })
+          }
+        >
+          <EditListSiswa
+            editSiswa={editSiswa}
+            setSiswaData={setSiswaData}
+            setIsModalOpen={setIsModalOpen}
+          />
+        </Modal>
+      )}
+      {isModalOpen.detailModal && (
+        <Modal
+          onClose={() =>
+            setIsModalOpen({
+              deleteModal: false,
+              editModal: false,
+              detailModal: false,
+            })
+          }
+        >
+          <DetailListSiswa
+            detailSiswa={detailSiswa}
+            setSiswaData={setSiswaData}
+            setIsModalOpen={setIsModalOpen}
           />
         </Modal>
       )}

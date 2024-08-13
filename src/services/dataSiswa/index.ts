@@ -7,6 +7,8 @@ const dataSiswaServices = {
   getAllSiswa: () => instance.get(endpoint),
   addNewSiswa: (data: Siswa) => instance.post(endpoint, data),
   deleteDataSiswa: (nisn: string) => instance.delete(`${endpoint}/${nisn}`),
+  editDataSiswa: (nisn: string, data: Siswa) =>
+    instance.put(`${endpoint}/${nisn}`, { data }),
 };
 
 export default dataSiswaServices;

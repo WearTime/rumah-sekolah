@@ -1,0 +1,34 @@
+.modal {
+  h1 {
+    margin-bottom: 20px;
+  }
+  &_form {
+    text-align: left;
+    &_input {
+      margin-bottom: 10px;
+    }
+    &_group {
+      width: 100%;
+      margin-bottom: 10px;
+
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      &_item {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        label {
+          margin-bottom: 10px;
+        }
+        select,
+        textarea {
+          padding: 10px;
+          background-color: #eee;
+          border-radius: 8px;
+          resize: none;
+        }
+      }
+    }
+  }
+}

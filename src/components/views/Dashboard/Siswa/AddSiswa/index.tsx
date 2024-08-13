@@ -4,6 +4,8 @@ import styles from "./AddSiswa.module.scss";
 import siswaSchema from "@/validation/siswaSchema.validation";
 import dataSiswaServices from "@/services/dataSiswa";
 import toast from "react-hot-toast";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 const AddSiswaView = () => {
   const [jurusan, setJurusan] = useState("");
@@ -41,14 +43,20 @@ const AddSiswaView = () => {
       return;
     }
 
-    setMessages({ success: "Successfully added siswa", errors: "" });
     const result = await dataSiswaServices.addNewSiswa(data);
-    form.reset();
-    setKelas("");
-    setJurusan("");
-    setIsLoading(false);
-    setMessages({ success: "", errors: "" });
-    toast.success("Berhasil Tambah Data");
+
+    if (result.status == 201) {
+      form.reset();
+      setKelas("");
+      setJurusan("");
+      setIsLoading(false);
+      toast.success("Berhasil Tambah Data");
+    } else {
+      setKelas("");
+      setJurusan("");
+      setIsLoading(false);
+      toast.error("Something went wrong!");
+    }
   };
 
   useEffect(() => {
@@ -90,20 +98,27 @@ const AddSiswaView = () => {
             onSubmit={handleSubmit}
             className={styles.addsiswa_main_content_form}
           >
-            <div className={styles.addsiswa_main_content_form_item}>
-              <label htmlFor="nama">Nama</label>
-              <input type="text" name="nama" id="nama" required />
-            </div>
-            <div className={styles.addsiswa_main_content_form_group}>
-              <div className={styles.addsiswa_main_content_form_group_item}>
-                <label htmlFor="nisn">NISN</label>
-                <input type="text" name="nisn" id="nisn" required />
-              </div>
-              <div className={styles.addsiswa_main_content_form_group_item}>
-                <label htmlFor="nis">NIS</label>
-                <input type="text" name="nis" id="nis" required />
-              </div>
-            </div>
+            <Input
+              label="Nama"
+              type="text"
+              name="nama"
+              placeholder="Masukan Nama Siswa"
+              className={styles.addsiswa_main_content_form_input}
+            />
+            <Input
+              label="NISN"
+              type="text"
+              name="nisn"
+              placeholder="Masukan Nisn Siswa"
+              className={styles.addsiswa_main_content_form_input}
+            />
+            <Input
+              label="NIS"
+              type="text"
+              name="nis"
+              placeholder="Masukan Nis Siswa"
+              className={styles.addsiswa_main_content_form_input}
+            />
             <div className={styles.addsiswa_main_content_form_item}>
               <label htmlFor="kelas">Kelas</label>
               <select
@@ -135,7 +150,8 @@ const AddSiswaView = () => {
                   <option value="MPLB">MPLB</option>
                   <option value="BDP">BDP</option>
                   <option value="KULINER">KULINER</option>
-                  <option value="TATA BOGA">TATA BOGA</option>
+                  <option value="TATABUSANA">TATA BUSANA</option>
+                  <option value="PHT">PHT</option>
                   <option value="UPW">UPW</option>
                 </select>
               </div>
@@ -151,19 +167,22 @@ const AddSiswaView = () => {
                 </select>
               </div>
             </div>
-            <div className={styles.addsiswa_main_content_form_item}>
-              <label htmlFor="no_hp">No HP</label>
-              <input type="text" name="no_hp" id="no_hp" required />
-            </div>
+            <Input
+              label="No HP"
+              type="text"
+              name="no_hp"
+              placeholder="Masukan Nomor Handphone Siswa"
+              className={styles.addsiswa_main_content_form_input}
+            />
             <div className={styles.addsiswa_main_content_form_item}>
               <label htmlFor="alamat">Alamat</label>
               <textarea name="alamat" id="alamat" cols={20} rows={2} required />
             </div>
 
             <div className={styles.addsiswa_main_content_form_button}>
-              <button type="submit" disabled={isLoading}>
+              <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Loading..." : "Tambah Siswa"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>

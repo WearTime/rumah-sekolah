@@ -2,14 +2,15 @@
   position: fixed;
   display: none;
   flex-direction: column;
-  right: 2vw;
+  right: 3vw;
   border: 1px solid black;
   border-radius: 10px;
   z-index: 99;
   width: 10%;
   text-align: left;
-  transition: display 0.5s ease-in-out;
+  transition: opacity 1s ease-in-out;
   padding: 10px;
+  opacity: 0;
   background-color: white;
   &_header {
     &_title {
@@ -41,5 +42,6 @@
   }
   &-active {
     display: flex;
+    opacity: 1;
   }
 }

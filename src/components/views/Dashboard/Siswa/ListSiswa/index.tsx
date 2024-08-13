@@ -12,9 +12,16 @@ type PropTypes = {
 
 const ListSiswaView = ({ siswa }: PropTypes) => {
   const [siswaData, setSiswaData] = useState<Siswa[]>([]);
-  const [actionMenu, setActionMenu] = useState<Siswa | any>({});
-  const [toggleActionMenu, setToggleActionMenu] = useState(false);
+  const [actionMenu, setActionMenu] = useState<Siswa | null>(null);
   const pathname = usePathname();
+
+  const handleActionMenu = (selectedSiswa: Siswa) => {
+    if (actionMenu?.nisn === selectedSiswa.nisn) {
+      setActionMenu(null); // Close the action menu if it's already open for the clicked user
+    } else {
+      setActionMenu(selectedSiswa); // Open the action menu for the selected user
+    }
+  };
 
   useEffect(() => {
     setSiswaData(siswa);
@@ -62,22 +69,21 @@ const ListSiswaView = ({ siswa }: PropTypes) => {
                     <FontAwesomeIcon
                       icon={["fas", "ellipsis"]}
                       className={styles.listsiswa_table_body_icon}
-                      onClick={() => setActionMenu(siswa)}
+                      onClick={() => handleActionMenu(siswa)}
                     />
-                    {Object.keys(actionMenu).length > 0 &&
-                      actionMenu?.nisn == siswa.nisn && (
-                        <ActionMenu
-                          setSiswaData={setSiswaData}
-                          setActionMenu={setActionMenu}
-                          actionMenu={actionMenu}
-                        />
-                      )}
+                    {actionMenu?.nisn === siswa.nisn && (
+                      <ActionMenu
+                        actionMenu={actionMenu}
+                        setActionMenu={setActionMenu}
+                        setSiswaData={setSiswaData}
+                      />
+                    )}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={7}>Data Kosong</td>
+                <td colSpan={9}>Data Kosong</td>
               </tr>
             )}
           </tbody>
