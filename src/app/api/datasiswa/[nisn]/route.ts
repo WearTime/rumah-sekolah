@@ -5,6 +5,7 @@ import siswaSchema from "@/validation/siswaSchema.validation";
 import { createWriteStream } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
+import { Readable } from "stream";
 
 export async function DELETE(req: NextRequest, { params }: any) {
   try {
@@ -91,14 +92,21 @@ export async function PUT(req: NextRequest, { params }: any) {
         )}`;
 
         parsedData.data.image = profileImageUrl;
+      } else {
+        // If no new image, retain the existing one
+        delete parsedData.data.image;
       }
 
+      const updateData = {
+        ...parsedData.data,
+        image: profileImageUrl || parsedData.data.image || checkData.image, // retain existing image if no new one is uploaded
+      };
       // Update the student's data
       const updateSiswa = await prisma.dataSiswa.update({
         where: {
           nisn: nisn,
         },
-        data: parsedData.data,
+        data: updateData,
       });
 
       return NextResponse.json({ data: updateSiswa }, { status: 200 });

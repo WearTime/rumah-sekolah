@@ -49,8 +49,12 @@ export async function POST(req: NextRequest) {
         );
       }
 
+      const updateData = {
+        ...parsedData.data,
+        image: "",
+      };
       const newSiswa = await prisma.dataSiswa.create({
-        data: parsedData.data,
+        data: updateData,
       });
 
       return NextResponse.json(

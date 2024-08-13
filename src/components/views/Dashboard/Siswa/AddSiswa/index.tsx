@@ -29,7 +29,7 @@ const AddSiswaView = () => {
         const data = {
           image: file,
         };
-        const update = await dataSiswaServices.editDataSiswa(nisn, data);
+        // const update = await dataSiswaServices.editDataSiswa(nisn, data);
       }
     }
   };
