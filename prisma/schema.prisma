@@ -22,13 +22,14 @@ model User {
 }
 
 model DataSiswa {
-  nisn    String  @id
+  nisn    String  @id @unique
   nis     String  @unique
   nama    String
   kelas   String
   jurusan String
   no_hp   String?
   alamat  String?
+  image   String?
 
   @@map(name: "data_siswa")
 }
@@ -39,6 +40,7 @@ model DataGuru {
   no_hp  String?
   alamat String?
   mapel  String?
+  image  String?
 
   @@map(name: "data_guru")
 }

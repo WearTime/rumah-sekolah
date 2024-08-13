@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const kelas = ["X", "XI", "XII"];
+const allowedImageExtensions = ["jpg", "jpeg", "png", "gif"];
 
 const siswaSchema = z.object({
   nama: z
@@ -33,6 +34,20 @@ const siswaSchema = z.object({
     .string()
     .min(1, "Alamat harus diisi")
     .max(150, "Alamat Tidak boleh lebih dari 150 Karakter"),
+  image: z
+    .union([z.instanceof(File), z.string()])
+    .optional()
+    .refine(
+      (file) => {
+        if (!file || typeof file === "string") return true;
+        const fileExtension = file.name.split(".").pop()?.toLowerCase();
+        return fileExtension && allowedImageExtensions.includes(fileExtension);
+      },
+      {
+        message:
+          "Hanya file dengan ekstensi .jpg, .jpeg, .png, atau .gif yang diperbolehkan.",
+      }
+    ),
 });
 
 export default siswaSchema;

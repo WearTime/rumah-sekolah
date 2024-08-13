@@ -6,4 +6,5 @@ export type Siswa = {
   jurusan: string;
   no_hp: string;
   alamat: string;
+  image?: File | string;
 };

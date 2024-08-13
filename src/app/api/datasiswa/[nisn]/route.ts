@@ -1,7 +1,10 @@
 import prisma from "@/lib/database/db";
+import { encrypt } from "@/utils/uploadImage";
 import { verifyToken } from "@/utils/verifyToken";
 import siswaSchema from "@/validation/siswaSchema.validation";
+import { createWriteStream } from "fs";
 import { NextRequest, NextResponse } from "next/server";
+import { join } from "path";
 
 export async function DELETE(req: NextRequest, { params }: any) {
   try {
@@ -40,9 +43,11 @@ export async function PUT(req: NextRequest, { params }: any) {
   try {
     return await verifyToken(req, true, async () => {
       const nisn = params.nisn;
-      const body = await req.json();
+      const formData = await req.formData();
+      const body = JSON.parse(formData.get("data") as string); // Assuming the data is sent as JSON string
 
-      const parsedData = siswaSchema.safeParse(body.data);
+      // Validate data
+      const parsedData = siswaSchema.safeParse(body);
 
       if (!parsedData.success) {
         return NextResponse.json(
@@ -50,21 +55,45 @@ export async function PUT(req: NextRequest, { params }: any) {
           { status: 400 }
         );
       }
-      const checkData = await prisma.dataSiswa.findMany({
+
+      // Check if student exists
+      const checkData = await prisma.dataSiswa.findUnique({
         where: {
           nisn: nisn,
         },
       });
 
-      console.log(body);
-
-      if (checkData.length < 1) {
+      if (!checkData) {
         return NextResponse.json(
           { message: "Data siswa dengan nisn tersebut tidak ditemukan" },
           { status: 400 }
         );
       }
 
+      // Handling file upload
+      const file = formData.get("image") as File | null;
+      let profileImageUrl = null;
+
+      if (file && file.size < 1048576) {
+        const filePath = join(process.cwd(), "uploads", file.name);
+
+        // Convert ReadableStream to Node.js Readable stream
+        const readableStream = Readable.fromWeb(file.stream() as any);
+
+        const writeStream = createWriteStream(filePath);
+        readableStream.pipe(writeStream);
+
+        await new Promise((resolve) => writeStream.on("finish", resolve));
+
+        const encryptedFileName = encrypt(file.name);
+        profileImageUrl = `/api/getProfileImage?file=${encodeURIComponent(
+          encryptedFileName
+        )}`;
+
+        parsedData.data.image = profileImageUrl;
+      }
+
+      // Update the student's data
       const updateSiswa = await prisma.dataSiswa.update({
         where: {
           nisn: nisn,
@@ -72,12 +101,10 @@ export async function PUT(req: NextRequest, { params }: any) {
         data: parsedData.data,
       });
 
-      console.log(updateSiswa);
       return NextResponse.json({ data: updateSiswa }, { status: 200 });
     });
   } catch (error) {
-    console.log(error);
-
+    console.error(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

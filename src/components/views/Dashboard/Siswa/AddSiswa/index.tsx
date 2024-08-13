@@ -6,15 +6,33 @@ import dataSiswaServices from "@/services/dataSiswa";
 import toast from "react-hot-toast";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
+import InputFile from "@/components/ui/InputFile";
+import { createWriteStream } from "fs";
+import { join } from "path";
+import Image from "next/image";
+import { encrypt } from "@/utils/uploadImage";
+import prisma from "@/lib/database/db";
 
 const AddSiswaView = () => {
   const [jurusan, setJurusan] = useState("");
   const [kelas, setKelas] = useState("");
   const [subJurOptions, setSubJurOptions] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<{ success: string; errors: string }>(
-    { success: "", errors: "" }
-  );
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+
+  const uploadImage = async (nisn: string, form: HTMLFormElement) => {
+    const file = form.image.files[0];
+    let profileImageUrl = null;
+
+    if (file) {
+      if (file.size < 1048576) {
+        const data = {
+          image: file,
+        };
+        const update = await dataSiswaServices.editDataSiswa(nisn, data);
+      }
+    }
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,15 +48,15 @@ const AddSiswaView = () => {
       jurusan: form.jurusan.value + " " + form.sub_jur.value,
       no_hp: form.no_hp.value,
       alamat: form.alamat.value,
+      image: "",
     };
 
     // Validate the data using Zod
     const check = siswaSchema.safeParse(data);
 
     if (!check.success) {
-      console.log(check.error.errors);
+      toast.error(check.error.errors[0].message);
 
-      setMessages({ success: "", errors: check.error.errors[0].message });
       setIsLoading(false);
       return;
     }
@@ -46,6 +64,7 @@ const AddSiswaView = () => {
     const result = await dataSiswaServices.addNewSiswa(data);
 
     if (result.status == 201) {
+      uploadImage(form.nisn.value, form);
       form.reset();
       setKelas("");
       setJurusan("");
@@ -80,18 +99,6 @@ const AddSiswaView = () => {
       <div className={styles.addsiswa_main}>
         <div className={styles.addsiswa_main_header}>
           <h1>Formulir Tambah Siswa</h1>
-
-          {messages.errors.length > 0 && (
-            <p className={styles.addsiswa_main_header_error}>
-              {messages.errors}
-            </p>
-          )}
-
-          {messages.success.length > 0 && (
-            <p className={styles.addsiswa_main_header_success}>
-              {messages.success}
-            </p>
-          )}
         </div>
         <div className={styles.addsiswa_main_content}>
           <form
@@ -179,6 +186,28 @@ const AddSiswaView = () => {
               <textarea name="alamat" id="alamat" cols={20} rows={2} required />
             </div>
 
+            <div className={styles.addsiswa_main_content_form_item}>
+              <div className={styles.addsiswa_main_content_form_item_image}>
+                {uploadedImage ? (
+                  <Image
+                    width={200}
+                    height={200}
+                    src={URL.createObjectURL(uploadedImage)}
+                    alt="image"
+                    className={styles.form__image__preview}
+                  />
+                ) : (
+                  <div className={styles.form__image__placeholder}>
+                    No Image
+                  </div>
+                )}
+                <InputFile
+                  name="image"
+                  uploadedImage={uploadedImage}
+                  setUploadedImage={setUploadedImage}
+                />
+              </div>
+            </div>
             <div className={styles.addsiswa_main_content_form_button}>
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Loading..." : "Tambah Siswa"}

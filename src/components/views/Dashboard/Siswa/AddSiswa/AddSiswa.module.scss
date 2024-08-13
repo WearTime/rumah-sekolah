@@ -4,6 +4,7 @@
   justify-content: center;
   margin-top: 6vw;
   align-items: center;
+
   &_main {
     padding: 15px 20px;
     border: 1px solid black;
@@ -43,6 +44,24 @@
             background-color: #eee;
             border-radius: 8px;
             resize: none;
+          }
+          &_image {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            &__preview,
+            &__placeholder {
+              margin-top: 10px;
+              background-color: #eee;
+              width: 15%;
+              aspect-ratio: 1/1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: auto;
+              border-radius: 5px;
+            }
           }
         }
         &_group {
