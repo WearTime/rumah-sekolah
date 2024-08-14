@@ -3,6 +3,10 @@ import prisma from "../../../lib/database/db";
 import { NextRequest, NextResponse } from "next/server";
 import siswaSchema from "@/validation/siswaSchema.validation";
 import { verifyToken } from "@/utils/verifyToken";
+import { createWriteStream, existsSync, promises } from "fs";
+import { extname, join } from "path";
+import { encrypt } from "@/utils/imageEncrypt";
+import { Readable } from "stream";
 
 export async function GET(req: NextRequest) {
   try {
@@ -25,44 +29,51 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     return await verifyToken(req, true, async () => {
-      const body = await req.json();
-      const parsedData = siswaSchema.safeParse(body);
+      const formData = await req.formData();
+      const body = JSON.parse(formData.get("data") as string);
+      const file = formData.get("image") as File | null;
+      console.log(file);
+      if (file) {
+        // Dapatkan ekstensi file asli
+        const extension = extname(file.name);
+        // Enkripsi nama file dan tambahkan ekstensi
+        const encryptedFileName = encrypt(file.name) + extension;
 
-      if (!parsedData.success) {
-        return NextResponse.json(
-          { data: null, message: parsedData.error.format() },
-          { status: 400 }
-        );
+        const uploadDir = join(process.cwd(), "uploads", "siswa");
+
+        // Cek apakah folder "uploads/siswa" ada, jika tidak, buat folder tersebut
+        if (!existsSync(uploadDir)) {
+          await promises.mkdir(uploadDir, { recursive: true });
+        }
+
+        const filePath = join(uploadDir, encryptedFileName);
+
+        // Simpan file ke filesystem
+        const writeStream = createWriteStream(filePath);
+        const readableStream = Readable.fromWeb(file.stream() as any);
+        readableStream.pipe(writeStream);
+
+        // Tunggu hingga penulisan selesai
+        await new Promise((resolve, reject) => {
+          writeStream.on("finish", resolve);
+          writeStream.on("error", reject);
+        });
+
+        // Tambahkan path file ke body
+        body.image = `/api/getProfileImage?file=${encodeURIComponent(
+          encryptedFileName
+        )}`;
       }
 
-      const checkData = await prisma.dataSiswa.findMany({
-        where: {
-          nisn: parsedData.data.nisn,
-          nis: parsedData.data.nis,
-        },
+      // Simpan data ke database
+      const result = await prisma.dataSiswa.create({
+        data: body,
       });
 
-      if (checkData.length > 0) {
-        return NextResponse.json(
-          { message: "NISN Atau NIS sudah ada." },
-          { status: 400 }
-        );
-      }
-
-      const updateData = {
-        ...parsedData.data,
-        image: "",
-      };
-      const newSiswa = await prisma.dataSiswa.create({
-        data: updateData,
-      });
-
-      return NextResponse.json(
-        { data: newSiswa, message: "Successfully add siswa data" },
-        { status: 201 }
-      );
+      return NextResponse.json({ data: result }, { status: 201 });
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

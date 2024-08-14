@@ -5,10 +5,16 @@ type PropTypes = {
   uploadedImage: File | null;
   setUploadedImage: Dispatch<SetStateAction<File | null>>;
   name: string;
+  accept: string;
 };
 
 const MAX_LENGTH = 20;
-const InputFile = ({ name, uploadedImage, setUploadedImage }: PropTypes) => {
+const InputFile = ({
+  name,
+  uploadedImage,
+  setUploadedImage,
+  accept,
+}: PropTypes) => {
   const truncateFileName = (fileName: string, maxLength: number): string => {
     const [name, extension] = fileName.split(/\.(?=[^.]+$)/);
 
@@ -18,7 +24,11 @@ const InputFile = ({ name, uploadedImage, setUploadedImage }: PropTypes) => {
     }
 
     const nameParts = name.match(/.{1,1}/g) || [];
-    const lastTwoParts = nameParts.slice(-2).join("");
+
+    let lastTwoParts = "";
+    if (name.length > maxLength) {
+      lastTwoParts = nameParts.slice(-2).join("");
+    }
 
     const finalName = `${shortenedName}${lastTwoParts}`;
 
@@ -46,6 +56,7 @@ const InputFile = ({ name, uploadedImage, setUploadedImage }: PropTypes) => {
         type="file"
         name={name}
         id={name}
+        accept={accept}
         onChange={(e: any) => {
           e.preventDefault();
           setUploadedImage(e.currentTarget.files[0]);

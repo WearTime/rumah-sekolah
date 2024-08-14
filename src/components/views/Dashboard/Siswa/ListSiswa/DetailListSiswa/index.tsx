@@ -27,7 +27,11 @@ const DetailListSiswa = ({
           className={styles.modal_header_image}
           width={100}
           height={100}
-          src={"/blankpp.jpeg"}
+          src={
+            detailSiswa?.image
+              ? `http://localhost:3000${detailSiswa?.image}`
+              : "/blankpp.jpeg"
+          }
           alt="huhu"
         />
         <h1>{detailSiswa?.nama}</h1>

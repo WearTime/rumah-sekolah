@@ -4,13 +4,13 @@
   }
   &_form {
     text-align: left;
+
     &_input {
       margin-bottom: 10px;
     }
     &_group {
       width: 100%;
       margin-bottom: 10px;
-
       display: flex;
       gap: 10px;
       justify-content: center;
@@ -27,6 +27,24 @@
           background-color: #eee;
           border-radius: 8px;
           resize: none;
+        }
+        &_image {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          margin-bottom: 20px;
+          &__preview,
+          &__placeholder {
+            margin-top: 10px;
+            background-color: #eee;
+            width: 15%;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            border-radius: 5px;
+          }
         }
       }
     }

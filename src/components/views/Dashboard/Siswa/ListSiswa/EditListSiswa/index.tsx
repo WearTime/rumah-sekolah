@@ -12,6 +12,8 @@ import dataSiswaServices from "@/services/dataSiswa";
 import toast from "react-hot-toast";
 import Input from "@/components/ui/Input";
 import siswaSchema from "@/validation/siswaSchema.validation";
+import Image from "next/image";
+import InputFile from "@/components/ui/InputFile";
 
 type PropTypes = {
   editSiswa: Siswa | null;
@@ -36,13 +38,14 @@ const EditListSiswa = ({
   );
   const [kelas, setKelas] = useState(editSiswa?.kelas || "");
   const [subJurOptions, setSubJurOptions] = useState<number[]>([]);
-
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const sub_jur = editSiswa?.jurusan.split(" ")[1] || "";
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     const form = event.target as HTMLFormElement;
+    const formData = new FormData();
 
     const data = {
       nama: form.nama.value,
@@ -53,9 +56,6 @@ const EditListSiswa = ({
       no_hp: form.no_hp.value,
       alamat: form.alamat.value,
     };
-
-    console.log(data);
-
     const check = siswaSchema.safeParse(data);
 
     if (!check.success) {
@@ -67,12 +67,19 @@ const EditListSiswa = ({
 
     if (!editSiswa?.nisn) {
       toast.error("NISN is missing");
-
       setIsLoading(false);
       return;
     }
 
-    const result = await dataSiswaServices.editDataSiswa(editSiswa.nisn, data);
+    formData.append("data", JSON.stringify(data));
+    if (form.image.files[0]) {
+      formData.append("image", form.image.files[0]);
+    }
+
+    const result = await dataSiswaServices.editDataSiswa(
+      editSiswa.nisn,
+      formData
+    );
 
     if (result.status == 200) {
       setIsModalOpen({
@@ -110,6 +117,8 @@ const EditListSiswa = ({
     }
     setSubJurOptions(options);
   }, [jurusan, kelas]);
+  console.log(editSiswa);
+  console.log(uploadedImage);
 
   return (
     <div className={styles.modal}>
@@ -210,6 +219,33 @@ const EditListSiswa = ({
               rows={2}
               required
               defaultValue={editSiswa?.alamat}
+            />
+          </div>
+        </div>
+        <div className={styles.modal_form_group_item}>
+          <div className={styles.modal_form_group_item_image}>
+            {editSiswa?.image ? (
+              <Image
+                width={200}
+                height={200}
+                src={
+                  uploadedImage
+                    ? URL.createObjectURL(uploadedImage)
+                    : `http://localhost:3000${editSiswa?.image}`
+                }
+                alt="image"
+                className={styles.modal_form_group_item_preview}
+              />
+            ) : (
+              <div className={styles.modal_form_group_item_placeholder}>
+                No Image
+              </div>
+            )}
+            <InputFile
+              name="image"
+              accept=".jpg, .png, .jpeg, .gif"
+              uploadedImage={uploadedImage}
+              setUploadedImage={setUploadedImage}
             />
           </div>
         </div>

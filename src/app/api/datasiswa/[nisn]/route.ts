@@ -1,10 +1,10 @@
 import prisma from "@/lib/database/db";
-import { encrypt } from "@/utils/uploadImage";
+import { encrypt } from "@/utils/imageEncrypt";
 import { verifyToken } from "@/utils/verifyToken";
 import siswaSchema from "@/validation/siswaSchema.validation";
-import { createWriteStream } from "fs";
+import { createWriteStream, existsSync, promises, unlinkSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
+import { extname, join } from "path";
 import { Readable } from "stream";
 
 export async function DELETE(req: NextRequest, { params }: any) {
@@ -45,74 +45,67 @@ export async function PUT(req: NextRequest, { params }: any) {
     return await verifyToken(req, true, async () => {
       const nisn = params.nisn;
       const formData = await req.formData();
-      const body = JSON.parse(formData.get("data") as string); // Assuming the data is sent as JSON string
+      const body = JSON.parse(formData.get("data") as string);
+      const file = formData.get("image") as File | null;
 
-      // Validate data
-      const parsedData = siswaSchema.safeParse(body);
-
-      if (!parsedData.success) {
-        return NextResponse.json(
-          { data: null, message: parsedData.error.format() },
-          { status: 400 }
-        );
-      }
-
-      // Check if student exists
-      const checkData = await prisma.dataSiswa.findUnique({
-        where: {
-          nisn: nisn,
-        },
+      const existingData = await prisma.dataSiswa.findUnique({
+        where: { nisn },
       });
 
-      if (!checkData) {
+      if (!existingData) {
         return NextResponse.json(
-          { message: "Data siswa dengan nisn tersebut tidak ditemukan" },
-          { status: 400 }
+          { message: "Data siswa tidak ditemukan" },
+          { status: 404 }
         );
       }
 
-      // Handling file upload
-      const file = formData.get("image") as File | null;
-      let profileImageUrl = null;
+      body.image = existingData.image;
 
-      if (file && file.size < 1048576) {
-        const filePath = join(process.cwd(), "uploads", file.name);
+      if (file) {
+        const extension = extname(file.name);
+        const encryptedFileName = encrypt(file.name) + extension;
 
-        // Convert ReadableStream to Node.js Readable stream
-        const readableStream = Readable.fromWeb(file.stream() as any);
+        const uploadDir = join(process.cwd(), "uploads", "siswa");
+
+        if (!existsSync(uploadDir)) {
+          await promises.mkdir(uploadDir, { recursive: true });
+        }
+
+        const filePath = join(uploadDir, encryptedFileName);
 
         const writeStream = createWriteStream(filePath);
+        const readableStream = Readable.fromWeb(file.stream() as any);
         readableStream.pipe(writeStream);
 
         await new Promise((resolve) => writeStream.on("finish", resolve));
 
-        const encryptedFileName = encrypt(file.name);
-        profileImageUrl = `/api/getProfileImage?file=${encodeURIComponent(
+        body.image = `/api/getProfileImage?file=${encodeURIComponent(
           encryptedFileName
         )}`;
 
-        parsedData.data.image = profileImageUrl;
-      } else {
-        // If no new image, retain the existing one
-        delete parsedData.data.image;
+        // Hapus file gambar lama
+        if (existingData.image) {
+          const oldFilePath = join(
+            process.cwd(),
+            "uploads",
+            "siswa",
+            existingData.image.split("?file=")[1]
+          );
+          if (existsSync(oldFilePath)) {
+            unlinkSync(oldFilePath);
+          }
+        }
       }
 
-      const updateData = {
-        ...parsedData.data,
-        image: profileImageUrl || parsedData.data.image || checkData.image, // retain existing image if no new one is uploaded
-      };
-      // Update the student's data
-      const updateSiswa = await prisma.dataSiswa.update({
-        where: {
-          nisn: nisn,
-        },
-        data: updateData,
+      const updatedData = await prisma.dataSiswa.update({
+        where: { nisn },
+        data: body,
       });
 
-      return NextResponse.json({ data: updateSiswa }, { status: 200 });
+      return NextResponse.json({ data: updatedData }, { status: 200 });
     });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

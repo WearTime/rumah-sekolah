@@ -7,11 +7,9 @@ import toast from "react-hot-toast";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import InputFile from "@/components/ui/InputFile";
-import { createWriteStream } from "fs";
-import { join } from "path";
 import Image from "next/image";
-import { encrypt } from "@/utils/uploadImage";
-import prisma from "@/lib/database/db";
+import imageSchema from "@/validation/imageSchema.validation";
+import { Siswa } from "@/types/siswa.type";
 
 const AddSiswaView = () => {
   const [jurusan, setJurusan] = useState("");
@@ -19,64 +17,6 @@ const AddSiswaView = () => {
   const [subJurOptions, setSubJurOptions] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-
-  const uploadImage = async (nisn: string, form: HTMLFormElement) => {
-    const file = form.image.files[0];
-    let profileImageUrl = null;
-
-    if (file) {
-      if (file.size < 1048576) {
-        const data = {
-          image: file,
-        };
-        // const update = await dataSiswaServices.editDataSiswa(nisn, data);
-      }
-    }
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsLoading(true);
-    const form = event.target as HTMLFormElement;
-
-    // Extracting form values
-    const data = {
-      nama: form.nama.value,
-      nisn: form.nisn.value,
-      nis: form.nis.value,
-      kelas: form.kelas.value,
-      jurusan: form.jurusan.value + " " + form.sub_jur.value,
-      no_hp: form.no_hp.value,
-      alamat: form.alamat.value,
-      image: "",
-    };
-
-    // Validate the data using Zod
-    const check = siswaSchema.safeParse(data);
-
-    if (!check.success) {
-      toast.error(check.error.errors[0].message);
-
-      setIsLoading(false);
-      return;
-    }
-
-    const result = await dataSiswaServices.addNewSiswa(data);
-
-    if (result.status == 201) {
-      uploadImage(form.nisn.value, form);
-      form.reset();
-      setKelas("");
-      setJurusan("");
-      setIsLoading(false);
-      toast.success("Berhasil Tambah Data");
-    } else {
-      setKelas("");
-      setJurusan("");
-      setIsLoading(false);
-      toast.error("Something went wrong!");
-    }
-  };
 
   useEffect(() => {
     let options: number[] = [];
@@ -94,6 +34,49 @@ const AddSiswaView = () => {
     setSubJurOptions(options);
   }, [jurusan, kelas]);
 
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData();
+
+    const data: Siswa = {
+      nama: form.nama.value,
+      nisn: form.nisn.value,
+      nis: form.nis.value,
+      kelas: form.kelas.value,
+      jurusan: form.jurusan.value + " " + form.sub_jur.value,
+      no_hp: form.no_hp.value,
+      alamat: form.alamat.value,
+    };
+
+    // Validate and submit form
+    const check = siswaSchema.safeParse(data);
+    if (!check.success) {
+      toast.error(check.error.errors[0].message);
+      setIsLoading(false);
+      return;
+    }
+
+    // Handle Image Upload
+    formData.append("data", JSON.stringify(data));
+    if (form.image.files[0]) {
+      formData.append("image", form.image.files[0]);
+    }
+
+    const result = await dataSiswaServices.addNewSiswa(formData);
+
+    if (result.status == 201) {
+      form.reset();
+      setUploadedImage(null);
+      setIsLoading(false);
+      toast.success("Berhasil Tambah Data");
+    } else {
+      setIsLoading(false);
+      toast.error("Something went wrong!");
+    }
+  };
+
   return (
     <div className={styles.addsiswa}>
       <div className={styles.addsiswa_main}>
@@ -104,6 +87,7 @@ const AddSiswaView = () => {
           <form
             onSubmit={handleSubmit}
             className={styles.addsiswa_main_content_form}
+            encType="multipart/form-data"
           >
             <Input
               label="Nama"
@@ -203,6 +187,7 @@ const AddSiswaView = () => {
                 )}
                 <InputFile
                   name="image"
+                  accept=".jpg, .png, .jpeg, .gif"
                   uploadedImage={uploadedImage}
                   setUploadedImage={setUploadedImage}
                 />

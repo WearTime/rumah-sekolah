@@ -83,7 +83,9 @@ const ListSiswaView = ({ siswa }: PropTypes) => {
               ))
             ) : (
               <tr>
-                <td colSpan={9}>Data Kosong</td>
+                <td colSpan={9} className={styles.listsiswa_table_body_empty}>
+                  Data Kosong
+                </td>
               </tr>
             )}
           </tbody>
