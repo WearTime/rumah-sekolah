@@ -7,6 +7,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { extname, join } from "path";
 import { Readable } from "stream";
 
+async function deleteOldFile(imageUrl: string) {
+  if (imageUrl) {
+    const oldFilePath = join(
+      process.cwd(),
+      "uploads",
+      "siswa",
+      imageUrl.split("?file=")[1]
+    );
+    if (existsSync(oldFilePath)) {
+      unlinkSync(oldFilePath);
+    }
+  }
+}
+
 export async function DELETE(req: NextRequest, { params }: any) {
   try {
     return await verifyToken(req, true, async () => {
@@ -45,8 +59,29 @@ export async function PUT(req: NextRequest, { params }: any) {
     return await verifyToken(req, true, async () => {
       const nisn = params.nisn;
       const formData = await req.formData();
-      const body = JSON.parse(formData.get("data") as string);
+
+      // Log formData untuk debugging
+      console.log("formData:", formData);
+
+      // Ambil data dari formData
+      const bodyString = formData.get("data") as string;
       const file = formData.get("image") as File | null;
+
+      // Log bodyString untuk debugging
+      console.log("bodyString:", bodyString);
+
+      // Pastikan bodyString tidak null
+      if (!bodyString) {
+        return NextResponse.json(
+          { message: "Data is missing from the formData" },
+          { status: 400 }
+        );
+      }
+
+      const body = JSON.parse(bodyString);
+
+      // Log body untuk debugging
+      console.log("Parsed Body:", body);
 
       const existingData = await prisma.dataSiswa.findUnique({
         where: { nisn },
@@ -59,7 +94,7 @@ export async function PUT(req: NextRequest, { params }: any) {
         );
       }
 
-      body.image = existingData.image;
+      body.image = existingData.image || "";
 
       if (file) {
         const extension = extname(file.name);
@@ -84,18 +119,10 @@ export async function PUT(req: NextRequest, { params }: any) {
         )}`;
 
         // Hapus file gambar lama
-        if (existingData.image) {
-          const oldFilePath = join(
-            process.cwd(),
-            "uploads",
-            "siswa",
-            existingData.image.split("?file=")[1]
-          );
-          if (existsSync(oldFilePath)) {
-            unlinkSync(oldFilePath);
-          }
-        }
+        await deleteOldFile(`${existingData.image}`);
       }
+
+      console.log("Updated Body:", body);
 
       const updatedData = await prisma.dataSiswa.update({
         where: { nisn },

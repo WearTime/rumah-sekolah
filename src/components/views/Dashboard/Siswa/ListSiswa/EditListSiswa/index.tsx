@@ -47,7 +47,7 @@ const EditListSiswa = ({
     const form = event.target as HTMLFormElement;
     const formData = new FormData();
 
-    const data = {
+    const data: Siswa = {
       nama: form.nama.value,
       nisn: form.nisn.value,
       nis: form.nis.value,
@@ -75,6 +75,7 @@ const EditListSiswa = ({
     if (form.image.files[0]) {
       formData.append("image", form.image.files[0]);
     }
+    console.log(formData);
 
     const result = await dataSiswaServices.editDataSiswa(
       editSiswa.nisn,

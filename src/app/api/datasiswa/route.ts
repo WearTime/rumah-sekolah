@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       const formData = await req.formData();
       const body = JSON.parse(formData.get("data") as string);
       const file = formData.get("image") as File | null;
-      console.log(file);
+      console.log(body);
       if (file) {
         // Dapatkan ekstensi file asli
         const extension = extname(file.name);
