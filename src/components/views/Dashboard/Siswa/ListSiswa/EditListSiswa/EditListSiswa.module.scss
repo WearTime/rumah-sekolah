@@ -1,10 +1,11 @@
 .modal {
+  // overflow-x: hidden !important;
   h1 {
     margin-bottom: 20px;
   }
   &_form {
     text-align: left;
-
+    position: inherit;
     &_input {
       margin-bottom: 10px;
     }
@@ -31,13 +32,13 @@
         &_image {
           display: flex;
           align-items: center;
-          gap: 20px;
+          gap: 10px;
           margin-bottom: 20px;
           &__preview,
           &__placeholder {
             margin-top: 10px;
             background-color: #eee;
-            width: 15%;
+            width: 13%;
             aspect-ratio: 1/1;
             display: flex;
             align-items: center;

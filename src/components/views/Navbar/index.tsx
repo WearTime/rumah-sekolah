@@ -21,7 +21,6 @@ const listTitleNavbar = [
 const NavbarView = () => {
   const { data: session, status } = useSession();
   const pathname = usePathname();
-  // console.log(session.user.username);
 
   return (
     <div className={styles.navbar}>

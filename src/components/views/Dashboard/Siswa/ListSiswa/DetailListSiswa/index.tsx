@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./DetailListSiswa.module.scss";
 import { Siswa } from "@/types/siswa.type";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type PropsTypes = {
@@ -25,8 +25,8 @@ const DetailListSiswa = ({
       <div className={styles.modal_header}>
         <Image
           className={styles.modal_header_image}
-          width={100}
-          height={100}
+          width={130}
+          height={130}
           src={
             detailSiswa?.image
               ? `http://localhost:3000${detailSiswa?.image}`

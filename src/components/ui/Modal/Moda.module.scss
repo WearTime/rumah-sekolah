@@ -26,6 +26,7 @@
     max-height: 80vh;
     border-radius: 8px;
     overflow-y: auto;
+    overflow-x: hidden;
     -ms-overflow-style: none;
     &::-webkit-scrollbar {
       display: none;

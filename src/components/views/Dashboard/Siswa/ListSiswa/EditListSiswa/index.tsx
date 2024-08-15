@@ -75,7 +75,6 @@ const EditListSiswa = ({
     if (form.image.files[0]) {
       formData.append("image", form.image.files[0]);
     }
-    console.log(formData);
 
     const result = await dataSiswaServices.editDataSiswa(
       editSiswa.nisn,
@@ -90,7 +89,10 @@ const EditListSiswa = ({
       });
       setIsLoading(false);
       toast.success("Berhasil Update Data");
-      const { data } = await dataSiswaServices.getAllSiswa();
+      const { data } = await dataSiswaServices.getAllSiswa({
+        page: 1,
+        search: "",
+      });
       setSiswaData(data.data);
     } else {
       setIsModalOpen({
@@ -118,8 +120,6 @@ const EditListSiswa = ({
     }
     setSubJurOptions(options);
   }, [jurusan, kelas]);
-  console.log(editSiswa);
-  console.log(uploadedImage);
 
   return (
     <div className={styles.modal}>
@@ -227,8 +227,8 @@ const EditListSiswa = ({
           <div className={styles.modal_form_group_item_image}>
             {editSiswa?.image ? (
               <Image
-                width={200}
-                height={200}
+                width={100}
+                height={100}
                 src={
                   uploadedImage
                     ? URL.createObjectURL(uploadedImage)

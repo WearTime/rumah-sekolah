@@ -1,5 +1,4 @@
 import instance from "@/lib/axios/instance";
-import { Siswa } from "@/types/siswa.type";
 
 const endpoint = {
   siswa: "/api/datasiswa",
@@ -7,7 +6,13 @@ const endpoint = {
 };
 
 const dataSiswaServices = {
-  getAllSiswa: () => instance.get(endpoint.siswa),
+  getAllSiswa: ({
+    page = 1,
+    search = "",
+  }: {
+    page?: number;
+    search?: string;
+  }) => instance.get(`${endpoint.siswa}?page=${page}&search=${search}`),
   addNewSiswa: (formData: FormData) =>
     instance.post(endpoint.siswa, formData, {
       headers: {
@@ -17,17 +22,13 @@ const dataSiswaServices = {
   deleteDataSiswa: (nisn: string) =>
     instance.delete(`${endpoint.siswa}/${nisn}`),
   editDataSiswa: (nisn: string, formData: FormData) =>
-    instance.put(
-      `${endpoint.siswa}/${nisn}`,
-      { formData },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    ),
-  getProfileSiswa: (image: string) =>
-    instance.get(`${endpoint.profileImage}/${image}`),
+    instance.put(`${endpoint.siswa}/${nisn}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  searchDataSiswa: (search: string) =>
+    instance.get(`${endpoint.siswa}?search=${search}`),
 };
 
 export default dataSiswaServices;

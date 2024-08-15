@@ -5,6 +5,7 @@ import DeleteListSiswa from "../DeleteListSiswa";
 import Modal from "@/components/ui/Modal";
 import EditListSiswa from "../EditListSiswa";
 import DetailListSiswa from "../DetailListSiswa";
+import dataSiswaServices from "@/services/dataSiswa";
 
 type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Siswa | null>>;
@@ -27,7 +28,7 @@ const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
     setDeletedSiswa(actionMenu);
     setIsModalOpen({ deleteModal: true, editModal: false, detailModal: false });
   };
-  
+
   return (
     <>
       <div

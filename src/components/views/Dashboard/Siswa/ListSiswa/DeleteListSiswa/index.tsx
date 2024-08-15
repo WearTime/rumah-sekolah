@@ -29,7 +29,10 @@ const DeleteListSiswa = ({
       setIsLoading(false);
       setDeletedSiswa(null);
       toast.success("Berhasil Hapus Data");
-      const { data } = await dataSiswaServices.getAllSiswa();
+      const { data } = await dataSiswaServices.getAllSiswa({
+        page: 1,
+        search: "",
+      });
       setSiswaData(data.data);
     } else {
       setIsLoading(false);

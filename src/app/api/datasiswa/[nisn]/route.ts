@@ -1,7 +1,6 @@
 import prisma from "@/lib/database/db";
 import { encrypt } from "@/utils/imageEncrypt";
 import { verifyToken } from "@/utils/verifyToken";
-import siswaSchema from "@/validation/siswaSchema.validation";
 import { createWriteStream, existsSync, promises, unlinkSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import { extname, join } from "path";
@@ -39,6 +38,12 @@ export async function DELETE(req: NextRequest, { params }: any) {
         );
       }
 
+      const siswa = checkData[0];
+
+      if (siswa.image) {
+        await deleteOldFile(siswa.image);
+      }
+
       const deleteData = await prisma.dataSiswa.deleteMany({
         where: {
           nisn: nisn,
@@ -60,17 +65,9 @@ export async function PUT(req: NextRequest, { params }: any) {
       const nisn = params.nisn;
       const formData = await req.formData();
 
-      // Log formData untuk debugging
-      console.log("formData:", formData);
-
-      // Ambil data dari formData
       const bodyString = formData.get("data") as string;
       const file = formData.get("image") as File | null;
 
-      // Log bodyString untuk debugging
-      console.log("bodyString:", bodyString);
-
-      // Pastikan bodyString tidak null
       if (!bodyString) {
         return NextResponse.json(
           { message: "Data is missing from the formData" },
@@ -79,9 +76,6 @@ export async function PUT(req: NextRequest, { params }: any) {
       }
 
       const body = JSON.parse(bodyString);
-
-      // Log body untuk debugging
-      console.log("Parsed Body:", body);
 
       const existingData = await prisma.dataSiswa.findUnique({
         where: { nisn },
@@ -122,8 +116,6 @@ export async function PUT(req: NextRequest, { params }: any) {
         await deleteOldFile(`${existingData.image}`);
       }
 
-      console.log("Updated Body:", body);
-
       const updatedData = await prisma.dataSiswa.update({
         where: { nisn },
         data: body,
@@ -132,7 +124,6 @@ export async function PUT(req: NextRequest, { params }: any) {
       return NextResponse.json({ data: updatedData }, { status: 200 });
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

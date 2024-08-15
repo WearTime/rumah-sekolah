@@ -45,7 +45,6 @@ const LoginView = ({ searchParams }: any) => {
       });
 
       if (loginData?.error) {
-        console.log(loginData.error);
         setFormErrors({ username: "Username or password incorrect" });
       } else {
         router.push(callbackUrl);

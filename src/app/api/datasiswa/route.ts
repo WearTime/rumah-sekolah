@@ -1,7 +1,5 @@
-import { verify } from "jsonwebtoken";
 import prisma from "../../../lib/database/db";
 import { NextRequest, NextResponse } from "next/server";
-import siswaSchema from "@/validation/siswaSchema.validation";
 import { verifyToken } from "@/utils/verifyToken";
 import { createWriteStream, existsSync, promises } from "fs";
 import { extname, join } from "path";
@@ -11,12 +9,32 @@ import { Readable } from "stream";
 export async function GET(req: NextRequest) {
   try {
     return await verifyToken(req, false, async () => {
-      const allData = await prisma.dataSiswa.findMany();
-      const count = allData.length;
-      return NextResponse.json(
-        { data: allData, total: count },
-        { status: 200 }
-      );
+      const { searchParams } = new URL(req.url);
+      const search = searchParams.get("search") || "";
+      const page = parseInt(searchParams.get("page") || "1", 10);
+      const pageSize = 10; // Jumlah data per halaman
+      const skip = (page - 1) * pageSize;
+
+      const [allData, total] = await prisma.$transaction([
+        prisma.dataSiswa.findMany({
+          where: {
+            nama: {
+              contains: search,
+            },
+          },
+          skip: skip,
+          take: pageSize,
+        }),
+        prisma.dataSiswa.count({
+          where: {
+            nama: {
+              contains: search,
+            },
+          },
+        }),
+      ]);
+
+      return NextResponse.json({ data: allData, total }, { status: 200 });
     });
   } catch (error) {
     return NextResponse.json(
@@ -32,7 +50,6 @@ export async function POST(req: NextRequest) {
       const formData = await req.formData();
       const body = JSON.parse(formData.get("data") as string);
       const file = formData.get("image") as File | null;
-      console.log(body);
       if (file) {
         // Dapatkan ekstensi file asli
         const extension = extname(file.name);
@@ -73,7 +90,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ data: result }, { status: 201 });
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

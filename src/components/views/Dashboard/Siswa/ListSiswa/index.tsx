@@ -5,27 +5,69 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ActionMenu from "./ActionMenu";
 import { useEffect, useState } from "react";
 import { Siswa } from "@/types/siswa.type";
+import dataSiswaServices from "@/services/dataSiswa";
+import useDebounce from "@/hooks/useDebounce";
+import Button from "@/components/ui/Button";
 
 type PropTypes = {
-  siswa: Siswa[]; // Expecting an array of Siswa objects
+  siswa: Siswa[];
+  total: number;
 };
 
-const ListSiswaView = ({ siswa }: PropTypes) => {
+const SEARCH_DELAY = 1000; // Delay untuk debounce
+
+const ListSiswaView = ({ siswa, total }: PropTypes) => {
+  const { debounce } = useDebounce();
   const [siswaData, setSiswaData] = useState<Siswa[]>([]);
   const [actionMenu, setActionMenu] = useState<Siswa | null>(null);
+  const [search, setSearch] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
+  const totalPages = Math.ceil(total / pageSize);
   const pathname = usePathname();
 
   const handleActionMenu = (selectedSiswa: Siswa) => {
     if (actionMenu?.nisn === selectedSiswa.nisn) {
-      setActionMenu(null); // Close the action menu if it's already open for the clicked user
+      setActionMenu(null);
     } else {
-      setActionMenu(selectedSiswa); // Open the action menu for the selected user
+      setActionMenu(selectedSiswa);
     }
   };
 
+  const fetchPageData = async (page: number) => {
+    const { data } = await dataSiswaServices.getAllSiswa({ page, search });
+    setSiswaData(data.data);
+    setCurrentPage(page);
+  };
+
+  // Fungsi untuk memulai pencarian
+  const performSearch = () => {
+    if (search !== "") {
+      fetchPageData(1); // Reset ke halaman pertama setiap kali melakukan pencarian
+    } else {
+      setSiswaData(siswa); // Jika pencarian kosong, tampilkan data awal
+    }
+  };
+
+  // Debounce pencarian
+  const debounceSearch = debounce(performSearch, SEARCH_DELAY);
+
+  // Trigger debounce ketika nilai search berubah
   useEffect(() => {
-    setSiswaData(siswa);
-  }, [siswa]);
+    debounceSearch();
+  }, [search]);
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      fetchPageData(currentPage + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      fetchPageData(currentPage - 1);
+    }
+  };
 
   return (
     <>
@@ -37,6 +79,7 @@ const ListSiswaView = ({ siswa }: PropTypes) => {
             id="search"
             placeholder="Cari nama siswa"
             className={styles.listsiswa_search_input}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <table className={styles.listsiswa_table}>
@@ -57,7 +100,7 @@ const ListSiswaView = ({ siswa }: PropTypes) => {
             {siswaData.length > 0 ? (
               siswaData.map((siswa: Siswa, index) => (
                 <tr key={siswa.nisn}>
-                  <td>{index + 1}</td>
+                  <td>{(currentPage - 1) * pageSize + index + 1}</td>
                   <td>{siswa.nama}</td>
                   <td>{siswa.nisn}</td>
                   <td>{siswa.nis}</td>
@@ -90,6 +133,28 @@ const ListSiswaView = ({ siswa }: PropTypes) => {
             )}
           </tbody>
         </table>
+        <div className={styles.listsiswa_pagination}>
+          <Button
+            type="button"
+            onClick={handlePrev}
+            disabled={currentPage === 1}
+            className={styles.listsiswa_pagination_prev}
+          >
+            Prev
+          </Button>
+          <span>
+            {currentPage} of {totalPages}
+          </span>
+
+          <Button
+            type="button"
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+            className={styles.listsiswa_pagination_prev}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </>
   );

@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { existsSync, createReadStream } from "fs";
 import { join } from "path";
-import { decrypt } from "@/utils/imageEncrypt";
-import { promisify } from "util";
-import { pipeline } from "stream";
 import { stat } from "fs/promises";
-import { verifyToken } from "@/utils/verifyToken";
 
 // Convert callback-based pipeline to promise-based
-const pipelinePromise = promisify(pipeline);
+// const pipelinePromise = promisify(pipeline);
 
 export async function GET(req: NextRequest) {
   try {
@@ -46,7 +42,6 @@ export async function GET(req: NextRequest) {
     return res;
     // });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

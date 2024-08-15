@@ -1,25 +1,28 @@
+// page.tsx
 "use client";
-import ListSiswaView from "@/components/views/Dashboard/Siswa/ListSiswa"; // Pastikan path ini benar
+import ListSiswaView from "@/components/views/Dashboard/Siswa/ListSiswa";
+import { useEffect, useState } from "react";
 import dataSiswaServices from "@/services/dataSiswa";
 import { Siswa } from "@/types/siswa.type";
-import { useEffect, useState } from "react";
-
-type SiswaDataResponse = {
-  data: Siswa[];
-  total: number;
-};
+import toast from "react-hot-toast";
 
 const ListSiswaPage = () => {
-  const [siswaDataResponse, setSiswaDataResponse] =
-    useState<SiswaDataResponse | null>(null);
+  const [siswaDataResponse, setSiswaDataResponse] = useState<{
+    data: Siswa[];
+    total: number;
+  } | null>(null);
 
   useEffect(() => {
     const getSiswaData = async () => {
       try {
-        const { data } = await dataSiswaServices.getAllSiswa();
-
+        const { data } = await dataSiswaServices.getAllSiswa({
+          page: 1,
+          search: "",
+        });
         setSiswaDataResponse(data);
-      } catch (error) {}
+      } catch (error) {
+        toast.error("An error occurred while loading data");
+      }
     };
 
     getSiswaData();
@@ -27,7 +30,14 @@ const ListSiswaPage = () => {
 
   return (
     <div>
-      {siswaDataResponse && <ListSiswaView siswa={siswaDataResponse.data} />}
+      {siswaDataResponse ? (
+        <ListSiswaView
+          siswa={siswaDataResponse.data}
+          total={siswaDataResponse.total}
+        />
+      ) : (
+        <h1 style={{ marginTop: "20px" }}>Loading...</h1>
+      )}
     </div>
   );
 };

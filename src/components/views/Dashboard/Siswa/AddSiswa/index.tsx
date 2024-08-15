@@ -8,7 +8,6 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import InputFile from "@/components/ui/InputFile";
 import Image from "next/image";
-import imageSchema from "@/validation/imageSchema.validation";
 import { Siswa } from "@/types/siswa.type";
 
 const AddSiswaView = () => {
