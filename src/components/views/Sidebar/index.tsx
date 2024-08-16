@@ -13,7 +13,13 @@ const SidebarView = () => {
     <div className={styles.sidebar}>
       <div className={styles.sidebar_logo}>
         <Link href="/">
-          <Image src="/logors.png" alt="Logo" width={226} height={58} />
+          <Image
+            src="/logors.png"
+            alt="Logo"
+            width={226}
+            height={58}
+            className={styles.sidebar_logo_image}
+          />
         </Link>
       </div>
       <div className={styles.sidebar_list}>

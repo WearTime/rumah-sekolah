@@ -12,11 +12,11 @@
       color: white;
       height: 29vh;
       background-color: #28a745;
-      padding: 45px 30px;
+      padding: 10vh 2vw;
       border-radius: 20px;
       gap: 25px;
       &_icon {
-        font-size: 12vh !important;
+        font-size: 6vw !important;
       }
       &:first-child {
         background-color: #17a2b8;
@@ -26,11 +26,11 @@
       }
       &_text {
         &_title {
-          font-size: 4.8vh;
+          font-size: 2.3vw;
         }
         &_count {
           margin-top: 10px;
-          font-size: 4vh;
+          font-size: 2vw;
         }
       }
     }
@@ -46,11 +46,11 @@
     padding: 20px;
     border-radius: 20px;
     h2 {
-      font-size: 30px;
+      font-size: 2vw;
     }
 
     p {
-      font-size: 25px;
+      font-size: 1.5vw;
       margin-top: 10px;
     }
   }

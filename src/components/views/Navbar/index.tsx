@@ -40,6 +40,7 @@ const NavbarView = () => {
             alt="Profile"
             width={35}
             height={35}
+            className={styles.navbar_profile_image}
           />
           <h3>{session.user.username}</h3>
         </div>

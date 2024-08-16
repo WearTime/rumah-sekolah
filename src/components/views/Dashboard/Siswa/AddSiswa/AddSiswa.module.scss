@@ -9,40 +9,38 @@
     padding: 15px 20px;
     border: 1px solid black;
     border-radius: 15px;
+    width: 60%;
     &_header {
-      font-size: 24px;
+      font-size: 2vw;
+      text-align: center;
       padding: 15px;
-      &_error {
-        color: red;
-        text-align: center;
-        font-size: 20px;
-        font-weight: 600;
-      }
-      &_success {
-        color: rgb(142, 230, 10);
-        text-align: center;
-        font-size: 20px;
-        font-weight: 600;
-      }
     }
     &_content {
       &_form {
         &_input {
-          margin: 10px;
+          margin: 1vw;
+          font-size: 1.3vw;
+          input {
+            font-size: 1vw;
+          }
         }
         &_item {
           display: flex;
           flex-direction: column;
           width: 96%;
-          margin: 10px;
+          margin: 1vw;
+
           label {
             margin-bottom: 10px;
+            font-size: 1.3vw;
           }
           select,
           textarea {
             padding: 10px;
             background-color: #eee;
             border-radius: 8px;
+            font-size: 1vw;
+
             resize: none;
           }
           &_image {
@@ -71,8 +69,9 @@
             display: flex;
             flex-direction: column;
             width: 50%;
-            margin: 10px;
+            margin: 1vw;
             label {
+              font-size: 1.3vw;
               margin-bottom: 10px;
             }
             select,
@@ -81,6 +80,7 @@
               background-color: #eee;
               border-radius: 8px;
               resize: none;
+              font-size: 1vw;
             }
           }
         }
@@ -88,6 +88,7 @@
           width: 100%;
           padding: 5px 10px;
           button {
+            font-size: 1vw;
             width: 100%;
             background-color: #e88513;
           }

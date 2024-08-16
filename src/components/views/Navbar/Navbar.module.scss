@@ -16,9 +16,18 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    &_image {
+      gap: -10px;
+      width: 8vw;
+      height: 8vh;
+    }
+    h3 {
+      font-size: 1.7vw;
+    }
   }
-
+  h1 {
+    font-size: 3vw;
+  }
   &_login {
     padding: 10px 20px;
     border-radius: 10px;

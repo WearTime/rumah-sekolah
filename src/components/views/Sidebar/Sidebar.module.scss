@@ -10,6 +10,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    &_image {
+      width: 16vw;
+      height: 8.5vh;
+    }
   }
   &_list {
     display: flex;
@@ -18,25 +22,25 @@
       margin: 5px 25px;
       h3 {
         color: #868282;
-        font-size: 14px;
+        font-size: 0.9vw;
       }
       &_list {
         list-style: none;
-        width: 170px;
+        width: 13vw;
         &_add {
-          gap: 8px !important;
-          margin: 10px 15px !important;
+          gap: 1vw !important;
+          margin: 2vh 1.2vw !important;
         }
         &_all {
-          gap: 17px !important;
-          margin: 1px 15px !important;
+          gap: 1.6vw !important;
+          margin: 0.1vh 1.2vw !important;
         }
         &_plus {
-          gap: 13px !important;
+          gap: 1.5vw !important;
         }
         &_active {
           box-sizing: border-box;
-          padding: 12px 0 12px 15px;
+          padding: 1.7vh 0 1.7vh 1.3vw;
           border-radius: 10px;
           color: white;
           display: flex;
@@ -45,23 +49,21 @@
           margin: 10px 0px !important;
           background-color: #e88513;
           svg {
-            font-size: 20px;
+            font-size: 1.5vw;
           }
           a {
             width: 100%;
           }
         }
         li {
-          margin: 15px 15px;
+          margin: 2vh 1.2vw;
           display: flex;
           align-items: center;
-          gap: 15px;
-          &_icon {
-            font-size: 30px !important;
+          gap: 1.5vw;
+          font-size: 1.2vw;
+          svg {
+            font-size: 1.5vw;
           }
-          // svg {
-          //   font-size: 20px;
-          // }
         }
       }
     }
