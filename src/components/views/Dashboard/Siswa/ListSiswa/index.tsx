@@ -40,31 +40,30 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
     setCurrentPage(page);
   };
 
-  // Fungsi untuk memulai pencarian
   const performSearch = () => {
     if (search !== "") {
-      fetchPageData(1); // Reset ke halaman pertama setiap kali melakukan pencarian
+      fetchPageData(1);
     } else {
-      setSiswaData(siswa); // Jika pencarian kosong, tampilkan data awal
+      setSiswaData(siswa);
     }
   };
 
-  // Debounce pencarian
   const debounceSearch = debounce(performSearch, SEARCH_DELAY);
 
-  // Trigger debounce ketika nilai search berubah
   useEffect(() => {
     debounceSearch();
   }, [search]);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
+      setActionMenu(null);
       fetchPageData(currentPage + 1);
     }
   };
 
   const handlePrev = () => {
     if (currentPage > 1) {
+      setActionMenu(null);
       fetchPageData(currentPage - 1);
     }
   };
@@ -116,9 +115,12 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
                     />
                     {actionMenu?.nisn === siswa.nisn && (
                       <ActionMenu
-                        actionMenu={actionMenu}
                         setActionMenu={setActionMenu}
+                        actionMenu={actionMenu}
                         setSiswaData={setSiswaData}
+                        setCurrentPage={setCurrentPage}
+                        fetchPageData={fetchPageData}
+                        currentPage={currentPage}
                       />
                     )}
                   </td>

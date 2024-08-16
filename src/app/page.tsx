@@ -16,7 +16,7 @@ export default function Home() {
   const getAllData = async () => {
     try {
       const [siswaResponse, guruResponse, mapelResponse] = await Promise.all([
-        dataSiswaServices.getAllSiswa(),
+        dataSiswaServices.getAllSiswa({ page: 1, search: "" }),
         dataGuruServices.getAllGuru(),
         dataMapelServices.getAllMapel(),
       ]);

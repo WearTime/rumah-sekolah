@@ -10,12 +10,16 @@ type PropTypes = {
   deletedSiswa: Siswa | null;
   setSiswaData: Dispatch<SetStateAction<Siswa[]>>;
   setDeletedSiswa: Dispatch<SetStateAction<Siswa | null>>;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  fetchPageData: (page: number) => Promise<void>;
 };
 
 const DeleteListSiswa = ({
   deletedSiswa,
   setSiswaData,
   setDeletedSiswa,
+  setCurrentPage,
+  fetchPageData,
 }: PropTypes) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,6 +38,8 @@ const DeleteListSiswa = ({
         search: "",
       });
       setSiswaData(data.data);
+      setCurrentPage(1);
+      fetchPageData(1);
     } else {
       setIsLoading(false);
       setDeletedSiswa(null);

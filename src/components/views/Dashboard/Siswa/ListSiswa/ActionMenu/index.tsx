@@ -11,9 +11,19 @@ type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Siswa | null>>;
   actionMenu: Siswa;
   setSiswaData: Dispatch<SetStateAction<Siswa[]>>;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  fetchPageData: (page: number) => Promise<void>;
+  currentPage: number;
 };
 
-const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
+const ActionMenu = ({
+  setActionMenu,
+  actionMenu,
+  setSiswaData,
+  setCurrentPage,
+  fetchPageData,
+  currentPage,
+}: PropTypes) => {
   const [deletedSiswa, setDeletedSiswa] = useState<Siswa | null>(null);
   const [editSiswa, setEditSiswa] = useState<Siswa | null>(null);
   const [detailSiswa, setDetailSiswa] = useState<Siswa | null>(null);
@@ -90,6 +100,8 @@ const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
             deletedSiswa={deletedSiswa}
             setSiswaData={setSiswaData}
             setDeletedSiswa={setDeletedSiswa}
+            setCurrentPage={setCurrentPage}
+            fetchPageData={fetchPageData}
           />
         </Modal>
       )}
@@ -104,9 +116,12 @@ const ActionMenu = ({ setActionMenu, actionMenu, setSiswaData }: PropTypes) => {
           }
         >
           <EditListSiswa
+            setActionMenu={setActionMenu}
             editSiswa={editSiswa}
             setSiswaData={setSiswaData}
             setIsModalOpen={setIsModalOpen}
+            currentPage={currentPage}
+            fetchPageData={fetchPageData}
           />
         </Modal>
       )}

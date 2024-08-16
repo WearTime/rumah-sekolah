@@ -10,6 +10,19 @@ body {
   overflow-x: hidden;
 }
 
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #e88513;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #e8851396;
+}
 .main {
   display: flex;
   flex-direction: row;

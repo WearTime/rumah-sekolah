@@ -16,6 +16,7 @@ import Image from "next/image";
 import InputFile from "@/components/ui/InputFile";
 
 type PropTypes = {
+  setActionMenu: Dispatch<SetStateAction<Siswa | null>>;
   editSiswa: Siswa | null;
   setSiswaData: Dispatch<SetStateAction<Siswa[]>>;
   setIsModalOpen: Dispatch<
@@ -25,12 +26,17 @@ type PropTypes = {
       detailModal: boolean;
     }>
   >;
+  currentPage: number;
+  fetchPageData: (page: number) => Promise<void>;
 };
 
 const EditListSiswa = ({
+  setActionMenu,
   editSiswa,
   setSiswaData,
   setIsModalOpen,
+  currentPage,
+  fetchPageData,
 }: PropTypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [jurusan, setJurusan] = useState(
@@ -90,10 +96,12 @@ const EditListSiswa = ({
       setIsLoading(false);
       toast.success("Berhasil Update Data");
       const { data } = await dataSiswaServices.getAllSiswa({
-        page: 1,
+        page: currentPage,
         search: "",
       });
       setSiswaData(data.data);
+      fetchPageData(currentPage);
+      setActionMenu(null);
     } else {
       setIsModalOpen({
         deleteModal: false,
