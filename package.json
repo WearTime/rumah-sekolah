@@ -26,6 +26,7 @@
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
     "sass": "^1.77.8",
+    "xlsx": "^0.18.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {

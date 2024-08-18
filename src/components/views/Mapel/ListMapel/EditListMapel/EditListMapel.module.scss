@@ -1,0 +1,53 @@
+.modal {
+  // overflow-x: hidden !important;
+  h1 {
+    margin-bottom: 20px;
+  }
+  &_form {
+    text-align: left;
+    position: inherit;
+    &_input {
+      margin-bottom: 10px;
+    }
+    &_group {
+      width: 100%;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      &_item {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        label {
+          margin-bottom: 10px;
+        }
+        select,
+        textarea {
+          padding: 10px;
+          background-color: #eee;
+          border-radius: 8px;
+          resize: none;
+        }
+        &_image {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 20px;
+          &__preview,
+          &__placeholder {
+            margin-top: 10px;
+            background-color: #eee;
+            width: 13%;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 // page.tsx
 "use client";
-import ListSiswaView from "@/components/views/Dashboard/Siswa/ListSiswa";
+import ListSiswaView from "@/components/views/Siswa/ListSiswa";
 import { useEffect, useState } from "react";
 import dataSiswaServices from "@/services/dataSiswa";
 import { Siswa } from "@/types/siswa.type";

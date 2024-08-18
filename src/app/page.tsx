@@ -17,8 +17,8 @@ export default function Home() {
     try {
       const [siswaResponse, guruResponse, mapelResponse] = await Promise.all([
         dataSiswaServices.getAllSiswa({ page: 1, search: "" }),
-        dataGuruServices.getAllGuru(),
-        dataMapelServices.getAllMapel(),
+        dataGuruServices.getAllGuru({ page: 1, search: "" }),
+        dataMapelServices.getAllMapel({ page: 1, search: "" }),
       ]);
 
       const totalSiswa = siswaResponse.data.total;

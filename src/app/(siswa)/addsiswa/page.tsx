@@ -1,4 +1,4 @@
-import AddSiswaView from "@/components/views/Dashboard/Siswa/AddSiswa";
+import AddSiswaView from "@/components/views/Siswa/AddSiswa";
 
 const AddSiswaPage = () => {
   return (

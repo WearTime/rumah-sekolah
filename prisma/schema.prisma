@@ -14,24 +14,35 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id       String   @id @default(uuid())
   username String
   password String
-  role     String
+  role     UserRole @default(Member)
   profile  String?
 }
 
+enum UserRole {
+  Admin
+  Member
+}
+
 model DataSiswa {
-  nisn    String  @id @unique
-  nis     String  @unique
+  nisn    String     @id @unique
+  nis     String?    @unique
   nama    String
-  kelas   String
+  kelas   KelasSiswa @default(X)
   jurusan String
   no_hp   String?
   alamat  String?
   image   String?
 
   @@map(name: "data_siswa")
+}
+
+enum KelasSiswa {
+  X
+  XI
+  XII
 }
 
 model DataGuru {
@@ -46,10 +57,15 @@ model DataGuru {
 }
 
 model Mapel {
-  kode_mapel String @id
+  kode_mapel String    @id
   nama_mapel String
   fase       String
-  tipe_mapel String
+  tipe_mapel FaseMapel @default(Umum)
 
   @@map(name: "mapel")
+}
+
+enum FaseMapel {
+  Umum
+  Jurusan
 }

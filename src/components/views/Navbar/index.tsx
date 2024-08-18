@@ -17,6 +17,26 @@ const listTitleNavbar = [
     title: "Add Siswa",
     url: "/addsiswa",
   },
+  {
+    title: "List Guru",
+    url: "/listguru",
+  },
+  {
+    title: "Add Guru",
+    url: "/addguru",
+  },
+  {
+    title: "Beranda Guru",
+    url: "/berandaguru",
+  },
+  {
+    title: "List Mapel",
+    url: "/listmapel",
+  },
+  {
+    title: "Add Mapel",
+    url: "/addmapel",
+  },
 ];
 const NavbarView = () => {
   const { data: session, status } = useSession();

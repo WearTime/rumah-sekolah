@@ -75,28 +75,46 @@ const SidebarView = () => {
         <div className={styles.sidebar_list_section}>
           <h3>GURU SECTION</h3>
           <ul className={styles.sidebar_list_section_list}>
-            <li>
+            <li
+              className={`${
+                pathname == "/listguru"
+                  ? styles.sidebar_list_section_list_active
+                  : ""
+              }`}
+            >
               <FontAwesomeIcon
                 icon={["fas", "list"]}
                 className={styles.sidebar_list_section_list_icon}
               />{" "}
-              <Link href="/">List Guru</Link>
+              <Link href="/listguru">List Guru</Link>
             </li>
 
-            <li className={`${styles.sidebar_list_section_list_all}`}>
+            <li
+              className={`${styles.sidebar_list_section_list_all}  ${
+                pathname == "/berandaguru"
+                  ? styles.sidebar_list_section_list_active
+                  : ""
+              }`}
+            >
               <FontAwesomeIcon
                 icon={["fas", "user-tie"]}
                 className={styles.sidebar_list_section_list_icon_all}
               />{" "}
-              <Link href="/">Beranda Guru</Link>
+              <Link href="/berandaguru">Beranda Guru</Link>
             </li>
             {session.data?.user.role == "Admin" && (
-              <li className={`${styles.sidebar_list_section_list_add}`}>
+              <li
+                className={`${styles.sidebar_list_section_list_add} ${
+                  pathname == "/addguru"
+                    ? styles.sidebar_list_section_list_active
+                    : ""
+                }`}
+              >
                 <FontAwesomeIcon
                   icon={["fas", "user-plus"]}
                   className={styles.sidebar_list_section_list_icon_plus}
                 />{" "}
-                <Link href="/">Tambah Guru</Link>
+                <Link href="/addguru">Tambah Guru</Link>
               </li>
             )}
           </ul>
@@ -104,20 +122,32 @@ const SidebarView = () => {
         <div className={styles.sidebar_list_section}>
           <h3>MAPEL SECTION</h3>
           <ul className={styles.sidebar_list_section_list}>
-            <li>
+            <li
+              className={`${
+                pathname == "/listmapel"
+                  ? styles.sidebar_list_section_list_active
+                  : ""
+              }`}
+            >
               <FontAwesomeIcon
                 icon={["fas", "book"]}
                 className={styles.sidebar_list_section_list_icon}
               />{" "}
-              <Link href="/">List Mapel</Link>
+              <Link href="/listmapel">List Mapel</Link>
             </li>
             {session.data?.user.role == "Admin" && (
-              <li className={`${styles.sidebar_list_section_list_plus}`}>
+              <li
+                className={`${styles.sidebar_list_section_list_plus}${
+                  pathname == "/addmapel"
+                    ? styles.sidebar_list_section_list_active
+                    : ""
+                }`}
+              >
                 <FontAwesomeIcon
                   icon={["fas", "square-plus"]}
                   className={styles.sidebar_list_section_list_icon_plus}
                 />{" "}
-                <Link href="/">Tambah Mapel</Link>
+                <Link href="/addmapel">Tambah Mapel</Link>
               </li>
             )}
           </ul>

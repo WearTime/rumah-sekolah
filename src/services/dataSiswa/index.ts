@@ -2,7 +2,7 @@ import instance from "@/lib/axios/instance";
 
 const endpoint = {
   siswa: "/api/datasiswa",
-  profileImage: "/api/getProfileImage/siswa",
+  import: "/api/datasiswa/import",
 };
 
 const dataSiswaServices = {
@@ -29,6 +29,8 @@ const dataSiswaServices = {
     }),
   searchDataSiswa: (search: string) =>
     instance.get(`${endpoint.siswa}?search=${search}`),
+  importFromExcel: (formData: FormData) =>
+    instance.post(endpoint.import, formData),
 };
 
 export default dataSiswaServices;

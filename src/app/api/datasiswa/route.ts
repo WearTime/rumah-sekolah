@@ -5,6 +5,7 @@ import { createWriteStream, existsSync, promises } from "fs";
 import { extname, join } from "path";
 import { encrypt } from "@/utils/imageEncrypt";
 import { Readable } from "stream";
+import siswaSchema from "@/validation/siswaSchema.validation";
 
 export async function GET(req: NextRequest) {
   try {
@@ -50,6 +51,15 @@ export async function POST(req: NextRequest) {
       const formData = await req.formData();
       const body = JSON.parse(formData.get("data") as string);
       const file = formData.get("image") as File | null;
+
+      const check = siswaSchema.safeParse(body);
+
+      if (!check.success) {
+        return NextResponse.json(
+          { data: null, message: check.error.errors[0].message },
+          { status: 400 }
+        );
+      }
       if (file) {
         // Dapatkan ekstensi file asli
         const extension = extname(file.name);
@@ -77,7 +87,7 @@ export async function POST(req: NextRequest) {
         });
 
         // Tambahkan path file ke body
-        body.image = `/api/getProfileImage?file=${encodeURIComponent(
+        body.image = `/api/getProfileImage/siswa?file=${encodeURIComponent(
           encryptedFileName
         )}`;
       }

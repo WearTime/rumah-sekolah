@@ -6,4 +6,13 @@ export function mainMiddleware(request: NextRequest) {
   return res;
 }
 
-export default withAuth(mainMiddleware, ["/addsiswa", "/login", "/register"]);
+export default withAuth(mainMiddleware, [
+  "/",
+  "/listsiswa",
+  "/addsiswa",
+  "/addguru",
+  "/listguru",
+  "/berandaguru",
+  "/login",
+  "/register",
+]);

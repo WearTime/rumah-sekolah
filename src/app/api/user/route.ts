@@ -14,10 +14,16 @@ const userValidation = zod.object({
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { username, password } = userValidation.parse(body);
+    const check = userValidation.safeParse(body);
 
+    if (!check.success) {
+      return NextResponse.json(
+        { data: null, message: check.error.errors[0].message },
+        { status: 400 }
+      );
+    }
     const existingUserByUsername = await prisma.user.findFirst({
-      where: { username: username },
+      where: { username: check.data.username },
     });
 
     if (existingUserByUsername) {
@@ -27,10 +33,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const hashedPassword = await hash(password, 10);
+    const hashedPassword = await hash(check.data.password, 10);
     const newUser = await prisma.user.create({
       data: {
-        username,
+        username: check.data.username,
         password: hashedPassword,
         role: "Member",
       },
@@ -42,6 +48,8 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
+
     return NextResponse.json(
       { user: null, message: "Internal Server Error" },
       { status: 500 }
