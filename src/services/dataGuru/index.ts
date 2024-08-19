@@ -2,7 +2,7 @@ import instance from "../../lib/axios/instance";
 
 const endpoint = {
   guru: "/api/dataguru",
-  profileImage: "/api/getProfileImage/guru",
+  import: "/api/dataguru/import",
 };
 
 const dataGuruServices = {
@@ -23,6 +23,12 @@ const dataGuruServices = {
     }),
   searchDataGuru: (search: string) =>
     instance.get(`${endpoint.guru}?search=${search}`),
+  importFromExcel: (formData: FormData) =>
+    instance.post(endpoint.import, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 };
 
 export default dataGuruServices;

@@ -9,10 +9,15 @@ import Image from "next/image";
 import { Guru } from "@/types/guru.types";
 import guruSchema from "@/validation/guruSchema.validation";
 import dataGuruServices from "@/services/dataGuru";
+import { AxiosError } from "axios";
+import ExcelImportGuru from "./ExcelImportGuru";
+import Modal from "@/components/ui/Modal";
 
 const AddGuruView = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [modalExcelImport, setModalExcelImport] = useState<boolean>(false);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -41,97 +46,123 @@ const AddGuruView = () => {
       formData.append("image", form.image.files[0]);
     }
 
-    const result = await dataGuruServices.addNewGuru(formData);
+    try {
+      const result = await dataGuruServices.addNewGuru(formData);
 
-    if (result.status == 201) {
-      form.reset();
-      setUploadedImage(null);
+      if (result.status == 201) {
+        form.reset();
+        setUploadedImage(null);
+        setIsLoading(false);
+        toast.success("Berhasil Tambah Data");
+      } else {
+        setIsLoading(false);
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unknown error occurred!");
+      }
+    } finally {
       setIsLoading(false);
-      toast.success("Berhasil Tambah Data");
-    } else {
-      setIsLoading(false);
-      toast.error("Something went wrong!");
     }
   };
 
   return (
-    <div className={styles.addguru}>
-      <div className={styles.addguru_main}>
-        <div className={styles.addguru_main_header}>
-          <h1>Formulir Tambah Guru</h1>
-        </div>
-        <div className={styles.addguru_main_content}>
-          <form
-            onSubmit={handleSubmit}
-            className={styles.addguru_main_content_form}
-            encType="multipart/form-data"
-          >
-            <Input
-              label="Nama"
-              type="text"
-              name="nama"
-              placeholder="Masukan Nama Siswa"
-              className={styles.addguru_main_content_form_input}
-            />
-            <Input
-              label="NIP"
-              type="text"
-              name="nip"
-              placeholder="Masukan Nip Siswa"
-              className={styles.addguru_main_content_form_input}
-            />
-            <Input
-              label="MAPEL"
-              type="text"
-              name="mapel"
-              placeholder="Masukan Mapel Siswa"
-              className={styles.addguru_main_content_form_input}
-            />
-            <Input
-              label="No HP"
-              type="text"
-              name="no_hp"
-              placeholder="Masukan Nomor Handphone Siswa"
-              className={styles.addguru_main_content_form_input}
-            />
-            <div className={styles.addguru_main_content_form_item}>
-              <label htmlFor="alamat">Alamat</label>
-              <textarea name="alamat" id="alamat" cols={20} rows={2} required />
-            </div>
-
-            <div className={styles.addguru_main_content_form_item}>
-              <div className={styles.addguru_main_content_form_item_image}>
-                {uploadedImage ? (
-                  <Image
-                    width={200}
-                    height={200}
-                    src={URL.createObjectURL(uploadedImage)}
-                    alt="image"
-                    className={styles.form__image__preview}
-                  />
-                ) : (
-                  <div className={styles.form__image__placeholder}>
-                    No Image
-                  </div>
-                )}
-                <InputFile
-                  name="image"
-                  accept=".jpg, .png, .jpeg, .gif"
-                  uploadedImage={uploadedImage}
-                  setUploadedImage={setUploadedImage}
-                  type="image"
+    <>
+      <div className={styles.addguru}>
+        <div className={styles.addguru_main}>
+          <div className={styles.addguru_main_header}>
+            <h1>Formulir Tambah Guru</h1>
+          </div>
+          <div className={styles.addguru_main_content}>
+            <form
+              onSubmit={handleSubmit}
+              className={styles.addguru_main_content_form}
+              encType="multipart/form-data"
+            >
+              <Input
+                label="Nama"
+                type="text"
+                name="nama"
+                placeholder="Masukan Nama Siswa"
+                className={styles.addguru_main_content_form_input}
+              />
+              <Input
+                label="NIP"
+                type="text"
+                name="nip"
+                placeholder="Masukan Nip Siswa"
+                className={styles.addguru_main_content_form_input}
+              />
+              <Input
+                label="MAPEL"
+                type="text"
+                name="mapel"
+                placeholder="Masukan Mapel Siswa"
+                className={styles.addguru_main_content_form_input}
+              />
+              <Input
+                label="No HP"
+                type="text"
+                name="no_hp"
+                placeholder="Masukan Nomor Handphone Siswa"
+                className={styles.addguru_main_content_form_input}
+              />
+              <div className={styles.addguru_main_content_form_item}>
+                <label htmlFor="alamat">Alamat</label>
+                <textarea
+                  name="alamat"
+                  id="alamat"
+                  cols={20}
+                  rows={2}
+                  required
                 />
               </div>
-            </div>
-            <div className={styles.addguru_main_content_form_button}>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Tambah Guru"}
-              </Button>
-            </div>
-          </form>
+
+              <div className={styles.addguru_main_content_form_item}>
+                <div className={styles.addguru_main_content_form_item_image}>
+                  {uploadedImage ? (
+                    <Image
+                      width={200}
+                      height={200}
+                      src={URL.createObjectURL(uploadedImage)}
+                      alt="image"
+                      className={styles.form__image__preview}
+                    />
+                  ) : (
+                    <div className={styles.form__image__placeholder}>
+                      No Image
+                    </div>
+                  )}
+                  <InputFile
+                    name="image"
+                    accept=".jpg, .png, .jpeg, .gif"
+                    uploadedImage={uploadedImage}
+                    setUploadedImage={setUploadedImage}
+                    type="image"
+                  />
+                </div>
+              </div>
+              <div className={styles.addguru_main_content_form_button}>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Loading..." : "Tambah Guru"}
+                </Button>
+                <Button type="button" onClick={() => setModalExcelImport(true)}>
+                  Import From Excel
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+      {modalExcelImport && (
+        <Modal onClose={() => setModalExcelImport(false)}>
+          <ExcelImportGuru setModalExcelImport={setModalExcelImport} />
+        </Modal>
+      )}
+    </>
   );
 };
 

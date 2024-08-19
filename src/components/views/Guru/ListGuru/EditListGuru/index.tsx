@@ -14,6 +14,7 @@ import InputFile from "@/components/ui/InputFile";
 import { Guru } from "@/types/guru.types";
 import guruSchema from "@/validation/guruSchema.validation";
 import dataGuruServices from "@/services/dataGuru";
+import { AxiosError } from "axios";
 
 type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Guru | null>>;
@@ -74,31 +75,37 @@ const EditListGuru = ({
       formData.append("image", form.image.files[0]);
     }
 
-    const result = await dataGuruServices.editDataGuru(editGuru.nip, formData);
+    try {
+      const result = await dataGuruServices.editDataGuru(
+        editGuru.nip,
+        formData
+      );
 
-    if (result.status == 200) {
+      if (result.status == 200) {
+        toast.success("Berhasil Update Data");
+        const { data } = await dataGuruServices.getAllGuru({
+          page: currentPage,
+          search: "",
+        });
+        setGuruData(data.data);
+        fetchPageData(currentPage);
+        setActionMenu(null);
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unknown error occurred!");
+      }
+    } finally {
+      setIsLoading(false);
       setIsModalOpen({
         deleteModal: false,
         editModal: false,
         detailModal: false,
       });
-      setIsLoading(false);
-      toast.success("Berhasil Update Data");
-      const { data } = await dataGuruServices.getAllGuru({
-        page: currentPage,
-        search: "",
-      });
-      setGuruData(data.data);
-      fetchPageData(currentPage);
-      setActionMenu(null);
-    } else {
-      setIsModalOpen({
-        deleteModal: false,
-        editModal: false,
-        detailModal: false,
-      });
-      setIsLoading(false);
-      toast.error("Something went wrong!");
     }
   };
 

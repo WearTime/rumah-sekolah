@@ -64,6 +64,17 @@ export async function PUT(req: NextRequest, { params }: any) {
   try {
     return await verifyToken(req, true, async () => {
       const nip = params.nip;
+      const existingData = await prisma.dataGuru.findUnique({
+        where: { nip },
+      });
+
+      if (!existingData) {
+        return NextResponse.json(
+          { message: "Data guru tidak ditemukan" },
+          { status: 404 }
+        );
+      }
+
       const formData = await req.formData();
 
       const bodyString = formData.get("data") as string;
@@ -77,22 +88,29 @@ export async function PUT(req: NextRequest, { params }: any) {
       }
 
       const body = JSON.parse(bodyString);
+
+      const guruIsExist = await prisma.dataGuru.findUnique({
+        where: {
+          nip: body.nip,
+        },
+      });
+
+      if (guruIsExist) {
+        return NextResponse.json(
+          {
+            data: null,
+            message: `Nip ${body.nip} has been used by other teacher`,
+          },
+          { status: 409 }
+        );
+      }
+
       const check = guruSchema.safeParse(body);
 
       if (!check.success) {
         return NextResponse.json(
           { data: null, message: check.error.errors[0].message },
           { status: 400 }
-        );
-      }
-      const existingData = await prisma.dataGuru.findUnique({
-        where: { nip },
-      });
-
-      if (!existingData) {
-        return NextResponse.json(
-          { message: "Data guru tidak ditemukan" },
-          { status: 404 }
         );
       }
 

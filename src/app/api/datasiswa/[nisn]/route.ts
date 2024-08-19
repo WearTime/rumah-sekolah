@@ -63,6 +63,18 @@ export async function PUT(req: NextRequest, { params }: any) {
   try {
     return await verifyToken(req, true, async () => {
       const nisn = params.nisn;
+
+      const existingData = await prisma.dataSiswa.findUnique({
+        where: { nisn },
+      });
+
+      if (!existingData) {
+        return NextResponse.json(
+          { message: "Data siswa tidak ditemukan" },
+          { status: 404 }
+        );
+      }
+
       const formData = await req.formData();
 
       const bodyString = formData.get("data") as string;
@@ -77,14 +89,19 @@ export async function PUT(req: NextRequest, { params }: any) {
 
       const body = JSON.parse(bodyString);
 
-      const existingData = await prisma.dataSiswa.findUnique({
-        where: { nisn },
+      const userIsExist = await prisma.dataSiswa.findUnique({
+        where: {
+          nisn: body.nisn,
+        },
       });
 
-      if (!existingData) {
+      if (userIsExist) {
         return NextResponse.json(
-          { message: "Data siswa tidak ditemukan" },
-          { status: 404 }
+          {
+            data: null,
+            message: `Nisn ${body.nisn} has been used by other students`,
+          },
+          { status: 409 }
         );
       }
 

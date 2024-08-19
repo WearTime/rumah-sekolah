@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     const rombel = extractRombel(validatedStudent.Rombel);
     const jurusan = mapJurusan(rombel);
 
-    validStudents.push({
+    const dataSiswa = {
       nisn: validatedStudent.NISN,
       nis: "Kosong", // Placeholder for NIS
       nama: validatedStudent["Nama Lengkap"],
@@ -65,7 +65,18 @@ export async function POST(req: NextRequest) {
       jurusan: jurusan,
       no_hp: "Kosong", // Placeholder for phone number
       alamat: "Kosong", // Placeholder for address
+    };
+
+    const userIsExist = await prisma.dataSiswa.findUnique({
+      where: {
+        nisn: dataSiswa.nisn,
+      },
     });
+
+    if (userIsExist) {
+      continue;
+    }
+    validStudents.push(dataSiswa);
   }
 
   if (validStudents.length > 0) {
@@ -74,7 +85,7 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json(
-    { error: "No valid students to import" },
+    { message: "No valid students to import" },
     { status: 400 }
   );
 }

@@ -52,6 +52,19 @@ export async function POST(req: NextRequest) {
       const body = JSON.parse(formData.get("data") as string);
       const file = formData.get("image") as File | null;
 
+      const guruIsExist = await prisma.dataGuru.findUnique({
+        where: {
+          nip: body.nip,
+        },
+      });
+
+      if (guruIsExist) {
+        return NextResponse.json(
+          { data: null, message: "Data Guru already exist" },
+          { status: 409 }
+        );
+      }
+
       const check = guruSchema.safeParse(body);
 
       if (!check.success) {

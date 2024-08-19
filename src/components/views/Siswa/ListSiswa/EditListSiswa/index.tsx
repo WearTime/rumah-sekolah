@@ -14,6 +14,7 @@ import Input from "@/components/ui/Input";
 import siswaSchema from "@/validation/siswaSchema.validation";
 import Image from "next/image";
 import InputFile from "@/components/ui/InputFile";
+import { AxiosError } from "axios";
 
 type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Siswa | null>>;
@@ -82,34 +83,42 @@ const EditListSiswa = ({
       formData.append("image", form.image.files[0]);
     }
 
-    const result = await dataSiswaServices.editDataSiswa(
-      editSiswa.nisn,
-      formData
-    );
+    try {
+      const result = await dataSiswaServices.editDataSiswa(
+        editSiswa.nisn,
+        formData
+      );
 
-    if (result.status == 200) {
-      setIsModalOpen({
-        deleteModal: false,
-        editModal: false,
-        detailModal: false,
-      });
+      if (result.status == 200) {
+        setIsModalOpen({
+          deleteModal: false,
+          editModal: false,
+          detailModal: false,
+        });
+        toast.success("Berhasil Update Data");
+        const { data } = await dataSiswaServices.getAllSiswa({
+          page: currentPage,
+          search: "",
+        });
+        setSiswaData(data.data);
+        fetchPageData(currentPage);
+      } else {
+        setIsModalOpen({
+          deleteModal: false,
+          editModal: false,
+          detailModal: false,
+        });
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unknown error occurred!");
+      }
+    } finally {
       setIsLoading(false);
-      toast.success("Berhasil Update Data");
-      const { data } = await dataSiswaServices.getAllSiswa({
-        page: currentPage,
-        search: "",
-      });
-      setSiswaData(data.data);
-      fetchPageData(currentPage);
       setActionMenu(null);
-    } else {
-      setIsModalOpen({
-        deleteModal: false,
-        editModal: false,
-        detailModal: false,
-      });
-      setIsLoading(false);
-      toast.error("Something went wrong!");
     }
   };
 

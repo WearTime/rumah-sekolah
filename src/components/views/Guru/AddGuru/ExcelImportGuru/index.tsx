@@ -1,16 +1,16 @@
 import Button from "@/components/ui/Button";
 import InputFile from "@/components/ui/InputFile";
-import styles from "./ExcelImportSiswa.module.scss";
+import styles from "./ExcelImportGuru.module.scss";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { ExcelFileSchema } from "@/validation/importExcelSchema.validation";
 import toast from "react-hot-toast";
-import dataSiswaServices from "@/services/dataSiswa";
 import { AxiosError } from "axios";
+import dataGuruServices from "@/services/dataGuru";
 
 type PropTypes = {
   setModalExcelImport: Dispatch<SetStateAction<boolean>>;
 };
-const ExcelImportSiswa = ({ setModalExcelImport }: PropTypes) => {
+const ExcelImportGuru = ({ setModalExcelImport }: PropTypes) => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,12 +30,12 @@ const ExcelImportSiswa = ({ setModalExcelImport }: PropTypes) => {
     formData.append("file", form.file.files[0]);
 
     try {
-      const result = await dataSiswaServices.importFromExcel(formData);
+      const result = await dataGuruServices.importFromExcel(formData);
 
       if (result) {
         form.reset();
         setUploadedFile(null);
-        toast.success("Success Import Data Siswa From Excel");
+        toast.success("Success Import Data Guru From Excel");
       } else {
         toast.error("Something went wrong!");
       }
@@ -70,7 +70,7 @@ const ExcelImportSiswa = ({ setModalExcelImport }: PropTypes) => {
         </div>
         <div className={styles.excelimport_form_button}>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Import Siswa"}
+            {isLoading ? "Loading..." : "Import Guru"}
           </Button>
         </div>
       </form>
@@ -78,4 +78,4 @@ const ExcelImportSiswa = ({ setModalExcelImport }: PropTypes) => {
   );
 };
 
-export default ExcelImportSiswa;
+export default ExcelImportGuru;

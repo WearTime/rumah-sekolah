@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Siswa } from "@/types/siswa.type";
 import Modal from "@/components/ui/Modal";
 import ExcelImportSiswa from "./ExcelImportSIswa";
+import { AxiosError } from "axios";
 
 const AddSiswaView = () => {
   const [jurusan, setJurusan] = useState("");
@@ -66,16 +67,24 @@ const AddSiswaView = () => {
       formData.append("image", form.image.files[0]);
     }
 
-    const result = await dataSiswaServices.addNewSiswa(formData);
+    try {
+      const result = await dataSiswaServices.addNewSiswa(formData);
 
-    if (result.status == 201) {
-      form.reset();
-      setUploadedImage(null);
+      if (result.status == 201) {
+        form.reset();
+        setUploadedImage(null);
+        toast.success("Berhasil Tambah Data");
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unknown error occurred!");
+      }
+    } finally {
       setIsLoading(false);
-      toast.success("Berhasil Tambah Data");
-    } else {
-      setIsLoading(false);
-      toast.error("Something went wrong!");
     }
   };
 
@@ -217,7 +226,7 @@ const AddSiswaView = () => {
       </div>
       {modalExcelImport && (
         <Modal onClose={() => setModalExcelImport(false)}>
-          <ExcelImportSiswa />
+          <ExcelImportSiswa setModalExcelImport={setModalExcelImport} />
         </Modal>
       )}
     </>

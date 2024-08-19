@@ -4,10 +4,10 @@ import styles from "./AddMapel.module.scss";
 import toast from "react-hot-toast";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-
 import { Mapel } from "@/types/mapel.type";
 import mapelSchema from "@/validation/mapelSchema.validation";
 import dataMapelServices from "@/services/dataMapel";
+import { AxiosError } from "axios";
 const AddMapelView = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -36,16 +36,24 @@ const AddMapelView = () => {
     // Handle Image Upload
     formData.append("data", JSON.stringify(data));
 
-    const result = await dataMapelServices.addNewMapel(formData);
+    try {
+      const result = await dataMapelServices.addNewMapel(formData);
 
-    if (result.status == 201) {
-      form.reset();
-      setUploadedImage(null);
+      if (result.status == 201) {
+        form.reset();
+        setUploadedImage(null);
+        toast.success("Berhasil Tambah Data");
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unknown error occurred!");
+      }
+    } finally {
       setIsLoading(false);
-      toast.success("Berhasil Tambah Data");
-    } else {
-      setIsLoading(false);
-      toast.error("Something went wrong!");
     }
   };
 

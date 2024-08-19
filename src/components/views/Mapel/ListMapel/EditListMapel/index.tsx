@@ -12,6 +12,7 @@ import Input from "@/components/ui/Input";
 import { Mapel } from "@/types/mapel.type";
 import mapelSchema from "@/validation/mapelSchema.validation";
 import dataMapelServices from "@/services/dataMapel";
+import { AxiosError } from "axios";
 
 type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Mapel | null>>;
@@ -67,32 +68,36 @@ const EditListMapel = ({
     formData.append("data", JSON.stringify(data));
     console.log(formData);
 
-    const result = await dataMapelServices.editDataMapel(
-      editMapel.kode_mapel,
-      formData
-    );
+    try {
+      const result = await dataMapelServices.editDataMapel(
+        editMapel.kode_mapel,
+        formData
+      );
 
-    if (result.status == 200) {
+      if (result.status == 200) {
+        toast.success("Berhasil Update Data");
+        const { data } = await dataMapelServices.getAllMapel({
+          page: currentPage,
+          search: "",
+        });
+        setMapelData(data.data);
+        fetchPageData(currentPage);
+        setActionMenu(null);
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unknown error occurred!");
+      }
+    } finally {
+      setIsLoading(false);
       setIsModalOpen({
         deleteModal: false,
         editModal: false,
       });
-      setIsLoading(false);
-      toast.success("Berhasil Update Data");
-      const { data } = await dataMapelServices.getAllMapel({
-        page: currentPage,
-        search: "",
-      });
-      setMapelData(data.data);
-      fetchPageData(currentPage);
-      setActionMenu(null);
-    } else {
-      setIsModalOpen({
-        deleteModal: false,
-        editModal: false,
-      });
-      setIsLoading(false);
-      toast.error("Something went wrong!");
     }
   };
 

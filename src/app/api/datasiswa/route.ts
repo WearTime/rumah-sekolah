@@ -52,6 +52,18 @@ export async function POST(req: NextRequest) {
       const body = JSON.parse(formData.get("data") as string);
       const file = formData.get("image") as File | null;
 
+      const userIsExist = await prisma.dataSiswa.findUnique({
+        where: {
+          nisn: body.nisn,
+        },
+      });
+
+      if (userIsExist) {
+        return NextResponse.json(
+          { data: null, message: "Data Siswa already exist" },
+          { status: 409 }
+        );
+      }
       const check = siswaSchema.safeParse(body);
 
       if (!check.success) {
@@ -100,7 +112,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ data: result }, { status: 201 });
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

@@ -13,6 +13,13 @@ export const ExcelStudentSchema = z.object({
   Rombel: z.string().min(1, "Rombel is required"),
 });
 
+export const ExcelTeacherSchema = z.object({
+  NIP: z.string().min(1, "NIP Must be at least 1 characters long"),
+  "Nama Lengkap": z.string().min(1, "Name is required"),
+  "Jabatan PTK": z
+    .string()
+    .min(1, "Jabatan PTK Must be at least 1 characters long"),
+});
 // Define the Zod schema for file validation
 export const ExcelFileSchema = z.custom<File>(
   (file) => {

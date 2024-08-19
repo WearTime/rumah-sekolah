@@ -51,6 +51,18 @@ export async function POST(req: NextRequest) {
       const formData = await req.formData();
       const body = JSON.parse(formData.get("data") as string);
 
+      const mapelIsExist = await prisma.mapel.findUnique({
+        where: {
+          kode_mapel: body.kode_mapel,
+        },
+      });
+
+      if (mapelIsExist) {
+        return NextResponse.json(
+          { data: null, message: "Data Mapel already exist" },
+          { status: 409 }
+        );
+      }
       const check = mapelSchema.safeParse(body);
 
       if (!check.success) {

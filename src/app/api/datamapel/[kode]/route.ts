@@ -58,6 +58,17 @@ export async function PUT(req: NextRequest, { params }: any) {
     return await verifyToken(req, true, async () => {
       const kode_mapel = params.kode;
 
+      const existingData = await prisma.mapel.findUnique({
+        where: { kode_mapel },
+      });
+
+      if (!existingData) {
+        return NextResponse.json(
+          { message: "Data guru tidak ditemukan" },
+          { status: 404 }
+        );
+      }
+
       const formData = await req.formData();
 
       const bodyString = formData.get("data") as string;
@@ -71,16 +82,22 @@ export async function PUT(req: NextRequest, { params }: any) {
 
       const body = JSON.parse(bodyString);
 
-      const existingData = await prisma.mapel.findUnique({
-        where: { kode_mapel },
+      const mapelIsExist = await prisma.mapel.findUnique({
+        where: {
+          kode_mapel: body.kode_mapel,
+        },
       });
 
-      if (!existingData) {
+      if (mapelIsExist) {
         return NextResponse.json(
-          { message: "Data guru tidak ditemukan" },
-          { status: 404 }
+          {
+            data: null,
+            message: `Kode mapel ${body.kode_mapel} has been used by other Mapel`,
+          },
+          { status: 409 }
         );
       }
+
       const updatedData = await prisma.mapel.update({
         where: { kode_mapel },
         data: body,
