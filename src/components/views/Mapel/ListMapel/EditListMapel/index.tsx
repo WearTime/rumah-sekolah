@@ -9,8 +9,6 @@ import styles from "./EditListMapel.module.scss";
 import Button from "@/components/ui/Button";
 import toast from "react-hot-toast";
 import Input from "@/components/ui/Input";
-import Image from "next/image";
-import InputFile from "@/components/ui/InputFile";
 import { Mapel } from "@/types/mapel.type";
 import mapelSchema from "@/validation/mapelSchema.validation";
 import dataMapelServices from "@/services/dataMapel";

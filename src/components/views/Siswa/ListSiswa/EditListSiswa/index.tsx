@@ -256,6 +256,7 @@ const EditListSiswa = ({
               accept=".jpg, .png, .jpeg, .gif"
               uploadedImage={uploadedImage}
               setUploadedImage={setUploadedImage}
+              type="image"
             />
           </div>
         </div>

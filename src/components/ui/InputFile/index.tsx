@@ -6,6 +6,7 @@ type PropTypes = {
   setUploadedImage: Dispatch<SetStateAction<File | null>>;
   name: string;
   accept: string;
+  type: "image" | "file";
 };
 
 const MAX_LENGTH = 20;
@@ -14,6 +15,7 @@ const InputFile = ({
   uploadedImage,
   setUploadedImage,
   accept,
+  type,
 }: PropTypes) => {
   const truncateFileName = (fileName: string, maxLength: number): string => {
     const [name, extension] = fileName.split(/\.(?=[^.]+$)/);
@@ -38,12 +40,26 @@ const InputFile = ({
   return (
     <div className={styles.file}>
       <label className={styles.file__label} htmlFor={name}>
-        {uploadedImage?.name ? (
+        {type === "image" ? (
+          uploadedImage?.name ? (
+            <p>{truncateFileName(uploadedImage.name, MAX_LENGTH)}</p>
+          ) : (
+            <>
+              <p>
+                Upload a new Image, larger image will be resized automatically
+              </p>
+              <p>
+                Maximum upload size is <b>1MB</b>
+              </p>
+            </>
+          )
+        ) : uploadedImage?.name ? (
           <p>{truncateFileName(uploadedImage.name, MAX_LENGTH)}</p>
         ) : (
           <>
             <p>
-              Upload a new Image, larger image will be resized automatically
+              Upload a new file. The file cannot be uploaded if it exceeds the
+              maximum file size limit.
             </p>
             <p>
               Maximum upload size is <b>1MB</b>

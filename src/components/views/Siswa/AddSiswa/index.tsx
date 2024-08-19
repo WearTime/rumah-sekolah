@@ -9,6 +9,8 @@ import Button from "@/components/ui/Button";
 import InputFile from "@/components/ui/InputFile";
 import Image from "next/image";
 import { Siswa } from "@/types/siswa.type";
+import Modal from "@/components/ui/Modal";
+import ExcelImportSiswa from "./ExcelImportSIswa";
 
 const AddSiswaView = () => {
   const [jurusan, setJurusan] = useState("");
@@ -16,6 +18,7 @@ const AddSiswaView = () => {
   const [subJurOptions, setSubJurOptions] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [modalExcelImport, setModalExcelImport] = useState<boolean>(false);
 
   useEffect(() => {
     let options: number[] = [];
@@ -77,130 +80,147 @@ const AddSiswaView = () => {
   };
 
   return (
-    <div className={styles.addsiswa}>
-      <div className={styles.addsiswa_main}>
-        <div className={styles.addsiswa_main_header}>
-          <h1>Formulir Tambah Siswa</h1>
-        </div>
-        <div className={styles.addsiswa_main_content}>
-          <form
-            onSubmit={handleSubmit}
-            className={styles.addsiswa_main_content_form}
-            encType="multipart/form-data"
-          >
-            <Input
-              label="Nama"
-              type="text"
-              name="nama"
-              placeholder="Masukan Nama Siswa"
-              className={styles.addsiswa_main_content_form_input}
-            />
-            <Input
-              label="NISN"
-              type="text"
-              name="nisn"
-              placeholder="Masukan Nisn Siswa"
-              className={styles.addsiswa_main_content_form_input}
-            />
-            <Input
-              label="NIS"
-              type="text"
-              name="nis"
-              placeholder="Masukan Nis Siswa"
-              className={styles.addsiswa_main_content_form_input}
-            />
-            <div className={styles.addsiswa_main_content_form_item}>
-              <label htmlFor="kelas">Kelas</label>
-              <select
-                name="kelas"
-                id="kelas"
-                required
-                onChange={(e) => setKelas(e.target.value)}
-              >
-                <option value="">Pilih Kelas</option>
-                <option value="X">X</option>
-                <option value="XI">XI</option>
-                <option value="XII">XII</option>
-              </select>
-            </div>
-            <div className={styles.addsiswa_main_content_form_group}>
-              <div className={styles.addsiswa_main_content_form_group_item}>
-                <label htmlFor="jurusan">Jurusan</label>
+    <>
+      <div className={styles.addsiswa}>
+        <div className={styles.addsiswa_main}>
+          <div className={styles.addsiswa_main_header}>
+            <h1>Formulir Tambah Siswa</h1>
+          </div>
+          <div className={styles.addsiswa_main_content}>
+            <form
+              onSubmit={handleSubmit}
+              className={styles.addsiswa_main_content_form}
+              encType="multipart/form-data"
+            >
+              <Input
+                label="Nama"
+                type="text"
+                name="nama"
+                placeholder="Masukan Nama Siswa"
+                className={styles.addsiswa_main_content_form_input}
+              />
+              <Input
+                label="NISN"
+                type="text"
+                name="nisn"
+                placeholder="Masukan Nisn Siswa"
+                className={styles.addsiswa_main_content_form_input}
+              />
+              <Input
+                label="NIS"
+                type="text"
+                name="nis"
+                placeholder="Masukan Nis Siswa"
+                className={styles.addsiswa_main_content_form_input}
+              />
+              <div className={styles.addsiswa_main_content_form_item}>
+                <label htmlFor="kelas">Kelas</label>
                 <select
-                  name="jurusan"
-                  id="jurusan"
-                  disabled={!kelas}
-                  onChange={(e) => setJurusan(e.target.value)}
+                  name="kelas"
+                  id="kelas"
+                  required
+                  onChange={(e) => setKelas(e.target.value)}
                 >
-                  <option value="">Pilih Jurusan</option>
-                  <option value="AKL">AKL</option>
-                  <option value="PPLG">PPLG</option>
-                  <option value="TKJ">TKJ</option>
-                  <option value="DKV">DKV</option>
-                  <option value="MPLB">MPLB</option>
-                  <option value="BDP">BDP</option>
-                  <option value="KULINER">KULINER</option>
-                  <option value="TATABUSANA">TATA BUSANA</option>
-                  <option value="PHT">PHT</option>
-                  <option value="UPW">UPW</option>
+                  <option value="">Pilih Kelas</option>
+                  <option value="X">X</option>
+                  <option value="XI">XI</option>
+                  <option value="XII">XII</option>
                 </select>
               </div>
-              <div className={styles.addsiswa_main_content_form_group_item}>
-                <label htmlFor="sub_jur">Nomor Jurusan</label>
-                <select name="sub_jur" id="sub_jur" disabled={!jurusan}>
-                  <option value="">Pilih Nomor Jurusan</option>
-                  {subJurOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+              <div className={styles.addsiswa_main_content_form_group}>
+                <div className={styles.addsiswa_main_content_form_group_item}>
+                  <label htmlFor="jurusan">Jurusan</label>
+                  <select
+                    name="jurusan"
+                    id="jurusan"
+                    disabled={!kelas}
+                    onChange={(e) => setJurusan(e.target.value)}
+                  >
+                    <option value="">Pilih Jurusan</option>
+                    <option value="AKL">AKL</option>
+                    <option value="PPLG">PPLG</option>
+                    <option value="TKJ">TKJ</option>
+                    <option value="DKV">DKV</option>
+                    <option value="MPLB">MPLB</option>
+                    <option value="BDP">BDP</option>
+                    <option value="KULINER">KULINER</option>
+                    <option value="TATABUSANA">TATA BUSANA</option>
+                    <option value="PHT">PHT</option>
+                    <option value="UPW">UPW</option>
+                  </select>
+                </div>
+                <div className={styles.addsiswa_main_content_form_group_item}>
+                  <label htmlFor="sub_jur">Nomor Jurusan</label>
+                  <select name="sub_jur" id="sub_jur" disabled={!jurusan}>
+                    <option value="">Pilih Nomor Jurusan</option>
+                    {subJurOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
-            <Input
-              label="No HP"
-              type="text"
-              name="no_hp"
-              placeholder="Masukan Nomor Handphone Siswa"
-              className={styles.addsiswa_main_content_form_input}
-            />
-            <div className={styles.addsiswa_main_content_form_item}>
-              <label htmlFor="alamat">Alamat</label>
-              <textarea name="alamat" id="alamat" cols={20} rows={2} required />
-            </div>
-
-            <div className={styles.addsiswa_main_content_form_item}>
-              <div className={styles.addsiswa_main_content_form_item_image}>
-                {uploadedImage ? (
-                  <Image
-                    width={200}
-                    height={200}
-                    src={URL.createObjectURL(uploadedImage)}
-                    alt="image"
-                    className={styles.form__image__preview}
-                  />
-                ) : (
-                  <div className={styles.form__image__placeholder}>
-                    No Image
-                  </div>
-                )}
-                <InputFile
-                  name="image"
-                  accept=".jpg, .png, .jpeg, .gif"
-                  uploadedImage={uploadedImage}
-                  setUploadedImage={setUploadedImage}
+              <Input
+                label="No HP"
+                type="text"
+                name="no_hp"
+                placeholder="Masukan Nomor Handphone Siswa"
+                className={styles.addsiswa_main_content_form_input}
+              />
+              <div className={styles.addsiswa_main_content_form_item}>
+                <label htmlFor="alamat">Alamat</label>
+                <textarea
+                  name="alamat"
+                  id="alamat"
+                  cols={20}
+                  rows={2}
+                  required
                 />
               </div>
-            </div>
-            <div className={styles.addsiswa_main_content_form_button}>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Tambah Siswa"}
-              </Button>
-            </div>
-          </form>
+
+              <div className={styles.addsiswa_main_content_form_item}>
+                <div className={styles.addsiswa_main_content_form_item_image}>
+                  {uploadedImage ? (
+                    <Image
+                      width={200}
+                      height={200}
+                      src={URL.createObjectURL(uploadedImage)}
+                      alt="image"
+                      className={styles.form__image__preview}
+                    />
+                  ) : (
+                    <div className={styles.form__image__placeholder}>
+                      No Image
+                    </div>
+                  )}
+                  <InputFile
+                    name="image"
+                    accept=".jpg, .png, .jpeg, .gif"
+                    uploadedImage={uploadedImage}
+                    setUploadedImage={setUploadedImage}
+                    type="image"
+                  />
+                </div>
+              </div>
+              <div className={styles.addsiswa_main_content_form_button}>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Loading..." : "Tambah Siswa"}
+                </Button>
+                <Button type="button" onClick={() => setModalExcelImport(true)}>
+                  Import From Excel
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+      {modalExcelImport && (
+        <Modal onClose={() => setModalExcelImport(false)}>
+          <ExcelImportSiswa />
+        </Modal>
+      )}
+    </>
   );
 };
 

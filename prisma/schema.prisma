@@ -28,7 +28,7 @@ enum UserRole {
 
 model DataSiswa {
   nisn    String     @id @unique
-  nis     String?    @unique
+  nis     String?
   nama    String
   kelas   KelasSiswa @default(X)
   jurusan String

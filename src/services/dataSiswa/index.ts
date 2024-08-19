@@ -30,7 +30,11 @@ const dataSiswaServices = {
   searchDataSiswa: (search: string) =>
     instance.get(`${endpoint.siswa}?search=${search}`),
   importFromExcel: (formData: FormData) =>
-    instance.post(endpoint.import, formData),
+    instance.post(endpoint.import, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 };
 
 export default dataSiswaServices;
