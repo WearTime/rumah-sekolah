@@ -11,6 +11,8 @@ export const ExcelStudentSchema = z.object({
       "Invalid class level"
     ),
   Rombel: z.string().min(1, "Rombel is required"),
+  // "No HP": z.string(),
+  // Alamat: z.string(),
 });
 
 export const ExcelTeacherSchema = z.object({

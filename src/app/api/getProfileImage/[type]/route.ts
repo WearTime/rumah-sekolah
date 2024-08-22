@@ -16,7 +16,7 @@ export async function GET(req: NextRequest, { params }: any) {
         { status: 400 }
       );
     }
-    if (types !== "siswa" && types !== "guru") {
+    if (types !== "siswa" && types !== "guru" && types !== "users") {
       return NextResponse.json(
         { message: "Bad Request: Types must be 'siswa' or 'guru'" },
         { status: 400 }

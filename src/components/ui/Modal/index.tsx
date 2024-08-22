@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 type PropsTypes = {
   children: React.ReactNode;
   onClose: () => void;
+  className?: string;
 };
 
-const Modal = ({ children, onClose }: PropsTypes) => {
+const Modal = ({ children, onClose, className }: PropsTypes) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const Modal = ({ children, onClose }: PropsTypes) => {
 
   return (
     <div className={styles.modal}>
-      <div className={styles.modal__main} ref={ref}>
+      <div className={`${styles.modal__main} ${className}`} ref={ref}>
         <FontAwesomeIcon
           icon={["fas", "xmark"]}
           className={styles.modal__main__close}

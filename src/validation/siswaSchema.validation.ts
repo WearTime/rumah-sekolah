@@ -11,7 +11,7 @@ const siswaSchema = z.object({
   nisn: z
     .string()
     .min(1, "NISN harus diisi")
-    .max(10, "NISN Tidak boleh lebih dari 10 Karakter"),
+    .max(11, "NISN Tidak boleh lebih dari 10 Karakter"),
   nis: z
     .string()
     .min(1, "NIS harus diisi")

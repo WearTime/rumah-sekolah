@@ -1,33 +1,56 @@
 .berandaguru {
   margin: 17vh 25vw;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  position: sticky;
-  gap: 8vw;
   &_content {
-    display: flex;
-    flex-direction: column;
-    &_image {
-      border: 4px solid #e88513;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: sticky;
+    gap: 8vw;
+    &_item {
+      display: flex;
+      flex-direction: column;
+      &_image {
+        border: 4px solid #e88513;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+      }
+      &_button {
+        background-color: #e88513 !important;
+        font-size: 14px !important;
+        margin-top: 20px !important;
+        cursor: pointer;
+      }
     }
-    &_button {
-      background-color: #e88513 !important;
-      font-size: 14px !important;
-      margin-top: 20px !important;
-      cursor: pointer;
+    &_kosong {
+      grid-column: 1/-1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 100%;
     }
-  }
-  &_kosong {
-    grid-column: 1/-1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 100%;
+
+    &_pagination {
+      grid-column: 1/-1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      margin-top: 4vw;
+
+      span {
+        font-size: 1vw;
+        padding: 15px;
+      }
+      &_prev,
+      &_next {
+        margin-top: 0 !important;
+        font-size: 1vw !important;
+        background-color: #e88513 !important;
+      }
+    }
   }
 }

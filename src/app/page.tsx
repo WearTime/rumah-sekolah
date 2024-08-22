@@ -23,7 +23,7 @@ export default function Home() {
 
       const totalSiswa = siswaResponse.data.total;
       const totalGuru = guruResponse.data.total;
-      const totalMapel = guruResponse.data.total;
+      const totalMapel = mapelResponse.data.total;
 
       // Set hasil total siswa ke state
       setTotalData({

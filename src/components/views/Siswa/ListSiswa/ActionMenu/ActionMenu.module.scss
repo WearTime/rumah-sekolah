@@ -34,10 +34,14 @@
       display: flex;
       align-items: center;
       gap: 15px;
+      cursor: pointer;
+      &-disabled {
+        opacity: 0;
+        display: none;
+      }
       &:hover {
         font-weight: 600;
       }
-      cursor: pointer;
     }
   }
   &-active {

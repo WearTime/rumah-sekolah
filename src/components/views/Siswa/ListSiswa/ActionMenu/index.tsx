@@ -6,6 +6,7 @@ import Modal from "@/components/ui/Modal";
 import EditListSiswa from "../EditListSiswa";
 import DetailListSiswa from "../DetailListSiswa";
 import dataSiswaServices from "@/services/dataSiswa";
+import { useSession } from "next-auth/react";
 
 type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Siswa | null>>;
@@ -34,7 +35,8 @@ const ActionMenu = ({
     editModal: boolean;
     detailModal: boolean;
   }>({ deleteModal: false, editModal: false, detailModal: false });
-
+  const { data } = useSession();
+  const role = data?.user.role;
   const [actionMenuPosition, setActionMenuPosition] = useState<{
     top: number;
     // left: number;
@@ -63,8 +65,6 @@ const ActionMenu = ({
     setDeletedSiswa(actionMenu);
     setIsModalOpen({ deleteModal: true, editModal: false, detailModal: false });
   };
-
-  console.log(actionMenuPosition.top);
 
   return (
     <>
@@ -96,7 +96,9 @@ const ActionMenu = ({
           </button>
           <button
             type="button"
-            className={styles.actionmenu_content_list}
+            className={`${styles.actionmenu_content_list} ${
+              role != "Admin" && styles["actionmenu_content_list-disabled"]
+            }`}
             onClick={() => {
               setEditSiswa(actionMenu);
               setIsModalOpen({
@@ -110,7 +112,9 @@ const ActionMenu = ({
           </button>
           <button
             type="button"
-            className={styles.actionmenu_content_list}
+            className={`${styles.actionmenu_content_list} ${
+              role != "Admin" && styles["actionmenu_content_list-disabled"]
+            }`}
             onClick={handleDeleteItem}
           >
             <p>Delete item</p>

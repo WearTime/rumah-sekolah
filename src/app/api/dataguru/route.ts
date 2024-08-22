@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
       const { searchParams } = new URL(req.url);
       const search = searchParams.get("search") || "";
       const page = parseInt(searchParams.get("page") || "1", 10);
-      const pageSize = 10; // Jumlah data per halaman
+      const pageSize = 12; // Jumlah data per halaman
       const skip = (page - 1) * pageSize;
 
       const [allData, total] = await prisma.$transaction([

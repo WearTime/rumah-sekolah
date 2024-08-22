@@ -14,8 +14,8 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  username String
+  id       String   @id @unique @default(uuid())
+  username String   @unique
   password String
   role     UserRole @default(Member)
   profile  String?

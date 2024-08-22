@@ -21,7 +21,7 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
   const [actionMenu, setActionMenu] = useState<Guru | null>(null);
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize] = useState(12);
   const totalPages = Math.ceil(total / pageSize);
   // Type the refs to SVG elements
   const ellipsisButtonRefs = useRef<{ [key: string]: SVGSVGElement | null }>(

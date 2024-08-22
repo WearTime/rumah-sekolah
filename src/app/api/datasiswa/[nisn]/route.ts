@@ -95,7 +95,7 @@ export async function PUT(req: NextRequest, { params }: any) {
         },
       });
 
-      if (userIsExist) {
+      if (userIsExist?.nisn !== existingData.nisn) {
         return NextResponse.json(
           {
             data: null,
@@ -125,12 +125,14 @@ export async function PUT(req: NextRequest, { params }: any) {
 
         await new Promise((resolve) => writeStream.on("finish", resolve));
 
-        body.image = `/api/getProfileImage?file=${encodeURIComponent(
+        body.image = `/api/getProfileImage/siswa?file=${encodeURIComponent(
           encryptedFileName
         )}`;
 
         // Hapus file gambar lama
-        await deleteOldFile(`${existingData.image}`);
+        if (existingData.image) {
+          await deleteOldFile(`${existingData.image}`);
+        }
       }
 
       const updatedData = await prisma.dataSiswa.update({
@@ -141,6 +143,8 @@ export async function PUT(req: NextRequest, { params }: any) {
       return NextResponse.json({ data: updatedData }, { status: 200 });
     });
   } catch (error) {
+    console.log(error);
+
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

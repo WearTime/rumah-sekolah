@@ -12,17 +12,61 @@
   left: 18vw;
   padding: 10px 20px 10px 20px;
   &_profile {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    &_image {
-      gap: -10px;
-      width: 8vw;
-      height: 8vh;
+    &_detail {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1vw;
+      cursor: pointer;
+      &_avatar {
+        height: 100%;
+        width: 100%;
+
+        &_image {
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+      h3 {
+        font-size: 1.7vw;
+      }
     }
-    h3 {
-      font-size: 1.7vw;
+    &_dropdown {
+      display: none;
+      z-index: 9999;
+      position: absolute;
+      box-shadow: 0px 0px 1px rgba($color: #000000, $alpha: 1);
+      right: 10px;
+      top: 60px;
+      padding: 10px;
+      border-radius: 8px;
+      flex-direction: column;
+      gap: 10px;
+      background-color: white;
+      &--active {
+        display: flex;
+        z-index: 1;
+      }
+      &_item {
+        text-align: left;
+        width: 150px;
+        padding: 5px 20px;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        &:first-child {
+          border-radius: 8px 8px 0 0;
+        }
+        &:last-child {
+          border-radius: 0 0 8px 8px;
+        }
+        &:hover {
+          background-color: #eee;
+        }
+      }
     }
   }
   h1 {
@@ -37,4 +81,9 @@
     color: white;
     cursor: pointer;
   }
+}
+
+.modal {
+  width: 70vw !important;
+  max-height: 90vh !important;
 }
