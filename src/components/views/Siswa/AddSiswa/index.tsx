@@ -27,11 +27,25 @@ const AddSiswaView = () => {
       options = [1, 2, 3, 4, 5];
     } else if (jurusan === "PPLG") {
       options = [1, 2];
+    } else if (jurusan === "TJKT") {
+      options = [1, 2, 3];
+    } else if (jurusan === "DKV") {
+      options = [1, 2];
+    } else if (jurusan === "ULW") {
+      options = [1, 2];
+    } else if (jurusan === "BDP") {
+      options = [1, 2, 3];
+    } else if (jurusan === "TABUS") {
+      options = [1, 2];
+    } else if (jurusan === "KULINER") {
+      options = [1, 2];
+    } else if (jurusan === "PHT") {
+      options = [1, 2, 3];
     } else if (jurusan === "MPLB") {
       if (kelas === "X") {
         options = [1, 2];
       } else if (kelas === "XI") {
-        options = [1, 2, 3];
+        options = [1];
       }
     }
     setSubJurOptions(options);
@@ -148,14 +162,14 @@ const AddSiswaView = () => {
                     <option value="">Pilih Jurusan</option>
                     <option value="AKL">AKL</option>
                     <option value="PPLG">PPLG</option>
-                    <option value="TKJ">TKJ</option>
+                    <option value="TJKT">TJKT</option>
                     <option value="DKV">DKV</option>
                     <option value="MPLB">MPLB</option>
                     <option value="BDP">BDP</option>
                     <option value="KULINER">KULINER</option>
-                    <option value="TATABUSANA">TATA BUSANA</option>
+                    <option value="TABUS">TATA BUSANA</option>
                     <option value="PHT">PHT</option>
-                    <option value="UPW">UPW</option>
+                    <option value="ULW">ULW</option>
                   </select>
                 </div>
                 <div className={styles.addsiswa_main_content_form_group_item}>

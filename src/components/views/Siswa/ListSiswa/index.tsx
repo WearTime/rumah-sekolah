@@ -155,13 +155,13 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
             Prev
           </Button>
           <span>
-            {currentPage} of {totalPages}
+            {totalPages > 0 ? currentPage : 0} of {totalPages}
           </span>
 
           <Button
             type="button"
             onClick={handleNext}
-            disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages || totalPages === 0}
             className={styles.listsiswa_pagination_prev}
           >
             Next

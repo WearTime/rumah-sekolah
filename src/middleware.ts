@@ -12,6 +12,8 @@ export default withAuth(mainMiddleware, [
   "/addsiswa",
   "/addguru",
   "/listguru",
+  "/listmapel",
+  "/addmapel",
   "/berandaguru",
   "/login",
   "/register",

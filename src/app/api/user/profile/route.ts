@@ -29,8 +29,6 @@ export async function GET(req: NextRequest) {
         where: { id: decoded.id },
       });
 
-      console.log(getUser);
-
       if (!getUser) {
         return NextResponse.json(
           { user: null, message: "User not found" },
@@ -50,7 +48,7 @@ export async function GET(req: NextRequest) {
 }
 export async function PUT(req: NextRequest) {
   try {
-    return await verifyToken(req, true, async (decoded: { id: string }) => {
+    return await verifyToken(req, false, async (decoded: { id: string }) => {
       const getUser = await prisma.user.findUnique({
         where: { id: decoded.id },
       });
@@ -66,7 +64,7 @@ export async function PUT(req: NextRequest) {
         const usernameIsExist = await prisma.user.findUnique({
           where: { username: body.username },
         });
-        if (usernameIsExist) {
+        if (usernameIsExist?.username !== getUser?.username) {
           return NextResponse.json(
             {
               data: null,

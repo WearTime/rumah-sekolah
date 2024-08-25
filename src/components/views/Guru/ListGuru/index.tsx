@@ -153,7 +153,7 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
             Prev
           </Button>
           <span>
-            {currentPage} of {totalPages}
+            {totalPages > 0 ? currentPage : 0} of {totalPages}
           </span>
 
           <Button

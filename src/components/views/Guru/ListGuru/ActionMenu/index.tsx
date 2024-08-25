@@ -5,6 +5,7 @@ import DeleteListGuru from "../DeleteListGuru";
 import Modal from "@/components/ui/Modal";
 import EditListGuru from "../EditListGuru";
 import DetailListSiswa from "../DetailListGuru";
+import { useSession } from "next-auth/react";
 
 type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Guru | null>>;
@@ -25,6 +26,8 @@ const ActionMenu = ({
   currentPage,
   ellipsisButtonRef, // Ref passed from the parent
 }: PropTypes) => {
+  const { data } = useSession();
+  const role = data?.user.role;
   const [deletedGuru, setDeletedGuru] = useState<Guru | null>(null);
   const [editGuru, setEditGuru] = useState<Guru | null>(null);
   const [detailGuru, setDetailGuru] = useState<Guru | null>(null);
@@ -33,17 +36,17 @@ const ActionMenu = ({
     editModal: boolean;
     detailModal: boolean;
   }>({ deleteModal: false, editModal: false, detailModal: false });
-
   const [actionMenuPosition, setActionMenuPosition] = useState<{
     top: number;
-    // left: number;
-  }>({ top: 0 });
+    right: number;
+  }>({ top: 0, right: 0 });
 
   const updatePosition = () => {
     if (ellipsisButtonRef.current) {
       const rect = ellipsisButtonRef.current.getBoundingClientRect();
       setActionMenuPosition({
         top: rect.bottom,
+        right: rect.left - 115,
       });
     }
   };
@@ -51,11 +54,11 @@ const ActionMenu = ({
   useEffect(() => {
     // Set posisi awal dan tambahkan event listener untuk window resize
     updatePosition();
-    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition);
 
     // Hapus event listener saat komponen di-unmount
     return () => {
-      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition);
     };
   }, [ellipsisButtonRef]);
 
@@ -70,7 +73,7 @@ const ActionMenu = ({
         className={`${styles.actionmenu} ${styles["actionmenu-active"]}`}
         style={{
           top: `${actionMenuPosition.top}px`,
-          // left: `${actionMenuPosition.left}px`,
+          left: `${actionMenuPosition.right}px`,
         }}
       >
         <div className={styles.actionmenu_header}>
@@ -93,7 +96,9 @@ const ActionMenu = ({
           </button>
           <button
             type="button"
-            className={styles.actionmenu_content_list}
+            className={`${styles.actionmenu_content_list} ${
+              role != "Admin" && styles["actionmenu_content_list-disabled"]
+            }`}
             onClick={() => {
               setEditGuru(actionMenu);
               setIsModalOpen({
@@ -107,14 +112,15 @@ const ActionMenu = ({
           </button>
           <button
             type="button"
-            className={styles.actionmenu_content_list}
+            className={`${styles.actionmenu_content_list} ${
+              role != "Admin" && styles["actionmenu_content_list-disabled"]
+            }`}
             onClick={handleDeleteItem}
           >
             <p>Delete item</p>
           </button>
         </div>
       </div>
-      {/* Modals */}
       {isModalOpen.deleteModal && (
         <Modal
           onClose={() =>

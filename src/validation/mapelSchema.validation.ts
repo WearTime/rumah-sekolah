@@ -10,7 +10,7 @@ const mapelSchema = z.object({
   nama_mapel: z
     .string()
     .min(1, "Nama harus diisi")
-    .max(10, "Nama Tidak boleh lebih dari 10 Karakter"),
+    .max(30, "Nama Tidak boleh lebih dari 30 Karakter"),
   fase: z
     .string()
     .min(1, "Fase Mapel harus diisi")

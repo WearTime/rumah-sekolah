@@ -128,11 +128,25 @@ const EditListSiswa = ({
       options = [1, 2, 3, 4, 5];
     } else if (jurusan === "PPLG") {
       options = [1, 2];
+    } else if (jurusan === "TJKT") {
+      options = [1, 2, 3];
+    } else if (jurusan === "DKV") {
+      options = [1, 2];
+    } else if (jurusan === "ULW") {
+      options = [1, 2];
+    } else if (jurusan === "BDP") {
+      options = [1, 2, 3];
+    } else if (jurusan === "TABUS") {
+      options = [1, 2];
+    } else if (jurusan === "KULINER") {
+      options = [1, 2];
+    } else if (jurusan === "PHT") {
+      options = [1, 2, 3];
     } else if (jurusan === "MPLB") {
       if (kelas === "X") {
         options = [1, 2];
       } else if (kelas === "XI") {
-        options = [1, 2, 3];
+        options = [1];
       }
     }
     setSubJurOptions(options);

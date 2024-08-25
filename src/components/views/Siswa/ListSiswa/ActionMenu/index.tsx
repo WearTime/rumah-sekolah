@@ -45,20 +45,20 @@ const ActionMenu = ({
   const updatePosition = () => {
     if (ellipsisButtonRef.current) {
       const rect = ellipsisButtonRef.current.getBoundingClientRect();
+
       setActionMenuPosition({
         top: rect.bottom,
       });
     }
   };
-
   useEffect(() => {
     // Set posisi awal dan tambahkan event listener untuk window resize
     updatePosition();
-    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition);
 
     // Hapus event listener saat komponen di-unmount
     return () => {
-      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition);
     };
   }, [ellipsisButtonRef]);
   const handleDeleteItem = () => {

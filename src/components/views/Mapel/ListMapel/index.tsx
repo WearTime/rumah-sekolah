@@ -8,6 +8,7 @@ import useDebounce from "@/hooks/useDebounce";
 import Button from "@/components/ui/Button";
 import { Mapel } from "@/types/mapel.type";
 import dataMapelServices from "@/services/dataMapel";
+import { useSession } from "next-auth/react";
 
 type PropTypes = {
   mapel: Mapel[];
@@ -18,6 +19,8 @@ const SEARCH_DELAY = 1000; // Delay untuk debounce
 
 const ListMapelView = ({ mapel, total }: PropTypes) => {
   const { debounce } = useDebounce();
+  const { data } = useSession();
+  const role = data?.user.role;
   const [mapelData, setMapelData] = useState<Mapel[]>([]);
   const [actionMenu, setActionMenu] = useState<Mapel | null>(null);
   const [search, setSearch] = useState<string>("");
@@ -72,18 +75,18 @@ const ListMapelView = ({ mapel, total }: PropTypes) => {
 
   return (
     <>
-      <div className={styles.listsiswa}>
-        <div className={styles.listsiswa_search}>
+      <div className={styles.listmapel}>
+        <div className={styles.listmapel_search}>
           <input
             type="text"
             name="search"
             id="search"
             placeholder="Cari nama siswa"
-            className={styles.listsiswa_search_input}
+            className={styles.listmapel_search_input}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <table className={styles.listsiswa_table}>
+        <table className={styles.listmapel_table}>
           <thead>
             <tr>
               <th>Kode</th>
@@ -93,7 +96,7 @@ const ListMapelView = ({ mapel, total }: PropTypes) => {
               <th></th>
             </tr>
           </thead>
-          <tbody className={styles.listsiswa_table_body}>
+          <tbody className={styles.listmapel_table_body}>
             {mapelData.length > 0 ? (
               mapelData.map((mapel: Mapel, index) => (
                 <tr key={mapel.kode_mapel}>
@@ -101,60 +104,63 @@ const ListMapelView = ({ mapel, total }: PropTypes) => {
                   <td>{mapel.nama_mapel}</td>
                   <td>{mapel.fase}</td>
                   <td>{mapel.tipe_mapel}</td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={["fas", "ellipsis"]}
-                      className={styles.listsiswa_table_body_icon}
-                      onClick={() => handleActionMenu(mapel)}
-                      ref={(el) => {
-                        ellipsisButtonRefs.current[mapel.kode_mapel] =
-                          el as SVGSVGElement;
-                        return;
-                      }}
-                    />
-                    {actionMenu?.kode_mapel === mapel.kode_mapel && (
-                      <ActionMenu
-                        setActionMenu={setActionMenu}
-                        actionMenu={actionMenu}
-                        setMapelData={setMapelData}
-                        setCurrentPage={setCurrentPage}
-                        fetchPageData={fetchPageData}
-                        currentPage={currentPage}
-                        ellipsisButtonRef={{
-                          current: ellipsisButtonRefs.current[mapel.kode_mapel],
+                  {role === "Admin" && (
+                    <td>
+                      <FontAwesomeIcon
+                        icon={["fas", "ellipsis"]}
+                        className={styles.listmapel_table_body_icon}
+                        onClick={() => handleActionMenu(mapel)}
+                        ref={(el) => {
+                          ellipsisButtonRefs.current[mapel.kode_mapel] =
+                            el as SVGSVGElement;
+                          return;
                         }}
                       />
-                    )}
-                  </td>
+                      {actionMenu?.kode_mapel === mapel.kode_mapel && (
+                        <ActionMenu
+                          setActionMenu={setActionMenu}
+                          actionMenu={actionMenu}
+                          setMapelData={setMapelData}
+                          setCurrentPage={setCurrentPage}
+                          fetchPageData={fetchPageData}
+                          currentPage={currentPage}
+                          ellipsisButtonRef={{
+                            current:
+                              ellipsisButtonRefs.current[mapel.kode_mapel],
+                          }}
+                        />
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={9} className={styles.listsiswa_table_body_empty}>
+                <td colSpan={9} className={styles.listmapel_table_body_empty}>
                   Data Kosong
                 </td>
               </tr>
             )}
           </tbody>
         </table>
-        <div className={styles.listsiswa_pagination}>
+        <div className={styles.listmapel_pagination}>
           <Button
             type="button"
             onClick={handlePrev}
             disabled={currentPage === 1}
-            className={styles.listsiswa_pagination_prev}
+            className={styles.listmapel_pagination_prev}
           >
             Prev
           </Button>
           <span>
-            {currentPage} of {totalPages}
+            {totalPages > 0 ? currentPage : 0} of {totalPages}
           </span>
 
           <Button
             type="button"
             onClick={handleNext}
-            disabled={currentPage === totalPages}
-            className={styles.listsiswa_pagination_prev}
+            disabled={currentPage === totalPages || totalPages === 0}
+            className={styles.listmapel_pagination_prev}
           >
             Next
           </Button>
