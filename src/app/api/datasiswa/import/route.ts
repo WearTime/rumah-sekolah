@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
           const jurusan = mapJurusan(rombel);
           return {
             nisn: validatedStudent.NISN,
-            nis: validatedStudent.NISN || "Kosong", // Placeholder for NIS
+            nis: "Kosong", // Placeholder for NIS
             nama: validatedStudent["Nama Lengkap"],
             kelas: kelasRoman,
             jurusan: jurusan,

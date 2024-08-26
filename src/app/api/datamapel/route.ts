@@ -9,34 +9,34 @@ import mapelSchema from "@/validation/mapelSchema.validation";
 
 export async function GET(req: NextRequest) {
   try {
-    return await verifyToken(req, false, async () => {
-      const { searchParams } = new URL(req.url);
-      const search = searchParams.get("search") || "";
-      const page = parseInt(searchParams.get("page") || "1", 10);
-      const pageSize = 10; // Jumlah data per halaman
-      const skip = (page - 1) * pageSize;
+    // return await verifyToken(req, false, async () => {
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get("search") || "";
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const pageSize = 10; // Jumlah data per halaman
+    const skip = (page - 1) * pageSize;
 
-      const [allData, total] = await prisma.$transaction([
-        prisma.mapel.findMany({
-          where: {
-            nama_mapel: {
-              contains: search,
-            },
+    const [allData, total] = await prisma.$transaction([
+      prisma.mapel.findMany({
+        where: {
+          nama_mapel: {
+            contains: search,
           },
-          skip: skip,
-          take: pageSize,
-        }),
-        prisma.mapel.count({
-          where: {
-            nama_mapel: {
-              contains: search,
-            },
+        },
+        skip: skip,
+        take: pageSize,
+      }),
+      prisma.mapel.count({
+        where: {
+          nama_mapel: {
+            contains: search,
           },
-        }),
-      ]);
+        },
+      }),
+    ]);
 
-      return NextResponse.json({ data: allData, total }, { status: 200 });
-    });
+    return NextResponse.json({ data: allData, total }, { status: 200 });
+    // });
   } catch (error) {
     return NextResponse.json(
       { data: null, message: "Internal Server Error" },

@@ -7,14 +7,9 @@ export function mainMiddleware(request: NextRequest) {
 }
 
 export default withAuth(mainMiddleware, [
-  "/",
-  "/listsiswa",
   "/addsiswa",
   "/addguru",
-  "/listguru",
-  "/listmapel",
   "/addmapel",
-  "/berandaguru",
   "/login",
   "/register",
 ]);

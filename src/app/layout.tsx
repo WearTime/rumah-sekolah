@@ -5,22 +5,21 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
-import { usePathname } from "next/navigation";
+import { notFound, usePathname } from "next/navigation";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config, dom, library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import Head from "next/head";
+import { Toaster } from "react-hot-toast";
+import { useMediaQuery } from "react-responsive";
 
 const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
 });
 
-const disableNavbar = ["/login", "/register"];
+const disableNavbar = ["/login", "/register", "/404"];
 const disableSidebar = ["/login", "/register"];
-
-import { config, dom, library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import Head from "next/head";
-import toast, { Toaster } from "react-hot-toast";
-import { useEffect } from "react";
 
 library.add(fas);
 config.autoAddCss = false;
@@ -30,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   return (
     <html lang="en">
       <Head>
@@ -39,7 +38,8 @@ export default function RootLayout({
       <body className={lato.className}>
         <SessionProvider>
           <div className="main">
-            {!disableNavbar.includes(pathname) && <Sidebar />}
+            {isTabletOrMobile && <Navbar />}
+            {!disableSidebar.includes(pathname) && <Sidebar />}
             <div>
               {!disableNavbar.includes(pathname) && <Navbar />}
               <div className="content">

@@ -49,22 +49,28 @@ const NavbarView = () => {
   const [modalProfileUser, setModalProfileUser] = useState(false);
   const [dropdownUser, setDropdownUser] = useState(false);
   const [profile, setProfile] = useState<User | any>({});
+  const session = useSession();
+  console.log(session);
   const getProfile = async () => {
     const { data } = await userServices.getProfile();
     setProfile(data.user);
   };
   useEffect(() => {
-    getProfile();
-  }, []);
+    if (session.data) {
+      getProfile();
+    }
+  }, [session.data]);
 
+  const getTitle = (pathname: string) => {
+    const item = listTitleNavbar.find((item) => item.url === pathname);
+    return item ? item.title : "Not found";
+  };
+  const title = getTitle(pathname);
   return (
     <>
       <div className={styles.navbar}>
-        {listTitleNavbar.map(
-          (item) =>
-            pathname == item.url && <h1 key={item.title}>{item.title}</h1>
-        )}
-        {profile ? (
+        <h1>{title}</h1>
+        {session.data ? (
           <div className={styles.navbar_profile}>
             <div
               className={styles.navbar_profile_detail}

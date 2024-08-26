@@ -59,8 +59,10 @@ const DashboardView = ({ totalData }: PropTypes) => {
         </div>
       </div>
       <div className={styles.dashboard_welcome}>
-        <h2>Selamat Datang di Sistem Informasi SMKN 4 Bandar Lampung</h2>
-        <p>Silahkan gunakan sistem navigasi di kiri untuk melihat kontent</p>
+        <h2 className={styles.dashboard_welcome_text}>
+          Selamat Datang di Sistem Informasi SMKN 4 Bandar Lampung
+        </h2>
+        {/* <p>Silahkan gunakan sistem navigasi di kiri untuk melihat kontent</p> */}
       </div>
     </div>
   );
