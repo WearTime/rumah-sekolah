@@ -1,6 +1,6 @@
 // page.tsx
 "use client";
-import ListMapelView from "@/components/views/Mapel/ListMapel";
+import ListMapelView from "@/components/views/DesktopMode/Mapel/ListMapel";
 import dataMapelServices from "@/services/dataMapel";
 import { Mapel } from "@/types/mapel.type";
 import { useEffect, useState } from "react";

@@ -1,4 +1,4 @@
-import AddSiswaView from "@/components/views/Siswa/AddSiswa";
+import AddSiswaView from "@/components/views/DesktopMode/Siswa/AddSiswa";
 
 const AddSiswaPage = () => {
   return (

@@ -1,5 +1,5 @@
 "use client";
-import BerandaGuruView from "@/components/views/Guru/BerandaGuru";
+import BerandaGuruView from "@/components/views/DesktopMode/Guru/BerandaGuru";
 import dataGuruServices from "@/services/dataGuru";
 import { Guru } from "@/types/guru.types";
 import { useState, useEffect } from "react";

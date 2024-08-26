@@ -5,13 +5,15 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
-import { notFound, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config, dom, library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import { useMediaQuery } from "react-responsive";
+import NavbarMobileView from "@/components/views/MobileMode/Navbar";
+import { useEffect, useState } from "react";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -23,13 +25,26 @@ const disableSidebar = ["/login", "/register"];
 
 library.add(fas);
 config.autoAddCss = false;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure the component is mounted before using useMediaQuery
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1022px)" });
+  const isDesktop = useMediaQuery({ query: "(min-width: 1023px)" });
+
+  // If the component is not mounted, return null to avoid hydration mismatch
+  if (!mounted) return null;
+
   return (
     <html lang="en">
       <Head>
@@ -37,17 +52,24 @@ export default function RootLayout({
       </Head>
       <body className={lato.className}>
         <SessionProvider>
-          <div className="main">
-            {isTabletOrMobile && <Navbar />}
-            {!disableSidebar.includes(pathname) && <Sidebar />}
-            <div>
-              {!disableNavbar.includes(pathname) && <Navbar />}
-              <div className="content">
-                <Toaster position="top-right" />
-                {children}
+          {isTabletOrMobile && (
+            <div className="main-mobile">
+              {!disableNavbar.includes(pathname) && <NavbarMobileView />}
+              {/* <div className="content">{children}</div> */}
+            </div>
+          )}
+          {isDesktop && (
+            <div className="main-desktop">
+              {!disableSidebar.includes(pathname) && <Sidebar />}
+              <div>
+                {!disableNavbar.includes(pathname) && <Navbar />}
+                <div className="content">
+                  <Toaster position="top-right" />
+                  {children}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </SessionProvider>
       </body>
     </html>

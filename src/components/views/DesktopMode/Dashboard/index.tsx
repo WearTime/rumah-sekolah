@@ -60,7 +60,8 @@ const DashboardView = ({ totalData }: PropTypes) => {
       </div>
       <div className={styles.dashboard_welcome}>
         <h2 className={styles.dashboard_welcome_text}>
-          Selamat Datang di Sistem Informasi SMKN 4 Bandar Lampung
+          Selamat Datang di Sistem Informasi SMKN 4 Bandar Lampung - Silahkan
+          gunakan sistem navigasi di kiri untuk melihat kontent
         </h2>
         {/* <p>Silahkan gunakan sistem navigasi di kiri untuk melihat kontent</p> */}
       </div>

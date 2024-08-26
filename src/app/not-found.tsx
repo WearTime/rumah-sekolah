@@ -1,4 +1,4 @@
-import NotFoundView from "@/components/views/Error/NotFound";
+import NotFoundView from "@/components/views/DesktopMode/NotFound";
 import Link from "next/link";
 
 export default function NotFound() {

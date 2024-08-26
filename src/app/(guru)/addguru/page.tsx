@@ -1,4 +1,4 @@
-import AddGuruView from "@/components/views/Guru/AddGuru";
+import AddGuruView from "@/components/views/DesktopMode/Guru/AddGuru";
 
 const AddSiswaPage = () => {
   return (

@@ -1,4 +1,4 @@
-import LoginView from "@/components/views/Login";
+import LoginView from "@/components/views/DesktopMode/Login";
 
 const loginPage = ({ searchParams }: any) => {
   return (

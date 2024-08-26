@@ -1,6 +1,6 @@
 "use client";
 
-import DashboardView from "@/components/views/Dashboard";
+import DashboardView from "@/components/views/DesktopMode/Dashboard";
 import { useState, useEffect } from "react";
 import dataSiswaServices from "@/services/dataSiswa";
 import dataGuruServices from "@/services/dataGuru";

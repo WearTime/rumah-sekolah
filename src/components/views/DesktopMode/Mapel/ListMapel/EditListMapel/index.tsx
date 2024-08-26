@@ -66,7 +66,6 @@ const EditListMapel = ({
     }
 
     formData.append("data", JSON.stringify(data));
-    console.log(formData);
 
     try {
       const result = await dataMapelServices.editDataMapel(

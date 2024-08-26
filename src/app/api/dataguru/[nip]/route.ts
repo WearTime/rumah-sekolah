@@ -150,7 +150,6 @@ export async function PUT(req: NextRequest, { params }: any) {
       return NextResponse.json({ data: updatedData }, { status: 200 });
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

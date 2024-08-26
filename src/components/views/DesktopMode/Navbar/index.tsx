@@ -50,7 +50,6 @@ const NavbarView = () => {
   const [dropdownUser, setDropdownUser] = useState(false);
   const [profile, setProfile] = useState<User | any>({});
   const session = useSession();
-  console.log(session);
   const getProfile = async () => {
     const { data } = await userServices.getProfile();
     setProfile(data.user);

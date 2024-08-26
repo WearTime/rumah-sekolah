@@ -1,4 +1,4 @@
-import SidebarView from "@/components/views/Sidebar";
+import SidebarView from "@/components/views/DesktopMode/Sidebar";
 
 const Sidebar = () => {
   return (

@@ -1,4 +1,4 @@
-import NavbarView from "@/components/views/Navbar";
+import NavbarView from "@/components/views/DesktopMode/Navbar";
 
 const Navbar = () => {
   return (

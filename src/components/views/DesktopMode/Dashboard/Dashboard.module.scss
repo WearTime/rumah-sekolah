@@ -10,9 +10,9 @@
       justify-content: center;
       align-items: center;
       color: white;
-      height: 29vh;
+      // height: 29vh;
       background-color: #28a745;
-      padding: 10vh 2vw;
+      padding: 3.5vw 2vw;
       border-radius: 20px;
       gap: 25px;
       &_icon {
@@ -43,15 +43,29 @@
     flex-direction: column;
     background-color: #666262;
     color: white;
-    padding: 20px;
+    padding: 5vh 40vw;
     border-radius: 20px;
-    h2 {
+    overflow: hidden;
+    position: relative;
+    &_text {
+      position: absolute;
+      width: 113vw;
+      animation: runningText 18s linear infinite;
       font-size: 2vw;
     }
-    
+
     p {
       font-size: 1.5vw;
       margin-top: 10px;
     }
+  }
+}
+
+@keyframes runningText {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
   }
 }

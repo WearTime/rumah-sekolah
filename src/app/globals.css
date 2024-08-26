@@ -23,7 +23,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #e8851396;
 }
-.main {
+.main-desktop {
   display: flex;
   flex-direction: row;
   width: 100%;

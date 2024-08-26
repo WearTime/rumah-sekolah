@@ -2,7 +2,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import ListGuruView from "@/components/views/Guru/ListGuru";
+import ListGuruView from "@/components/views/DesktopMode/Guru/ListGuru";
 import { Guru } from "@/types/guru.types";
 import dataGuruServices from "@/services/dataGuru";
 
