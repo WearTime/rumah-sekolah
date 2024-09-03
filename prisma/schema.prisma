@@ -27,16 +27,81 @@ enum UserRole {
 }
 
 model DataSiswa {
-  nisn    String     @id @unique
-  nis     String?
-  nama    String
-  kelas   KelasSiswa @default(X)
-  jurusan String
-  no_hp   String?
-  alamat  String?
-  image   String?
+  nisn                      String     @id @unique
+  nis                       String?
+  nama                      String
+  kelas                     KelasSiswa @default(X)
+  jurusan                   String
+  no_hp                     String?
+  telepon                   String?
+  jenis_kelamin             JK         @default(L)
+  tempat_lahir              String?
+  tanggal_lahir             DateTime   @default(now())
+  alamat                    String?
+  image                     String?
+  nipd                      String?
+  agama                     String?
+  rt                        String?
+  rw                        String?
+  dusun                     String?
+  kelurahan                 String?
+  kecamatan                 String?
+  kode_pos                  String?
+  jenis_tinggal             String?
+  alat_transportasi         String?
+  hp                        String?
+  email                     String?
+  skhun                     String?
+  penerima_kps              Boolean?
+  no_kps                    String?
+  nama_ayah                 String?
+  tahunLahir_ayah           Int?
+  jenjang_pendidikan_ayah   String?
+  pekerjaan_ayah            String?
+  penghasilan_ayah          String?
+  nik_ayah                  String?
+  nama_ibu                  String?
+  tahun_lahir_ibu           Int?
+  jenjang_pendidikan_ibu    String?
+  pekerjaan_ibu             String?
+  penghasilan_ibu           String?
+  nik_ibu                   String?
+  nama_wali                 String?
+  tahun_lahir_wali          Int?
+  jenjang_pendidikan_wali   String?
+  pekerjaan_wali            String?
+  penghasilan_wali          String?
+  nik_wali                  String?
+  no_peserta_ujian_nasional String?
+  no_seri_ijazah            String?
+  penerima_kip              Boolean?
+  nomor_kip                 String?
+  nama_di_kip               String?
+  nomor_kks                 String?
+  no_registrasi_akta_lahir  String?
+  bank                      String?
+  nomor_rekening_bank       String?
+  rekening_atas_nama        String?
+  layak_pip                 Boolean?
+  alasan_Layak_pip          String?
+  kebutuhan_khusus          String?
+  sekolah_asal              String?
+  anak_ke_berapa            Int?
+  lintang                   Float?
+  bujur                     Float?
+  noKk                      String?
+  beratBadan                Int?
+  tinggiBadan               Int?
+  lingkarKepala             Int?
+  jumlahSaudaraKandung      Int?
+  jarakRumahKeSekolahKm     Float?
 
   @@map(name: "data_siswa")
+}
+
+enum JK {
+  L
+  P
 }
 
 enum KelasSiswa {

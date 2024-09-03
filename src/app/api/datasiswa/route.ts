@@ -9,34 +9,34 @@ import siswaSchema from "@/validation/siswaSchema.validation";
 
 export async function GET(req: NextRequest) {
   try {
-    // return await verifyToken(req, false, async () => {
-    const { searchParams } = new URL(req.url);
-    const search = searchParams.get("search") || "";
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const pageSize = 10; // Jumlah data per halaman
-    const skip = (page - 1) * pageSize;
+    return await verifyToken(req, false, async () => {
+      const { searchParams } = new URL(req.url);
+      const search = searchParams.get("search") || "";
+      const page = parseInt(searchParams.get("page") || "1", 10);
+      const pageSize = 10; // Jumlah data per halaman
+      const skip = (page - 1) * pageSize;
 
-    const [allData, total] = await prisma.$transaction([
-      prisma.dataSiswa.findMany({
-        where: {
-          nama: {
-            contains: search,
+      const [allData, total] = await prisma.$transaction([
+        prisma.dataSiswa.findMany({
+          where: {
+            nama: {
+              contains: search,
+            },
           },
-        },
-        skip: skip,
-        take: pageSize,
-      }),
-      prisma.dataSiswa.count({
-        where: {
-          nama: {
-            contains: search,
+          skip: skip,
+          take: pageSize,
+        }),
+        prisma.dataSiswa.count({
+          where: {
+            nama: {
+              contains: search,
+            },
           },
-        },
-      }),
-    ]);
+        }),
+      ]);
 
-    return NextResponse.json({ data: allData, total }, { status: 200 });
-    // });
+      return NextResponse.json({ data: allData, total }, { status: 200 });
+    });
   } catch (error) {
     return NextResponse.json(
       { data: null, message: "Internal Server Error" },

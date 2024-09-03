@@ -1,33 +1,21 @@
 "use client";
 
-import { Lato } from "next/font/google";
-import "./globals.css";
-import { SessionProvider, useSession } from "next-auth/react";
-import Sidebar from "./sidebar";
-import Navbar from "./navbar";
+import styles from "./Layout.module.scss";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config, dom, library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import Head from "next/head";
-import { Toaster } from "react-hot-toast";
 import { useMediaQuery } from "react-responsive";
 import NavbarMobileView from "@/components/views/MobileMode/Navbar";
 import { useEffect, useState } from "react";
-
-const lato = Lato({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "700", "900"],
-});
+import { Toaster } from "react-hot-toast";
+import Navbar from "@/app/navbar";
+import Sidebar from "../../DesktopMode/Sidebar";
 
 const disableNavbar = ["/login", "/register", "/404"];
 const disableSidebar = ["/login", "/register"];
 
-library.add(fas);
-config.autoAddCss = false;
-
 // Komponen untuk mengatur layout berdasarkan sesi
-function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
@@ -38,29 +26,29 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
 
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1022px)" });
   const isDesktop = useMediaQuery({ query: "(min-width: 1023px)" });
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   // If the component is not mounted, return null to avoid hydration mismatch
   if (!mounted) return null;
 
-  if (status !== "authenticated") {
-    return <h1>Hi</h1>;
-  }
-
-  return (
+  return status !== "authenticated" ? (
+    <>
+      <h1>Hi</h1>;
+    </>
+  ) : (
     <>
       {isTabletOrMobile && (
-        <div className="main-mobile">
+        <div className={styles["main-mobile"]}>
           {!disableNavbar.includes(pathname) && <NavbarMobileView />}
           {/* <div className="content">{children}</div> */}
         </div>
       )}
       {isDesktop && (
-        <div className="main-desktop">
+        <div className={styles["main-desktop"]}>
           {!disableSidebar.includes(pathname) && <Sidebar />}
           <div>
             {!disableNavbar.includes(pathname) && <Navbar />}
-            <div className="content">
+            <div className={styles["content"]}>
               <Toaster position="top-right" />
               {children}
             </div>
@@ -69,23 +57,6 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
       )}
     </>
   );
-}
+};
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <Head>
-        <style>{dom.css()}</style>
-      </Head>
-      <body className={lato.className}>
-        <SessionProvider>
-          <AuthenticatedLayout>{children}</AuthenticatedLayout>
-        </SessionProvider>
-      </body>
-    </html>
-  );
-}
+export default AppLayout;
