@@ -3,4 +3,5 @@ export type Mapel = {
   nama_mapel: string;
   fase: string;
   tipe_mapel: string;
+  jurusan: string;
 };

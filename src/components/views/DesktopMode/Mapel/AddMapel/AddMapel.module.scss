@@ -1,4 +1,4 @@
-.addsiswa {
+.addmapel {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,7 +40,8 @@
             background-color: #eee;
             border-radius: 8px;
             font-size: 1vw;
-
+            border: 0;
+            outline: 0;
             resize: none;
           }
           &_image {
@@ -60,6 +61,14 @@
               height: auto;
               border-radius: 5px;
             }
+          }
+          &_datalist {
+            padding: 10px;
+            border: 0;
+            outline: 0;
+            border-radius: 8px;
+            font-size: 1vw;
+            background-color: #eee;
           }
         }
         &_group {
@@ -81,6 +90,8 @@
               border-radius: 8px;
               resize: none;
               font-size: 1vw;
+              border: 0;
+              outline: 0;
             }
           }
         }

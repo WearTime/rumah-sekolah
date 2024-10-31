@@ -62,6 +62,9 @@ const EditListSiswa = ({
       jurusan: form.jurusan.value + " " + form.sub_jur.value,
       no_hp: form.no_hp.value,
       alamat: form.alamat.value,
+      jenis_kelamin: form.jenis_kelamin.value,
+      tanggal_lahir: form.tanggal_lahir.value,
+      tempat_lahir: form.tempat_lahir.value,
     };
     const check = siswaSchema.safeParse(data);
 

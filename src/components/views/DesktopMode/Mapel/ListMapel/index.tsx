@@ -57,6 +57,7 @@ const ListMapelView = ({ mapel, total }: PropTypes) => {
 
   useEffect(() => {
     debounceSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   const handleNext = () => {

@@ -15,6 +15,8 @@ import { Guru } from "@/types/guru.types";
 import guruSchema from "@/validation/guruSchema.validation";
 import dataGuruServices from "@/services/dataGuru";
 import { AxiosError } from "axios";
+import dataMapelServices from "@/services/dataMapel";
+import { Mapel } from "@/types/mapel.type";
 
 type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Guru | null>>;
@@ -41,6 +43,20 @@ const EditListGuru = ({
 }: PropTypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [mapelList, setMapelList] = useState<Mapel[]>([]); // State untuk menyimpan daftar mapel
+
+  // Fetch daftar mapel saat komponen di-mount
+  useEffect(() => {
+    const fetchMapelList = async () => {
+      try {
+        const { data } = await dataMapelServices.getAllMapel({ page: 1 });
+        setMapelList(data.data); // Asumsikan data.mapel berisi daftar mapel
+      } catch (error) {
+        console.error("Failed to fetch mapel:", error);
+      }
+    };
+    fetchMapelList();
+  }, []);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,7 +67,7 @@ const EditListGuru = ({
     const data: Guru = {
       nama: form.nama.value,
       nip: form.nip.value,
-      mapel: form.mapel.value,
+      mapel_id: form.mapel_id.value,
       no_hp: form.no_hp.value,
       alamat: form.alamat.value,
     };
@@ -127,13 +143,23 @@ const EditListGuru = ({
           defaultValue={editGuru?.nip}
           className={styles.modal_form_input}
         />
-        <Input
-          label="Mapel"
-          type="text"
-          name="mapel"
-          defaultValue={editGuru?.mapel}
-          className={styles.modal_form_input}
-        />
+        <div className={styles.modal_form_group5}>
+          <div className={styles.modal_form_group_item}>
+            <label htmlFor="mapel_id">Mapel</label>
+            <select
+              name="mapel_id"
+              id="mapel_id"
+              value={editGuru?.mapel?.kode_mapel || ""}
+            >
+              <option value="">Pilih Mapel</option>
+              {mapelList.map((mapel) => (
+                <option key={mapel.kode_mapel} value={mapel.kode_mapel}>
+                  {mapel.nama_mapel}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         <Input
           label="NO HP"
           type="number"

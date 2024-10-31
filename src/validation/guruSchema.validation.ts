@@ -19,7 +19,7 @@ const guruSchema = z.object({
     .string()
     .min(1, "Alamat harus diisi")
     .max(150, "Alamat Tidak boleh lebih dari 150 Karakter"),
-  mapel: z.string().min(1, "Mapel Harus diisi"),
+  mapel_id: z.string().min(1, "Mapel Harus diisi"),
   image: z
     .union([z.instanceof(File), z.string()])
     .optional()

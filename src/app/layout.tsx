@@ -43,9 +43,6 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   // If the component is not mounted, return null to avoid hydration mismatch
   if (!mounted) return null;
 
-  if (status !== "authenticated") {
-    return <h1>Hi</h1>;
-  }
 
   return (
     <>

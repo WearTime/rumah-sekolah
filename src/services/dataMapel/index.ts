@@ -10,6 +10,8 @@ const dataMapelServices = {
     page?: number;
     search?: string;
   }) => instance.get(`${endpoint}?page=${page}&search=${search}`),
+  getMapelByJurusan: (jurusan: string) =>
+    instance.get(`${endpoint}/${jurusan}`),
   addNewMapel: (formData: FormData) =>
     instance.post(endpoint, formData, {
       headers: {

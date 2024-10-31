@@ -49,6 +49,7 @@ const EditListMapel = ({
       nama_mapel: form.nama_mapel.value,
       tipe_mapel: form.tipe_mapel.value,
       fase: form.fase.value,
+      jurusan: form.jurusan.value,
     };
     const check = mapelSchema.safeParse(data);
 

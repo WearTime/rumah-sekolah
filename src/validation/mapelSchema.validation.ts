@@ -1,6 +1,18 @@
 import { z } from "zod";
 
-const tipe_mapel = ["Umum", "Jurusan"];
+const tipe_mapel = ["Umum", "Jurusan"] as const;
+const jurusan = [
+  "AKL",
+  "PPLG",
+  "TKJT",
+  "DKV",
+  "MPLB",
+  "BDP",
+  "KULINER",
+  "TABUS",
+  "PHT",
+  "ULW",
+] as const;
 
 const mapelSchema = z.object({
   kode_mapel: z
@@ -15,12 +27,14 @@ const mapelSchema = z.object({
     .string()
     .min(1, "Fase Mapel harus diisi")
     .max(30, "Nase Mapel Tidak boleh lebih dari 30 Karakter"),
-  tipe_mapel: z
-    .string()
-    .min(1, "Tipe Mapel harus diisi")
-    .refine((value) => tipe_mapel.includes(value), {
-      message: "Hanya bisa memilih Umum atau Jurusan",
+  tipe_mapel: z.enum(tipe_mapel, {
+    errorMap: () => ({ message: "Hanya bisa memilih Umum atau Jurusan" }),
+  }),
+  jurusan: z.enum(jurusan, {
+    errorMap: () => ({
+      message: "Jurusan harus salah satu dari daftar yang tersedia",
     }),
+  }),
 });
 
 export default mapelSchema;

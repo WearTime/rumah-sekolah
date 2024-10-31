@@ -95,7 +95,7 @@ export async function PUT(req: NextRequest, { params }: any) {
         },
       });
 
-      if (guruIsExist) {
+      if (guruIsExist?.nip != existingData.nip) {
         return NextResponse.json(
           {
             data: null,

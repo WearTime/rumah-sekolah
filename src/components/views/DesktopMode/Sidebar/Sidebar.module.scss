@@ -1,5 +1,6 @@
 .sidebar {
   //   background-color: black;
+  overflow-y: auto;
   height: 100dvh;
   position: fixed;
   width: 18vw;
@@ -26,7 +27,7 @@
       }
       &_list {
         list-style: none;
-        width: 13vw;
+        width: 13.4vw;
         &_add {
           gap: 0.9vw !important;
           margin: 2vh 1.2vw !important;
@@ -34,6 +35,41 @@
         &_all {
           gap: 1.6vw !important;
           margin: 0.1vh 1.2vw !important;
+        }
+        &_dropdown {
+          cursor: pointer;
+          &_active {
+            &::before {
+              background-color: #fff !important;
+              width: 10px !important;
+              height: 10px !important;
+            }
+          }
+          &_list {
+            li {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                background-color: #e88513;
+                border-radius: 50%;
+              }
+            }
+            margin-left: 1.5vw;
+          }
+          &_toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+          &_icon {
+            font-size: 14px !important;
+          }
         }
         &_plus {
           gap: 1.5vw !important;

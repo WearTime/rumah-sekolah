@@ -54,7 +54,6 @@ export async function POST(req: NextRequest) {
         return {
           nama: validatedTeacher["Nama Lengkap"],
           nip,
-          mapel: validatedTeacher["Jabatan PTK"],
           no_hp: "Kosong", // Placeholder for phone number
           alamat: "Kosong", // Placeholder for address
         };
@@ -65,7 +64,6 @@ export async function POST(req: NextRequest) {
         ): teacher is {
           nama: string;
           nip: string;
-          mapel: string;
           no_hp: string;
           alamat: string;
         } => teacher !== null

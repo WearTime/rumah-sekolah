@@ -18,6 +18,13 @@ export async function GET(req: NextRequest) {
 
       const [allData, total] = await prisma.$transaction([
         prisma.dataGuru.findMany({
+          include: {
+            guruandmapel: {
+              include: {
+                mapel: true,
+              },
+            },
+          },
           where: {
             nama: {
               contains: search,
@@ -38,6 +45,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ data: allData, total }, { status: 200 });
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { data: null, message: "Internal Server Error" },
       { status: 500 }
@@ -107,6 +115,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ data: result }, { status: 201 });
     });
   } catch (error) {
+    console.log(error);
+
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

@@ -11,6 +11,9 @@ export const ExcelStudentSchema = z.object({
       "Invalid class level"
     ),
   Rombel: z.string().min(1, "Rombel is required"),
+  "Tanggal Lahir": z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (expected YYYY-MM-DD)"),
   // "No HP": z.string(),
   // Alamat: z.string(),
 });

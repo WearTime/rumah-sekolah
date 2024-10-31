@@ -66,6 +66,8 @@ export async function POST(req: NextRequest) {
             jurusan: jurusan,
             no_hp: "Kosong", // Placeholder for phone number
             alamat: "Kosong", // Placeholder for address
+            tanggal_lahir: validatedStudent["Tanggal Lahir"],
+            tempat_lahir: "Kosong",
           };
         })
         .filter(
@@ -78,7 +80,10 @@ export async function POST(req: NextRequest) {
             kelas: "X" | "XI" | "XII";
             jurusan: string;
             no_hp: string;
+            jenis_kelamin: "L" | "P";
             alamat: string;
+            tanggal_lahir: string;
+            tempat_lahir: string;
           } => student !== null
         ); // Filter out invalid entries
 
@@ -101,7 +106,6 @@ export async function POST(req: NextRequest) {
           })
         ).map((record) => record.nisn)
       );
-
 
       const newTeachers = validStudents.filter(
         (student) => !existingNisn.has(student?.nisn)

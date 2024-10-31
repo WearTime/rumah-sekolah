@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id       String   @id @unique @default(uuid())
+  id       String   @id @default(uuid())
   username String   @unique
   password String
   role     UserRole @default(Member)
@@ -27,76 +27,19 @@ enum UserRole {
 }
 
 model DataSiswa {
-  nisn                      String     @id @unique
-  nis                       String?
-  nama                      String
-  kelas                     KelasSiswa @default(X)
-  jurusan                   String
-  no_hp                     String?
-  telepon                   String?
-  jenis_kelamin             JK         @default(L)
-  tempat_lahir              String?
-  tanggal_lahir             DateTime   @default(now())
-  alamat                    String?
-  image                     String?
-  nipd                      String?
-  agama                     String?
-  rt                        String?
-  rw                        String?
-  dusun                     String?
-  kelurahan                 String?
-  kecamatan                 String?
-  kode_pos                  String?
-  jenis_tinggal             String?
-  alat_transportasi         String?
-  hp                        String?
-  email                     String?
-  skhun                     String?
-  penerima_kps              Boolean?
-  no_kps                    String?
-  nama_ayah                 String?
-  tahunLahir_ayah           Int?
-  jenjang_pendidikan_ayah   String?
-  pekerjaan_ayah            String?
-  penghasilan_ayah          String?
-  nik_ayah                  String?
-  nama_ibu                  String?
-  tahun_lahir_ibu           Int?
-  jenjang_pendidikan_ibu    String?
-  pekerjaan_ibu             String?
-  penghasilan_ibu           String?
-  nik_ibu                   String?
-  nama_wali                 String?
-  tahun_lahir_wali          Int?
-  jenjang_pendidikan_wali   String?
-  pekerjaan_wali            String?
-  penghasilan_wali          String?
-  nik_wali                  String?
-  no_peserta_ujian_nasional String?
-  no_seri_ijazah            String?
-  penerima_kip              Boolean?
-  nomor_kip                 String?
-  nama_di_kip               String?
-  nomor_kks                 String?
-  no_registrasi_akta_lahir  String?
-  bank                      String?
-  nomor_rekening_bank       String?
-  rekening_atas_nama        String?
-  layak_pip                 Boolean?
-  alasan_Layak_pip          String?
-  kebutuhan_khusus          String?
-  sekolah_asal              String?
-  anak_ke_berapa            Int?
-  lintang                   Float?
-  bujur                     Float?
-  noKk                      String?
-  beratBadan                Int?
-  tinggiBadan               Int?
-  lingkarKepala             Int?
-  jumlahSaudaraKandung      Int?
-  jarakRumahKeSekolahKm     Float?
+  nisn          String     @id
+  nis           String?    @unique
+  nama          String
+  kelas         KelasSiswa
+  jurusan       String
+  no_hp         String?
+  jenis_kelamin JK
+  tempat_lahir  String?
+  tanggal_lahir DateTime
+  alamat        String?
+  image         String?
 
-  @@map(name: "data_siswa")
+  @@map("data_siswa")
 }
 
 enum JK {
@@ -111,26 +54,38 @@ enum KelasSiswa {
 }
 
 model DataGuru {
-  nip    String  @id
-  nama   String
-  no_hp  String?
-  alamat String?
-  mapel  String?
-  image  String?
+  nip          String         @id
+  nama         String
+  no_hp        String?
+  alamat       String?
+  image        String?
+  guruandmapel GuruAndMapel[]
 
-  @@map(name: "data_guru")
+  @@map("data_guru")
 }
 
 model Mapel {
-  kode_mapel String    @id
-  nama_mapel String
-  fase       String
-  tipe_mapel FaseMapel @default(Umum)
+  kode_mapel   String         @id
+  nama_mapel   String
+  fase         String
+  tipe_mapel   FaseMapel      @default(Umum)
+  jurusan      String
+  guruandmapel GuruAndMapel[]
 
-  @@map(name: "mapel")
+  @@map("mapel")
 }
 
 enum FaseMapel {
   Umum
   Jurusan
+}
+
+model GuruAndMapel {
+  id         String   @id @default(uuid())
+  kode_mapel String
+  nip_guru   String
+  mapel      Mapel    @relation(fields: [kode_mapel], references: [kode_mapel], onDelete: Cascade)
+  guru       DataGuru @relation(fields: [nip_guru], references: [nip], onDelete: Cascade)
+
+  @@unique([kode_mapel, nip_guru])
 }

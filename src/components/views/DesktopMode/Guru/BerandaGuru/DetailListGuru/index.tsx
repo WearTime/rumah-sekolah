@@ -53,7 +53,7 @@ const DetailListGuru = ({ detailGuru }: PropsTypes) => {
             />
             <h3>Mapel</h3>
           </div>
-          <p>{detailGuru?.mapel}</p>
+          <p>{detailGuru?.mapel?.nama_mapel || "Tidak ada mapel"}</p>
         </div>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header_hp}>
