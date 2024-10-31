@@ -7,17 +7,16 @@ import Button from "@/components/ui/Button";
 import InputFile from "@/components/ui/InputFile";
 import Image from "next/image";
 import { Guru } from "@/types/guru.types";
-import guruSchema from "@/validation/guruSchema.validation";
+import {
+  guruMapelSchema,
+  guruSchema,
+} from "@/validation/guruSchema.validation";
 import dataGuruServices from "@/services/dataGuru";
 import { AxiosError } from "axios";
 import ExcelImportGuru from "./ExcelImportGuru";
 import Modal from "@/components/ui/Modal";
 import dataMapelServices from "@/services/dataMapel";
-
-type Mapel = {
-  kode_mapel: string;
-  nama_mapel: string;
-};
+import { Mapel } from "@/types/mapel.type";
 
 const AddGuruView = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,11 +44,13 @@ const AddGuruView = () => {
     const data: Guru = {
       nama: form.nama.value,
       nip: form.nip.value,
-      mapel_id: form.mapel.value,
       no_hp: form.no_hp.value,
       alamat: form.alamat.value,
     };
 
+    const mapel = {
+      mapel: form.mapel.value,
+    };
     // Validate and submit form
     const check = guruSchema.safeParse(data);
     if (!check.success) {
@@ -58,8 +59,15 @@ const AddGuruView = () => {
       return;
     }
 
-    // Handle Image Upload
+    const mapelCheck = guruMapelSchema.safeParse(mapel);
+
+    if (!mapelCheck.success) {
+      toast.error(mapelCheck.error.errors[0].message);
+      setIsLoading(false);
+      return;
+    }
     formData.append("data", JSON.stringify(data));
+    formData.append("kode_mapel", JSON.stringify(mapel));
     if (form.image.files[0]) {
       formData.append("image", form.image.files[0]);
     }
@@ -114,13 +122,6 @@ const AddGuruView = () => {
                 placeholder="Masukan Nip Siswa"
                 className={styles.addguru_main_content_form_input}
               />
-              {/* <Input
-                label="MAPEL"
-                type="text"
-                name="mapel"
-                placeholder="Masukan Mapel Siswa"
-                className={styles.addguru_main_content_form_input}
-              /> */}
               <div className={styles.addguru_main_content_form_group}>
                 <div className={styles.addguru_main_content_form_group_item}>
                   <label htmlFor="mapel">Mapel</label>
@@ -128,7 +129,7 @@ const AddGuruView = () => {
                     <option value="">Pilih Mapel</option>
                     {mapelList.map((mapel) => (
                       <option key={mapel.kode_mapel} value={mapel.kode_mapel}>
-                        {mapel.nama_mapel}
+                        {mapel.nama_mapel} - {mapel.jurusan}
                       </option>
                     ))}
                   </select>

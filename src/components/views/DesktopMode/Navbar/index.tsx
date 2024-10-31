@@ -3,46 +3,36 @@ import styles from "./Navbar.module.scss";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import DetailProfilUser from "./DetailProfileUser";
 import Modal from "@/components/ui/Modal";
 import userServices from "@/services/user";
 import { User } from "@/types/user.types";
 
-const listTitleNavbar = [
-  {
-    title: "Dashboard",
-    url: "/",
-  },
-  {
-    title: "List Siswa",
-    url: "/listsiswa",
-  },
-  {
-    title: "Add Siswa",
-    url: "/addsiswa",
-  },
-  {
-    title: "List Guru",
-    url: "/listguru",
-  },
-  {
-    title: "Add Guru",
-    url: "/addguru",
-  },
-  {
-    title: "Beranda Guru",
-    url: "/berandaguru",
-  },
-  {
-    title: "List Mapel",
-    url: "/listmapel",
-  },
-  {
-    title: "Add Mapel",
-    url: "/addmapel",
-  },
+const allowedJurusan = [
+  "akl",
+  "pplg",
+  "tkjt",
+  "dkv",
+  "mplb",
+  "bdp",
+  "kuliner",
+  "tatabusana",
+  "pht",
+  "ulw",
 ];
+
+const listTitleNavbar = [
+  { title: "Dashboard", url: "/" },
+  { title: "List Siswa", url: "/listsiswa" },
+  { title: "Add Siswa", url: "/addsiswa" },
+  { title: "List Guru", url: "/listguru" },
+  { title: "Add Guru", url: "/addguru" },
+  { title: "Beranda Guru", url: "/berandaguru" },
+  { title: "List Mapel", url: "/listmapel" },
+  { title: "Add Mapel", url: "/addmapel" },
+];
+
 const NavbarView = () => {
   const pathname = usePathname();
   const { push } = useRouter();
@@ -50,25 +40,37 @@ const NavbarView = () => {
   const [dropdownUser, setDropdownUser] = useState(false);
   const [profile, setProfile] = useState<User | any>({});
   const session = useSession();
+
   const getProfile = async () => {
     const { data } = await userServices.getProfile();
     setProfile(data.user);
   };
+
   useEffect(() => {
     if (session.data) {
       getProfile();
     }
   }, [session.data]);
 
-  const getTitle = (pathname: string) => {
-    const item = listTitleNavbar.find((item) => item.url === pathname);
+  const getTitle = useMemo(() => {
+    const item = listTitleNavbar.find(
+      (item) => item.url === pathname || pathname.startsWith("/listmapel/")
+    );
+
+    if (item && pathname.startsWith("/listmapel/")) {
+      const jurusan = pathname.split("/")[2].toLowerCase();
+      if (allowedJurusan.includes(jurusan)) {
+        return `List Mapel for ${jurusan.toUpperCase()}`;
+      }
+    }
+
     return item ? item.title : "Not found";
-  };
-  const title = getTitle(pathname);
+  }, [pathname]);
+
   return (
     <>
       <div className={styles.navbar}>
-        <h1>{title}</h1>
+        <h1>{getTitle}</h1>
         {session.data ? (
           <div className={styles.navbar_profile}>
             <div

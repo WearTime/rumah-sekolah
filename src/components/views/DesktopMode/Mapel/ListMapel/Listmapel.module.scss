@@ -58,6 +58,12 @@
       &_empty {
         text-align: center !important;
       }
+      &_guru {
+        &_button {
+          margin-top: 0 !important;
+          padding: 9px !important;
+        }
+      }
     }
   }
   &_pagination {

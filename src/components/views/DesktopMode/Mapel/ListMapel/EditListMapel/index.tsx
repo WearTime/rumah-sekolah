@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import styles from "./EditListMapel.module.scss";
 import Button from "@/components/ui/Button";
 import toast from "react-hot-toast";

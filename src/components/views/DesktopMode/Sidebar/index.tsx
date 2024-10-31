@@ -193,14 +193,14 @@ const SidebarView = () => {
                   <li
                     key={mapel.url}
                     className={`${
-                      pathname === "/listmapel"
+                      pathname === `/listmapel/${mapel.url}`
                         ? styles.sidebar_list_section_list_active +
                           " " +
                           styles.sidebar_list_section_list_dropdown_active
                         : ""
                     }`}
                   >
-                    <Link href="/listmapel">{mapel.title}</Link>
+                    <Link href={`/listmapel/${mapel.url}`}>{mapel.title}</Link>
                   </li>
                 ))}
               </ul>

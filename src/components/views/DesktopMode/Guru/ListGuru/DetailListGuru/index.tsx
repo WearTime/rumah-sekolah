@@ -85,7 +85,10 @@ const DetailListGuru = ({
             />
             <h3>Mapel</h3>
           </div>
-          <p>{detailGuru?.mapel?.nama_mapel || "Tidak ada mapel"}</p>
+          <p>
+            {detailGuru?.guruandmapel?.map((item) => item.mapel.nama_mapel) ||
+              "Tidak ada mapel"}
+          </p>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import prisma from "@/lib/database/db";
 import { encrypt } from "@/utils/imageEncrypt";
 import { verifyToken } from "@/utils/verifyToken";
-import guruSchema from "@/validation/guruSchema.validation";
+import { guruSchema } from "@/validation/guruSchema.validation";
 import { createWriteStream, existsSync, promises, unlinkSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import { extname, join } from "path";

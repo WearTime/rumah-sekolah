@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const allowedImageExtensions = ["jpg", "jpeg", "png", "gif"];
 
-const guruSchema = z.object({
+export const guruSchema = z.object({
   nama: z
     .string()
     .min(1, "Nama harus diisi")
@@ -19,7 +19,6 @@ const guruSchema = z.object({
     .string()
     .min(1, "Alamat harus diisi")
     .max(150, "Alamat Tidak boleh lebih dari 150 Karakter"),
-  mapel_id: z.string().min(1, "Mapel Harus diisi"),
   image: z
     .union([z.instanceof(File), z.string()])
     .optional()
@@ -36,4 +35,6 @@ const guruSchema = z.object({
     ),
 });
 
-export default guruSchema;
+export const guruMapelSchema = z.object({
+  mapel: z.string().min(1, "Mapel Harus diisi"),
+});

@@ -1,0 +1,155 @@
+[33mcommit 26e7d326b030fb465dab53cf98d777d6e4f164f8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Thu Oct 31 22:14:26 2024 +0700
+
+    feat: connect mapel to  guru
+
+[33mcommit 4d0c821790db9a7e35df1bd4d83658578daf9bb5[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Tue Sep 3 23:33:39 2024 +0700
+
+    feat: add unauth page
+
+[33mcommit 286c7ef3a0000123a20be3a298d595e6fb4ce38e[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Tue Aug 27 06:45:31 2024 +0700
+
+    feat: mobile responsive
+
+[33mcommit 6b5d090dfbc644763a63643cc1665aade511b6a6[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Mon Aug 26 21:44:31 2024 +0700
+
+    feat: Not Found Handler
+
+[33mcommit fa0e53bf0b65706f5a84445d9ce44b88473644e6[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Sun Aug 25 23:30:45 2024 +0700
+
+    fix: action menu issue
+
+[33mcommit dff68e8937e6a7344b01357d33acc5e79968d8d5[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Thu Aug 22 23:11:19 2024 +0700
+
+    feat: change profile user
+
+[33mcommit 4e3c6cc068c854cbcdc498323bef799782ef18dc[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Tue Aug 20 03:31:23 2024 +0700
+
+    fix: bugs
+
+[33mcommit fc1d77cc4f19ad1f5e752fc1e85c43bb056f83c3[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Tue Aug 20 01:12:33 2024 +0700
+
+    feat: Import data Siswa from Excel
+
+[33mcommit 9c787dc1e6acd8248321b9977fda7cd8d8fa4474[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Mon Aug 19 06:55:27 2024 +0700
+
+    feat: mapel section
+
+[33mcommit 66816c3c0040a2a6470ad27fe8bf93523f35909d[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Sat Aug 17 05:54:22 2024 +0700
+
+    new: Add Responsive to desktop
+
+[33mcommit d5230d24d7149823539ebcd7a9d0b6c1faac0f73[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Fri Aug 16 20:40:23 2024 +0700
+
+    fix: Navbar Width
+
+[33mcommit 16f911327fdd92a546fac66567c7a7b3250d1177[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Fri Aug 16 06:55:05 2024 +0700
+
+    feat: pagination
+
+[33mcommit f51cf3c93c684e6171262dd505dc9c6874d73842[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Thu Aug 15 04:02:45 2024 +0700
+
+    feat: edit Profile Image
+
+[33mcommit c98c95489dd9d7c831051de76b373d8b63d81baa[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Thu Aug 15 03:05:19 2024 +0700
+
+    add Image Profile Siswa
+
+[33mcommit 0255adb38197367e454dde61c6bf38768552ab38[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Wed Aug 14 03:15:26 2024 +0700
+
+    fix: bug
+
+[33mcommit a6a3e5d135c7cb14d8c231156a7e1f249b4cb2b8[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Wed Aug 14 03:13:23 2024 +0700
+
+    feat: ui Detail Siswa
+
+[33mcommit 6ad97ed7a5f185704ffa579af6cd599bcfb588bd[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Tue Aug 13 23:42:15 2024 +0700
+
+    feat: edit and Detail Siswa
+
+[33mcommit c1d85f958fb0346d1423b9281415a49822583bf2[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Tue Aug 13 06:49:40 2024 +0700
+
+    fix: bug fix
+
+[33mcommit c99cf1a7179709c433e9f5193d0ae261fe6a1d02[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Tue Aug 13 06:11:22 2024 +0700
+
+    feat: Delete Siswa
+
+[33mcommit 57372ac2c891b75afd608c1aa86649d038a19d8c[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Tue Aug 13 05:31:39 2024 +0700
+
+    feat: DeleteSiswa
+
+[33mcommit 67460e9a0c8373a8b84914d8b7cbdc4e1a273ce2[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Mon Aug 12 01:41:53 2024 +0700
+
+    feat: addsiswa
+
+[33mcommit 0157dbd96f3adcbfdceacc10a503f7c02012038a[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Sun Aug 11 23:23:21 2024 +0700
+
+    feat: List siswa
+
+[33mcommit c2f590589f8c8581ed4e40c10a50e30c7d00d43b[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Fri Aug 9 02:51:26 2024 +0700
+
+    feat: dashboard view
+
+[33mcommit 36e2a74a88424bcab35f8807fa27b7a1ef41e854[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Fri Aug 9 01:17:31 2024 +0700
+
+    feat: navbar dashboard
+
+[33mcommit b6e0717c7d6844759d6a0dee2d4e85da359ea9f7[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Thu Aug 8 21:02:28 2024 +0700
+
+    feat: pre-commit husky
+
+[33mcommit 6b36420c4f4fd6791100958cee34a041a50dca64[m
+Author: WearTime <rizqiwiransyah0410@gmail.com>
+Date:   Wed Aug 7 17:18:14 2024 +0700
+
+    Initial commit from Create Next App

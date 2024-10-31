@@ -12,7 +12,7 @@ import Input from "@/components/ui/Input";
 import Image from "next/image";
 import InputFile from "@/components/ui/InputFile";
 import { Guru } from "@/types/guru.types";
-import guruSchema from "@/validation/guruSchema.validation";
+import { guruSchema } from "@/validation/guruSchema.validation";
 import dataGuruServices from "@/services/dataGuru";
 import { AxiosError } from "axios";
 import dataMapelServices from "@/services/dataMapel";
@@ -67,7 +67,6 @@ const EditListGuru = ({
     const data: Guru = {
       nama: form.nama.value,
       nip: form.nip.value,
-      mapel_id: form.mapel_id.value,
       no_hp: form.no_hp.value,
       alamat: form.alamat.value,
     };
@@ -149,7 +148,10 @@ const EditListGuru = ({
             <select
               name="mapel_id"
               id="mapel_id"
-              value={editGuru?.mapel?.kode_mapel || ""}
+              value={
+                editGuru?.guruandmapel?.map((item) => item.mapel.nama_mapel) ||
+                ""
+              }
             >
               <option value="">Pilih Mapel</option>
               {mapelList.map((mapel) => (

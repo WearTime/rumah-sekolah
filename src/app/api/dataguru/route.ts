@@ -5,16 +5,18 @@ import { createWriteStream, existsSync, promises } from "fs";
 import { extname, join } from "path";
 import { encrypt } from "@/utils/imageEncrypt";
 import { Readable } from "stream";
-import guruSchema from "@/validation/guruSchema.validation";
+import {
+  guruMapelSchema,
+  guruSchema,
+} from "@/validation/guruSchema.validation";
+import getPagination from "@/lib/pagination";
+import { connect } from "http2";
 
 export async function GET(req: NextRequest) {
   try {
     return await verifyToken(req, false, async () => {
       const { searchParams } = new URL(req.url);
-      const search = searchParams.get("search") || "";
-      const page = parseInt(searchParams.get("page") || "1", 10);
-      const pageSize = 12; // Jumlah data per halaman
-      const skip = (page - 1) * pageSize;
+      const { search, skip, take } = getPagination(searchParams);
 
       const [allData, total] = await prisma.$transaction([
         prisma.dataGuru.findMany({
@@ -31,7 +33,7 @@ export async function GET(req: NextRequest) {
             },
           },
           skip: skip,
-          take: pageSize,
+          take: take,
         }),
         prisma.dataGuru.count({
           where: {
@@ -59,6 +61,7 @@ export async function POST(req: NextRequest) {
       const formData = await req.formData();
       const body = JSON.parse(formData.get("data") as string);
       const file = formData.get("image") as File | null;
+      const kode_mapel = JSON.parse(formData.get("kode_mapel") as string);
 
       const guruIsExist = await prisma.dataGuru.findUnique({
         where: {
@@ -74,13 +77,21 @@ export async function POST(req: NextRequest) {
       }
 
       const check = guruSchema.safeParse(body);
-
+      const mapelCheck = guruMapelSchema.safeParse(kode_mapel);
       if (!check.success) {
         return NextResponse.json(
           { data: null, message: check.error.errors[0].message },
           { status: 400 }
         );
       }
+
+      if (!mapelCheck.success) {
+        return NextResponse.json(
+          { data: null, message: mapelCheck.error.errors[0].message },
+          { status: 400 }
+        );
+      }
+
       if (file) {
         const extension = extname(file.name);
         const encryptedFileName = encrypt(file.name) + extension;
@@ -110,6 +121,21 @@ export async function POST(req: NextRequest) {
       // Simpan data ke database
       const result = await prisma.dataGuru.create({
         data: body,
+      });
+
+      await prisma.guruAndMapel.create({
+        data: {
+          mapel: {
+            connect: {
+              kode_mapel: kode_mapel.mapel,
+            },
+          },
+          guru: {
+            connect: {
+              nip: body.nip,
+            },
+          },
+        },
       });
 
       return NextResponse.json({ data: result }, { status: 201 });

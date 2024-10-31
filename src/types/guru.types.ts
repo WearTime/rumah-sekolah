@@ -1,11 +1,10 @@
-import { Mapel } from "./mapel.type";
+import { GuruAndMapel } from "./guruandmapel.types";
 
 export type Guru = {
+  guruandmapel?: GuruAndMapel[];
   nip: string;
   nama: string;
   no_hp: string;
   alamat: string;
-  mapel_id: string;
   image?: File | null;
-  mapel?: Mapel;
 };

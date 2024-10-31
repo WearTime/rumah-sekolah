@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
         prisma.mapel.findMany({
           include: {
             guruandmapel: {
-              select: { guru: true },
+              include: { guru: true },
             },
           },
           where: {
