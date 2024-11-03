@@ -4,7 +4,7 @@ import { Guru } from "@/types/guru.types";
 import DeleteListGuru from "../DeleteListGuru";
 import Modal from "@/components/ui/Modal";
 import EditListGuru from "../EditListGuru";
-import DetailListSiswa from "../DetailListGuru";
+import DetailListSiswa from "../../DetailListGuru";
 import { useSession } from "next-auth/react";
 
 type PropTypes = {
@@ -170,11 +170,7 @@ const ActionMenu = ({
             })
           }
         >
-          <DetailListSiswa
-            detailGuru={detailGuru}
-            setGuruData={setGuruData}
-            setIsModalOpen={setIsModalOpen}
-          />
+          <DetailListSiswa detailGuru={detailGuru} />
         </Modal>
       )}
     </>

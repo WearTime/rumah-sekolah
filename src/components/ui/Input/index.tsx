@@ -9,6 +9,7 @@ type PropsTypes = {
   disabled?: boolean;
   onChange?: (e: any) => void;
   className?: string;
+  inputMode?: "search" | "email" | "tel" | "text" | "url" | "none" | "numeric" | "decimal"
 };
 const Input = ({
   label,
@@ -19,6 +20,7 @@ const Input = ({
   disabled,
   onChange,
   className,
+  inputMode,
 }: PropsTypes) => {
   return (
     <>
@@ -36,6 +38,7 @@ const Input = ({
           className={styles.container__input}
           defaultValue={defaultValue}
           disabled={disabled}
+          inputMode={inputMode}
           onChange={onChange}
         />
       </div>

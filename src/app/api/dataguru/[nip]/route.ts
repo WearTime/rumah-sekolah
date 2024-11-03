@@ -64,6 +64,7 @@ export async function PUT(req: NextRequest, { params }: any) {
   try {
     return await verifyToken(req, true, async () => {
       const nip = params.nip;
+
       const existingData = await prisma.dataGuru.findUnique({
         where: { nip },
       });
@@ -79,7 +80,19 @@ export async function PUT(req: NextRequest, { params }: any) {
 
       const bodyString = formData.get("data") as string;
       const file = formData.get("image") as File | null;
+      const mapel = JSON.parse(formData.get("mapel_ids") as string);
+      console.log(mapel);
 
+      const isMapelEmpty = mapel.some(
+        (mapelId: string) => !mapelId || mapelId == "" || mapelId == null
+      );
+
+      if (isMapelEmpty) {
+        return NextResponse.json(
+          { message: "Mapel Cannot be empty" },
+          { status: 400 }
+        );
+      }
       if (!bodyString) {
         return NextResponse.json(
           { message: "Data is missing from the formData" },
@@ -141,15 +154,21 @@ export async function PUT(req: NextRequest, { params }: any) {
         // Hapus file gambar lama
         await deleteOldFile(`${existingData.image}`);
       }
-
       const updatedData = await prisma.dataGuru.update({
         where: { nip },
-        data: body,
+        data: {
+          ...body,
+          guruandmapel: {
+            deleteMany: {},
+            create: mapel.map((mapelId: string) => ({ kode_mapel: mapelId })),
+          },
+        },
       });
 
       return NextResponse.json({ data: updatedData }, { status: 200 });
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

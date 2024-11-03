@@ -33,7 +33,7 @@ const DetailListGuru = ({ detailGuru }: PropsTypes) => {
             />
             <h3>Nip</h3>
           </div>
-          <p>{detailGuru?.nip}</p>
+          <p className={styles.modal_content_item_text}>{detailGuru?.nip}</p>
         </div>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header}>
@@ -43,20 +43,7 @@ const DetailListGuru = ({ detailGuru }: PropsTypes) => {
             />
             <h3>Nama</h3>
           </div>
-          <p>{detailGuru?.nama}</p>
-        </div>
-        <div className={styles.modal_content_item}>
-          <div className={styles.modal_content_item_header}>
-            <FontAwesomeIcon
-              icon={["fas", "book-bookmark"]}
-              className={styles.modal_content_item_header_icon}
-            />
-            <h3>Mapel</h3>
-          </div>
-          <p>
-            {detailGuru?.guruandmapel?.map((item) => item.mapel.nama_mapel) ||
-              "Tidak ada mapel"}
-          </p>
+          <p className={styles.modal_content_item_text}>{detailGuru?.nama}</p>
         </div>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header_hp}>
@@ -66,7 +53,7 @@ const DetailListGuru = ({ detailGuru }: PropsTypes) => {
             />
             <h3>No. Hp</h3>
           </div>
-          <p>{detailGuru?.no_hp}</p>
+          <p className={styles.modal_content_item_text}>{detailGuru?.no_hp}</p>
         </div>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header}>
@@ -76,7 +63,28 @@ const DetailListGuru = ({ detailGuru }: PropsTypes) => {
             />
             <h3>Alamat</h3>
           </div>
-          <p>{detailGuru?.alamat}</p>
+          <p className={styles.modal_content_item_text}>{detailGuru?.alamat}</p>
+        </div>
+        <div className={styles.modal_content_item}>
+          <div className={styles.modal_content_item_header}>
+            <FontAwesomeIcon
+              icon={["fas", "book-bookmark"]}
+              className={styles.modal_content_item_header_icon}
+            />
+            <h3>Mapel</h3>
+          </div>
+          <ul className={styles.modal_content_item_text}>
+            {detailGuru?.guruandmapel &&
+            detailGuru?.guruandmapel?.length > 0 ? (
+              detailGuru.guruandmapel?.map((item, index) => (
+                <li key={index} className={styles.modal_content_item_text_list}>
+                  {item.mapel.nama_mapel} - {item.mapel.jurusan}
+                </li>
+              ))
+            ) : (
+              <li>Tidak Ada Mapel</li>
+            )}
+          </ul>
         </div>
       </div>
     </div>

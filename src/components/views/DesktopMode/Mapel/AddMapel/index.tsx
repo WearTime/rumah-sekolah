@@ -20,11 +20,9 @@ import { Guru } from "@/types/guru.types";
 
 const AddMapelView = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [guruData, setGuruData] = useState<Guru[]>([]);
   const [selectedGuruId, setSelectedGuruId] = useState<string | null>(null);
   const [guruName, setGuruName] = useState("");
-  const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const { debounce } = useDebounce();
 
@@ -39,7 +37,6 @@ const AddMapelView = () => {
         setGuruData((prev) =>
           page === 1 ? data.data : [...prev, ...data.data]
         );
-        setHasMore(data.data.length > 0);
       } catch (error) {
         toast.error("Failed to fetch guru data");
         console.error("Error fetching guru data:", error);
@@ -96,7 +93,6 @@ const AddMapelView = () => {
       const result = await dataMapelServices.addNewMapel(formData);
       if (result.status === 201) {
         form.reset();
-        setUploadedImage(null);
         setGuruName("");
         toast.success("Berhasil Tambah Data");
       } else {

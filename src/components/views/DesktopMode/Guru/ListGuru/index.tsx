@@ -114,7 +114,7 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
                         <Button
                           type="button"
                           variant="secondary"
-                          className={styles.listguru_table_bod_guru_button}
+                          className={styles.listguru_table_body_guru_button}
                           onClick={() => {
                             setSelectedGuru(guru);
                             setIsMapelGuruModalOpen(true);

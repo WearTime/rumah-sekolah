@@ -4,8 +4,8 @@ import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { useEffect, useState } from "react";
 import Modal from "@/components/ui/Modal";
-import DetailListSiswa from "./DetailListGuru";
 import dataGuruServices from "@/services/dataGuru";
+import DetailListGuru from "../DetailListGuru";
 
 type PropTypes = {
   guru: Guru[];
@@ -102,7 +102,7 @@ const BerandaGuruView = ({ guru, total }: PropTypes) => {
       </div>
       {isDetailOpen && (
         <Modal onClose={() => setIsDetailOpen(false)}>
-          <DetailListSiswa detailGuru={detailGuru} />
+          <DetailListGuru detailGuru={detailGuru} />
         </Modal>
       )}
     </>

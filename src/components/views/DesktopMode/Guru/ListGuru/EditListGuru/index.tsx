@@ -17,6 +17,7 @@ import dataGuruServices from "@/services/dataGuru";
 import { AxiosError } from "axios";
 import dataMapelServices from "@/services/dataMapel";
 import { Mapel } from "@/types/mapel.type";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type PropTypes = {
   setActionMenu: Dispatch<SetStateAction<Guru | null>>;
@@ -43,14 +44,16 @@ const EditListGuru = ({
 }: PropTypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const [mapelList, setMapelList] = useState<Mapel[]>([]); // State untuk menyimpan daftar mapel
+  const [mapelList, setMapelList] = useState<Mapel[]>([]);
+  const [selectedMapel, setSelectedMapel] = useState<string[]>(
+    editGuru?.guruandmapel?.map((item) => item.mapel.kode_mapel) || []
+  );
 
-  // Fetch daftar mapel saat komponen di-mount
   useEffect(() => {
     const fetchMapelList = async () => {
       try {
         const { data } = await dataMapelServices.getAllMapel({ page: 1 });
-        setMapelList(data.data); // Asumsikan data.mapel berisi daftar mapel
+        setMapelList(data.data);
       } catch (error) {
         console.error("Failed to fetch mapel:", error);
       }
@@ -58,12 +61,35 @@ const EditListGuru = ({
     fetchMapelList();
   }, []);
 
+  const handleMapelChange = (index: number, value: string) => {
+    const updatedSelectedMapel = [...selectedMapel];
+    updatedSelectedMapel[index] = value;
+    setSelectedMapel(updatedSelectedMapel);
+  };
+
+  const addMapelSelect = () => {
+    setSelectedMapel([...selectedMapel, ""]);
+  };
+
+  const removeMapelSelect = (index: number) => {
+    const updatedSelectedMapel = selectedMapel.filter((_, i) => i !== index);
+    setSelectedMapel(updatedSelectedMapel);
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     const form = event.target as HTMLFormElement;
     const formData = new FormData();
+    const isMapelEmpty = selectedMapel.some(
+      (mapelId: string) => !mapelId || mapelId == "" || mapelId == null
+    );
 
+    if (isMapelEmpty) {
+      toast.error("Semua input guru harus diisi.");
+      setIsLoading(false);
+      return;
+    }
     const data: Guru = {
       nama: form.nama.value,
       nip: form.nip.value,
@@ -74,7 +100,6 @@ const EditListGuru = ({
 
     if (!check.success) {
       toast.error(check.error.errors[0].message);
-
       setIsLoading(false);
       return;
     }
@@ -86,6 +111,7 @@ const EditListGuru = ({
     }
 
     formData.append("data", JSON.stringify(data));
+    formData.append("mapel_ids", JSON.stringify(selectedMapel));
     if (form.image.files[0]) {
       formData.append("image", form.image.files[0]);
     }
@@ -96,7 +122,7 @@ const EditListGuru = ({
         formData
       );
 
-      if (result.status == 200) {
+      if (result.status === 200) {
         toast.success("Berhasil Update Data");
         const { data } = await dataGuruServices.getAllGuru({
           page: currentPage,
@@ -142,33 +168,63 @@ const EditListGuru = ({
           defaultValue={editGuru?.nip}
           className={styles.modal_form_input}
         />
-        <div className={styles.modal_form_group5}>
-          <div className={styles.modal_form_group_item}>
-            <label htmlFor="mapel_id">Mapel</label>
-            <select
-              name="mapel_id"
-              id="mapel_id"
-              value={
-                editGuru?.guruandmapel?.map((item) => item.mapel.nama_mapel) ||
-                ""
-              }
-            >
-              <option value="">Pilih Mapel</option>
-              {mapelList.map((mapel) => (
-                <option key={mapel.kode_mapel} value={mapel.kode_mapel}>
-                  {mapel.nama_mapel}
-                </option>
-              ))}
-            </select>
-          </div>
+
+        <div>
+          <label>Mapel</label>
+          {selectedMapel.map((mapelId, index) => (
+            <div key={index} className={styles.modal_form_group_item}>
+              <div className={styles.modal_form_group_item_content}>
+                <select
+                  name={`mapel_id_${index}`}
+                  id={`mapel_id_${index}`}
+                  value={mapelId}
+                  onChange={(e) => handleMapelChange(index, e.target.value)}
+                  required
+                >
+                  <option value="">Pilih Mapel</option>
+                  {mapelList
+                    .filter(
+                      (mapel) =>
+                        !selectedMapel.includes(mapel.kode_mapel) ||
+                        mapel.kode_mapel === mapelId
+                    )
+                    .map((mapel) => (
+                      <option key={mapel.kode_mapel} value={mapel.kode_mapel}>
+                        {mapel.nama_mapel} - {mapel.jurusan}
+                      </option>
+                    ))}
+                </select>
+                <Button
+                  type="button"
+                  className={styles.modal_form_group_item_content_btn}
+                  onClick={() => removeMapelSelect(index)}
+                >
+                  <FontAwesomeIcon
+                    icon={["fas", "xmark"]}
+                    className={styles.modal_form_group_item_content_btn_xmark}
+                  />
+                </Button>
+              </div>
+            </div>
+          ))}
+          <Button
+            type="button"
+            className={styles.modal_form_addMapelBtn}
+            onClick={addMapelSelect}
+          >
+            Add New Mapel
+          </Button>
         </div>
+
         <Input
           label="NO HP"
-          type="number"
+          type="text"
           name="no_hp"
+          inputMode="numeric"
           defaultValue={editGuru?.no_hp}
           className={styles.modal_form_input}
         />
+
         <div className={styles.modal_form_group}>
           <div className={styles.modal_form_group_item}>
             <label htmlFor="alamat">Alamat</label>
@@ -182,6 +238,7 @@ const EditListGuru = ({
             />
           </div>
         </div>
+
         <div className={styles.modal_form_group_item}>
           <div className={styles.modal_form_group_item_image}>
             {editGuru?.image ? (
@@ -210,6 +267,7 @@ const EditListGuru = ({
             />
           </div>
         </div>
+
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Update Guru"}
         </Button>
