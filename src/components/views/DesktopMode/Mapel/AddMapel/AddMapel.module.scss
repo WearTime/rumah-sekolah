@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 9vw;
+  margin-top: 85px;
   align-items: center;
 
   &_main {
@@ -19,27 +19,26 @@
       &_form {
         &_input {
           margin: 1vw;
-          font-size: 1.3vw;
+          font-size: 15px;
           input {
-            font-size: 1vw;
+            font-size: 13px;
           }
         }
         &_item {
           display: flex;
           flex-direction: column;
-          width: 96%;
           margin: 1vw;
 
           label {
             margin-bottom: 10px;
-            font-size: 1.3vw;
+            font-size: 15px;
           }
           select,
           textarea {
             padding: 10px;
             background-color: #eee;
             border-radius: 8px;
-            font-size: 1vw;
+            font-size: 13px;
             border: 0;
             outline: 0;
             resize: none;
@@ -67,7 +66,7 @@
             border: 0;
             outline: 0;
             border-radius: 8px;
-            font-size: 1vw;
+            font-size: 13px;
             background-color: #eee;
           }
         }
@@ -80,8 +79,8 @@
             width: 50%;
             margin: 1vw;
             label {
-              font-size: 1.3vw;
-              margin-bottom: 10px;
+              font-size: 15px;
+              margin-bottom: 5px;
             }
             select,
             textarea {
@@ -89,7 +88,7 @@
               background-color: #eee;
               border-radius: 8px;
               resize: none;
-              font-size: 1vw;
+              font-size: 13px;
               border: 0;
               outline: 0;
             }
@@ -99,9 +98,60 @@
           width: 100%;
           padding: 5px 10px;
           button {
-            font-size: 1vw;
+            font-size: 15px;
             width: 100%;
             background-color: #e88513;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 765px) {
+  .addmapel {
+    &_main {
+      &_header {
+        font-size: 3.3vw;
+      }
+      width: 90%;
+    }
+  }
+}
+
+@media (max-width: 440px) {
+  .addmapel {
+    &_main {
+      &_content {
+        &_form {
+          &_input {
+            margin-top: 10px;
+          }
+          &_item {
+            label {
+              margin-top: 5px;
+            }
+            &_image {
+              flex-direction: column;
+              margin-top: 20px;
+              margin-bottom: 0px;
+              &__preview,
+              &__placeholder {
+                width: 100%;
+              }
+            }
+          }
+          &_group {
+            flex-direction: column;
+            &_item {
+              width: auto;
+              label {
+                margin-top: 5px;
+              }
+            }
+          }
+          &_button {
+            padding: 5px 5px;
           }
         }
       }

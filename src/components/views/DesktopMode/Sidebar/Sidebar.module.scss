@@ -5,6 +5,7 @@
   position: fixed;
   width: 18vw;
   border-right: 3px solid #d0cbcb;
+  overflow-x: hidden;
   &_logo {
     text-align: center;
     padding: 20px 0;
@@ -83,7 +84,7 @@
           display: flex;
           align-items: center;
           font-weight: 600;
-          margin: 10px 0px !important;
+          margin: 10px 10px 10px 0 !important;
           background-color: #e88513;
           svg {
             font-size: 1.5vw;

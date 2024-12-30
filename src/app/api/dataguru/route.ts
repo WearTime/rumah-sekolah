@@ -10,7 +10,6 @@ import {
   guruSchema,
 } from "@/validation/guruSchema.validation";
 import getPagination from "@/lib/pagination";
-import { connect } from "http2";
 
 export async function GET(req: NextRequest) {
   try {
@@ -33,7 +32,7 @@ export async function GET(req: NextRequest) {
             },
           },
           skip: skip,
-          take: take,
+          take: 12,
         }),
         prisma.dataGuru.count({
           where: {

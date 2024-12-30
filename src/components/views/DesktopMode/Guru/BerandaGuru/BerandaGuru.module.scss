@@ -1,10 +1,11 @@
 .berandaguru {
-  margin: 17vh 25vw;
+  margin: 80px 10px;
   &_content {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(148px, 148px));
     position: sticky;
     gap: 8vw;
+    justify-content: center;
     &_item {
       display: flex;
       flex-direction: column;
@@ -42,14 +43,25 @@
       margin-top: 4vw;
 
       span {
-        font-size: 1vw;
+        font-size: 15px;
         padding: 15px;
       }
       &_prev,
       &_next {
         margin-top: 0 !important;
-        font-size: 1vw !important;
+        font-size: 15px !important;
         background-color: #e88513 !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 300px) {
+  .berandaguru {
+    &_content {
+      &_pagination {
+        flex-direction: column;
+        margin-top: 40px;
       }
     }
   }

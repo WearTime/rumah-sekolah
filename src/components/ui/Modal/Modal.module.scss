@@ -33,3 +33,18 @@
     }
   }
 }
+
+@media (max-width: 1022px) {
+  .modal {
+    &__main {
+      width: 80vw;
+    }
+  }
+}
+@media (max-width: 668px) {
+  .modal {
+    &__main {
+      width: 90vw;
+    }
+  }
+}

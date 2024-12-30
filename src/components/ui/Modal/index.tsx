@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import styles from "./Moda.module.scss";
+import styles from "./Modal.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type PropsTypes = {

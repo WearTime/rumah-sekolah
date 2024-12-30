@@ -6,15 +6,13 @@ import { extname, join } from "path";
 import { encrypt } from "@/utils/imageEncrypt";
 import { Readable } from "stream";
 import siswaSchema from "@/validation/siswaSchema.validation";
+import getPagination from "@/lib/pagination";
 
 export async function GET(req: NextRequest) {
   try {
     return await verifyToken(req, false, async () => {
       const { searchParams } = new URL(req.url);
-      const search = searchParams.get("search") || "";
-      const page = parseInt(searchParams.get("page") || "1", 10);
-      const pageSize = 10; // Jumlah data per halaman
-      const skip = (page - 1) * pageSize;
+      const { search, skip, take } = getPagination(searchParams);
 
       const [allData, total] = await prisma.$transaction([
         prisma.dataSiswa.findMany({
@@ -23,8 +21,8 @@ export async function GET(req: NextRequest) {
               contains: search,
             },
           },
-          skip: skip,
-          take: pageSize,
+          skip,
+          take,
         }),
         prisma.dataSiswa.count({
           where: {
@@ -117,6 +115,5 @@ export async function POST(req: NextRequest) {
       { message: "Internal Server Error" },
       { status: 500 }
     );
-    
   }
 }

@@ -43,13 +43,12 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   // If the component is not mounted, return null to avoid hydration mismatch
   if (!mounted) return null;
 
-
   return (
     <>
       {isTabletOrMobile && (
         <div className="main-mobile">
           {!disableNavbar.includes(pathname) && <NavbarMobileView />}
-          {/* <div className="content">{children}</div> */}
+          <div className="content">{children}</div>
         </div>
       )}
       {isDesktop && (

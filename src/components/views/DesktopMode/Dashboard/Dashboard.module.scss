@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+    margin: 0 5px;
     &_item {
       width: 35%;
       display: flex;
@@ -12,11 +13,11 @@
       color: white;
       // height: 29vh;
       background-color: #28a745;
-      padding: 3.5vw 2vw;
+      padding: 45px 0;
       border-radius: 20px;
       gap: 25px;
       &_icon {
-        font-size: 6vw !important;
+        font-size: 65px !important;
       }
       &:first-child {
         background-color: #17a2b8;
@@ -26,17 +27,17 @@
       }
       &_text {
         &_title {
-          font-size: 2.3vw;
+          font-size: 24px;
         }
         &_count {
           margin-top: 10px;
-          font-size: 2vw;
+          font-size: 22px;
         }
       }
     }
   }
   &_welcome {
-    margin: 20px 0;
+    margin: 20px 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,7 +50,7 @@
     position: relative;
     &_text {
       position: absolute;
-      width: 113vw;
+      width: 114vw;
       animation: runningText 18s linear infinite;
       font-size: 2vw;
     }
@@ -67,5 +68,44 @@
   }
   to {
     transform: translateX(-100%);
+  }
+}
+
+@media (max-width: 765px) {
+  .dashboard {
+    &_content {
+      &_item {
+        flex-direction: column;
+        align-items: start;
+        padding: 25px 20px;
+      }
+    }
+    &_welcome {
+      &_text {
+        width: 170vw;
+        font-size: 3vw;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    &_content {
+      flex-direction: column;
+      &_item {
+        width: 100%;
+        flex-direction: row;
+        align-items: start;
+        justify-content: start;
+        padding: 40px 20px;
+      }
+    }
+    &_welcome {
+      &_text {
+        width: 260vw;
+        font-size: 4.5vw;
+      }
+    }
   }
 }

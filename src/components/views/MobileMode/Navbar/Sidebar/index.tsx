@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import styles from "./Sidebar.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -9,11 +9,50 @@ import { useSession } from "next-auth/react";
 type PropsTypes = {
   onClose: () => void;
 };
+const listMapel = [
+  {
+    title: "AKL",
+    url: "akl",
+  },
+  {
+    title: "PPLG",
+    url: "pplg",
+  },
+  {
+    title: "TKJT",
+    url: "tkjt",
+  },
+  {
+    title: "DKV",
+    url: "dkv",
+  },
+  {
+    title: "MPLB",
+    url: "mplb",
+  },
+  {
+    title: "KULINER",
+    url: "kuliner",
+  },
+  {
+    title: "TATA BUSANA",
+    url: "tatabusana",
+  },
+  {
+    title: "PHT",
+    url: "pht",
+  },
+  {
+    title: "ULW",
+    url: "ulw",
+  },
+];
 const SidebarView = ({ onClose }: PropsTypes) => {
   const ref = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const session = useSession();
-
+  const [mapelOpen, setMapelOpen] = useState(false);
+  const toggleMapelDropdown = () => setMapelOpen(!mapelOpen);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -154,18 +193,48 @@ const SidebarView = ({ onClose }: PropsTypes) => {
             <h3>MAPEL SECTION</h3>
             <ul className={styles.sidebar_content_list_section_list}>
               <li
-                className={`${
-                  pathname == "/listmapel"
-                    ? styles.sidebar_content_list_section_list_active
-                    : ""
-                }`}
+                className={
+                  styles.sidebar_content_list_section_list_dropdown_toggle
+                }
+                onClick={toggleMapelDropdown}
               >
                 <FontAwesomeIcon
                   icon={["fas", "book"]}
-                  className={styles.sidebar_content_list_section_list_icon}
+                  className={styles.sidebar_list_section_list_icon}
                 />{" "}
-                <Link href="/listmapel">List Mapel</Link>
+                <span>List Mapel</span>
+                <FontAwesomeIcon
+                  icon={["fas", mapelOpen ? "chevron-down" : "chevron-left"]}
+                  className={
+                    styles.sidebar_content_list_section_list_dropdown_icon
+                  }
+                />
               </li>
+
+              {mapelOpen && (
+                <ul
+                  className={
+                    styles.sidebar_content_list_section_list_dropdown_list
+                  }
+                >
+                  {listMapel.map((mapel) => (
+                    <li
+                      key={mapel.url}
+                      className={`${
+                        pathname === `/listmapel/${mapel.url}`
+                          ? styles.sidebar_content_list_section_list_active +
+                            " " +
+                            styles.sidebar_content_list_section_list_dropdown_active
+                          : ""
+                      }`}
+                    >
+                      <Link href={`/listmapel/${mapel.url}`}>
+                        {mapel.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {session.data?.user.role == "Admin" && (
                 <li
                   className={`${styles.sidebar_content_list_section_list_plus}${

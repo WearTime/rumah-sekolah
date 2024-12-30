@@ -1,14 +1,17 @@
 .sidebar {
   background-color: white;
-  height: 100dvh;
-  width: 30%;
-  position: absolute;
+  height: 100%;
+  width: 230px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
   top: 0;
   border-right: 1px solid black;
+  z-index: 10;
   &_close {
     width: 100%;
     text-align: end;
-    padding: 10px;
+    padding: 0 10px;
     font-size: 20px;
   }
   &_content {
@@ -17,58 +20,94 @@
     &_logo {
       text-align: center;
       &_image {
-        width: 25vw;
-        height: 7vw;
+        width: 200px;
+        height: 60px;
       }
     }
     &_list {
       display: flex;
       flex-direction: column;
+      align-content: center;
       &_section {
-        margin: 20px 25px;
+        margin: 5px 25px;
         h3 {
           color: #868282;
-          font-size: 1.6vw;
+          font-size: 14px;
         }
         &_list {
           list-style: none;
-          width: 25vw;
+          width: 95%;
           &_add {
-            gap: 0.9vw !important;
-            margin: 2vh 1.2vw !important;
+            gap: 7.5px !important;
+            margin: 10px 12px !important;
+          }
+          &_dropdown {
+            cursor: pointer;
+            &_active {
+              &::before {
+                background-color: #fff !important;
+                width: 10px !important;
+                height: 10px !important;
+              }
+            }
+            &_list {
+              width: 100%;
+              li {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                &::before {
+                  content: "";
+                  display: inline-block;
+                  width: 8px;
+                  height: 8px;
+                  background-color: #e88513;
+                  border-radius: 50%;
+                }
+              }
+              margin-left: 1.5vw;
+            }
+            &_toggle {
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+            }
+            &_icon {
+              font-size: 14px !important;
+            }
           }
           &_all {
-            gap: 1.6vw !important;
-            margin: 0.1vh 1.2vw !important;
+            gap: 16px !important;
+            margin: 1px 12px !important;
           }
           &_plus {
-            gap: 1.5vw !important;
+            gap: 15px !important;
           }
           &_active {
             box-sizing: border-box;
-            padding: 1.7vh 0 1.7vh 1.3vw;
+            padding: 14px 0 14px 13px;
             border-radius: 10px;
             color: white;
             display: flex;
             align-items: center;
             font-weight: 600;
-            margin: 10px 0px !important;
+            margin: 10px 10px 10px 0px !important;
             background-color: #e88513;
             svg {
-              font-size: 1.5vw;
+              font-size: 15px;
             }
             a {
               width: 100%;
             }
           }
           li {
-            margin: 2vh 1.2vw;
+            margin: 15px 12px;
             display: flex;
             align-items: center;
-            gap: 1.5vw;
-            font-size: 2.6vw;
+            gap: 15px;
+            // font-size: 20px;
             svg {
-              font-size: 2.5vw;
+              font-size: 21px;
             }
           }
         }
