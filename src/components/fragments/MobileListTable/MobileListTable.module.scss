@@ -1,0 +1,84 @@
+.tableMobile {
+  display: none;
+  width: 100%;
+  padding: 5px 10px;
+  &_container {
+    background-color: #e88513;
+    color: white;
+    border-radius: 10px;
+    margin: 15px 0;
+    hr {
+      border: 1px solid #b86507;
+    }
+    &_title {
+      padding: 10px 10px 5px 10px;
+      h3 {
+        font-size: 24px;
+      }
+      h1 {
+        font-size: 29px;
+        margin-top: -3px;
+      }
+    }
+    &_item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      h2 {
+        font-size: 22px;
+      }
+      &_seeMore {
+        margin-top: 0 !important;
+        padding: 9px !important;
+        background-color: orangered !important;
+      }
+    }
+    &_btnSect {
+      display: flex;
+      padding: 5px;
+      gap: 10px;
+      &_item {
+        margin: 0 !important;
+        flex: 1;
+        background-color: rgb(255, 166, 0) !important;
+        &:first-child {
+          background-color: rgb(19, 133, 76) !important;
+        }
+        &:last-child {
+          background-color: rgb(255, 0, 0) !important;
+        }
+        &_icon {
+          display: none;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  &_empty {
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .tableMobile {
+    display: block;
+  }
+}
+
+@media (max-width: 340px) {
+  .tableMobile {
+    &_container {
+      &_btnSect {
+        gap: 50px;
+        &_item {
+          padding: 5px 10px !important;
+          &_icon {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}

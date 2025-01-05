@@ -1,85 +1,35 @@
 .listmapel {
   width: 100%;
-  margin-top: 10vh;
+  margin-top: 70px;
   &_search {
     &_input {
       border-radius: 10px;
-      padding: 1.5vh 1vw;
-      width: 25%;
-      margin: 20px 0;
+      padding: 10px 10px;
+      width: 255px;
+      margin: 10px 0;
       font-weight: 600;
-      font-size: 1vw;
+      font-size: 13px;
     }
   }
-  &_table {
-    border-collapse: collapse;
-    background: white;
-    border-radius: 1vw;
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-    margin: 0 auto;
-    * {
-      position: relative;
-    }
+}
 
-    td,
-    th {
-      padding: 2vh 8px;
-    }
-
-    thead {
-      background-color: #e88513;
-      border: 1px solid #e88513;
-      color: white;
-      tr {
-        height: 50px;
-        text-align: left;
-        font-size: 1vw;
-      }
-    }
-
-    &_body {
-      border: 1px solid #cfb9a0;
-      &_icon {
-        &:hover {
-          color: #4e4b4b;
-        }
-        font-size: 1.5vw;
-        cursor: pointer;
-      }
-      td {
-        text-align: left;
-        height: 48px;
-        font-weight: 600;
-        font-size: 1vw;
-        border-bottom: 1px solid #cfb9a0;
-      }
-      &_empty {
-        text-align: center !important;
-      }
-      &_guru {
-        &_button {
-          margin-top: 0 !important;
-          padding: 9px !important;
-        }
+@media (max-width: 1022px) {
+  .listmapel {
+    &_search {
+      &_input {
+        margin: 10px 10px;
+        font-size: 13px;
       }
     }
   }
-  &_pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 4vw;
-    span {
-      font-size: 1vw;
-      padding: 15px;
-    }
-    &_prev,
-    &_next {
-      margin-top: 0 !important;
-      font-size: 1vw !important;
-      background-color: #e88513 !important;
+}
+
+@media (max-width: 400px) {
+  .listmapel {
+    &_search {
+      &_input {
+        margin: 10px 10px -10px 10px;
+      }
     }
   }
 }

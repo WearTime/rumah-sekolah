@@ -28,14 +28,13 @@ enum UserRole {
 
 model DataSiswa {
   nisn          String     @id
-  nis           String?    @unique
   nama          String
   kelas         KelasSiswa
   jurusan       String
   no_hp         String?
   jenis_kelamin JK
   tempat_lahir  String?
-  tanggal_lahir DateTime
+  tanggal_lahir DateTime   @db.Date
   alamat        String?
   image         String?
 

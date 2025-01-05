@@ -52,11 +52,9 @@ const ActionMenu = ({
   };
 
   useEffect(() => {
-    // Set posisi awal dan tambahkan event listener untuk window resize
     updatePosition();
     window.addEventListener("scroll", updatePosition);
 
-    // Hapus event listener saat komponen di-unmount
     return () => {
       window.removeEventListener("scroll", updatePosition);
     };
@@ -137,6 +135,7 @@ const ActionMenu = ({
             setDeletedGuru={setDeletedGuru}
             setCurrentPage={setCurrentPage}
             fetchPageData={fetchPageData}
+            setIsModalOpen={setIsModalOpen}
           />
         </Modal>
       )}

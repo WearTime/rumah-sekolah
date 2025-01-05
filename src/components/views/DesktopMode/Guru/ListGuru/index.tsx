@@ -2,12 +2,17 @@
 import styles from "./Listguru.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ActionMenu from "./ActionMenu";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, SetStateAction } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import Button from "@/components/ui/Button";
 import { Guru } from "@/types/guru.types";
 import dataGuruServices from "@/services/dataGuru";
 import MapelGuruModal from "./MapelGuruModal";
+import { useMediaQuery } from "react-responsive";
+import Modal from "@/components/ui/Modal";
+import DeleteListGuru from "./DeleteListGuru";
+import EditListGuru from "./EditListGuru";
+import DetailListSiswa from "../DetailListGuru";
 
 type PropTypes = {
   guru: Guru[];
@@ -24,9 +29,18 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(total); // Track total dynamically
   const [pageSize] = useState(12);
+  const isMobile = useMediaQuery({ query: "(max-width: 340px)" });
   const [selectedGuru, setSelectedGuru] = useState<Guru | null>(null);
   const [isMapelGuruModalOpen, setIsMapelGuruModalOpen] = useState(false);
   const totalPages = Math.ceil(totalItems / pageSize);
+  const [deletedGuru, setDeletedGuru] = useState<Guru | null>(null);
+  const [editGuru, setEditGuru] = useState<Guru | null>(null);
+  const [detailGuru, setDetailGuru] = useState<Guru | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<{
+    deleteModal: boolean;
+    editModal: boolean;
+    detailModal: boolean;
+  }>({ deleteModal: false, editModal: false, detailModal: false });
 
   const ellipsisButtonRefs = useRef<{ [key: string]: SVGSVGElement | null }>(
     {}
@@ -40,16 +54,16 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
     const response = await dataGuruServices.getAllGuru({ page, search });
     const { data, total: newTotal } = response.data;
     setGuruData(data);
-    setTotalItems(newTotal); // Update total items dynamically
+    setTotalItems(newTotal);
     setCurrentPage(page);
   };
 
   const performSearch = () => {
     if (search) {
-      fetchPageData(1); // Reset to page 1 when searching
+      fetchPageData(1);
     } else {
       setGuruData(guru);
-      setTotalItems(total); // Reset total to the original value
+      setTotalItems(total);
     }
   };
 
@@ -71,6 +85,33 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
       setActionMenu(null);
       fetchPageData(currentPage - 1);
     }
+  };
+
+  const handleDetailClick = (guru: SetStateAction<Guru | null>) => {
+    setDetailGuru(guru);
+    setIsModalOpen({
+      detailModal: true,
+      editModal: false,
+      deleteModal: false,
+    });
+  };
+
+  const handleEditClick = (guru: SetStateAction<Guru | null>) => {
+    setEditGuru(guru);
+    setIsModalOpen({
+      detailModal: false,
+      editModal: true,
+      deleteModal: false,
+    });
+  };
+
+  const handleDeleteClick = (guru: SetStateAction<Guru | null>) => {
+    setDeletedGuru(guru);
+    setIsModalOpen({
+      detailModal: false,
+      editModal: false,
+      deleteModal: true,
+    });
   };
 
   return (
@@ -124,9 +165,7 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
                         </Button>
                       </>
                     ) : (
-                      guru?.guruandmapel?.map(
-                        (item) => item.mapel.nama_mapel
-                      ) || "Tidak ada mapel"
+                      guru?.guruandmapel?.[0]?.mapel.nama_mapel || "Tidak ada"
                     )}
                   </td>
                   <td>
@@ -166,6 +205,114 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
           </tbody>
         </table>
 
+        <div className={styles.listguru_tableMobile}>
+          {guruData.length > 0 ? (
+            guruData.map((guru, index) => (
+              <div
+                key={guru.nip}
+                className={styles.listguru_tableMobile_container}
+              >
+                <div className={styles.listguru_tableMobile_container_title}>
+                  <p>Nama</p>
+                  <h1>{guru.nama}</h1>
+                </div>
+                <hr />
+                <div className={styles.listguru_tableMobile_container_item}>
+                  <p>NIP</p>
+                  <p>{guru.nip}</p>
+                </div>
+                <hr />
+                <div className={styles.listguru_tableMobile_container_item}>
+                  <p>No Hp</p>
+                  <p>{guru.no_hp}</p>
+                </div>
+                <hr />
+                <div className={styles.listguru_tableMobile_container_item}>
+                  <p>Alamat</p>
+                  <p>{guru.alamat}</p>
+                </div>
+                <hr />
+                <div className={styles.listguru_tableMobile_container_item}>
+                  <p>Mapel</p>
+                  <p>
+                    {guru.guruandmapel && guru.guruandmapel.length > 1 ? (
+                      <>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          className={
+                            styles.listguru_tableMobile_container_item_seeMore
+                          }
+                          onClick={() => {
+                            setSelectedGuru(guru);
+                            setIsMapelGuruModalOpen(true);
+                          }}
+                        >
+                          See More
+                        </Button>
+                      </>
+                    ) : (
+                      guru?.guruandmapel?.map(
+                        (item) => item.mapel.nama_mapel
+                      ) || "Tidak ada mapel"
+                    )}
+                  </p>
+                </div>
+                <hr />
+                <div className={styles.listguru_tableMobile_container_btnSect}>
+                  <Button
+                    type="button"
+                    className={
+                      styles.listguru_tableMobile_container_btnSect_item
+                    }
+                    onClick={() => handleDetailClick(guru)}
+                  >
+                    <FontAwesomeIcon
+                      icon={["fas", "circle-info"]}
+                      className={
+                        styles.listguru_tableMobile_container_btnSect_item_icon
+                      }
+                    />
+                    {!isMobile && "Detail"}
+                  </Button>
+                  <Button
+                    type="button"
+                    className={
+                      styles.listguru_tableMobile_container_btnSect_item
+                    }
+                    onClick={() => handleEditClick(guru)}
+                  >
+                    <FontAwesomeIcon
+                      icon={["fas", "pen-to-square"]}
+                      className={
+                        styles.listguru_tableMobile_container_btnSect_item_icon
+                      }
+                    />
+                    {!isMobile && "Edit"}
+                  </Button>
+                  <Button
+                    type="button"
+                    className={
+                      styles.listguru_tableMobile_container_btnSect_item
+                    }
+                    onClick={() => handleDeleteClick(guru)}
+                  >
+                    <FontAwesomeIcon
+                      icon={["fas", "trash"]}
+                      className={
+                        styles.listguru_tableMobile_container_btnSect_item_icon
+                      }
+                    />
+                    {!isMobile && "Delete"}
+                  </Button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <h1 className={styles.listguru_tableMobile_empty}> Data Kosong</h1>
+          )}
+        </div>
+
         <div className={styles.listguru_pagination}>
           <Button
             type="button"
@@ -193,6 +340,59 @@ const ListGuruView = ({ guru, total }: PropTypes) => {
           guru={selectedGuru}
           onClose={() => setIsMapelGuruModalOpen(false)}
         />
+      )}
+      {isModalOpen.deleteModal && (
+        <Modal
+          onClose={() =>
+            setIsModalOpen({
+              deleteModal: false,
+              editModal: false,
+              detailModal: false,
+            })
+          }
+        >
+          <DeleteListGuru
+            deletedGuru={deletedGuru}
+            setGuruData={setGuruData}
+            setDeletedGuru={setDeletedGuru}
+            setCurrentPage={setCurrentPage}
+            fetchPageData={fetchPageData}
+            setIsModalOpen={setIsModalOpen}
+          />
+        </Modal>
+      )}
+      {isModalOpen.editModal && (
+        <Modal
+          onClose={() =>
+            setIsModalOpen({
+              deleteModal: false,
+              editModal: false,
+              detailModal: false,
+            })
+          }
+        >
+          <EditListGuru
+            setActionMenu={setActionMenu}
+            editGuru={editGuru}
+            setGuruData={setGuruData}
+            setIsModalOpen={setIsModalOpen}
+            currentPage={currentPage}
+            fetchPageData={fetchPageData}
+          />
+        </Modal>
+      )}
+      {isModalOpen.detailModal && (
+        <Modal
+          onClose={() =>
+            setIsModalOpen({
+              deleteModal: false,
+              editModal: false,
+              detailModal: false,
+            })
+          }
+        >
+          <DetailListSiswa detailGuru={detailGuru} />
+        </Modal>
       )}
     </>
   );

@@ -1,28 +1,14 @@
 import Image from "next/image";
-import styles from "./DetailListSiswa.module.scss";
-import { Siswa } from "@/types/siswa.type";
+import styles from "./DetailListMapel.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Mapel } from "@/types/mapel.type";
 
 type PropsTypes = {
-  detailSiswa: Siswa | null;
+  detailMapel: Mapel | null;
 };
-const DetailListSiswa = ({ detailSiswa }: PropsTypes) => {
+const DetailListMapel = ({ detailMapel }: PropsTypes) => {
   return (
     <div className={styles.modal}>
-      <div className={styles.modal_header}>
-        <Image
-          className={styles.modal_header_image}
-          width={130}
-          height={130}
-          src={
-            detailSiswa?.image
-              ? `http://localhost:3000${detailSiswa?.image}`
-              : "/blankpp.jpeg"
-          }
-          alt="huhu"
-        />
-        <h1>{detailSiswa?.nama}</h1>
-      </div>
       <div className={styles.modal_content}>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header}>
@@ -30,9 +16,9 @@ const DetailListSiswa = ({ detailSiswa }: PropsTypes) => {
               icon={["fas", "id-badge"]}
               className={styles.modal_content_item_header_icon}
             />
-            <h3>Nisn</h3>
+            <h3>Kode Mapel</h3>
           </div>
-          <p>{detailSiswa?.nisn}</p>
+          <p>{detailMapel?.kode_mapel}</p>
         </div>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header}>
@@ -42,7 +28,7 @@ const DetailListSiswa = ({ detailSiswa }: PropsTypes) => {
             />
             <h3>Nama</h3>
           </div>
-          <p>{detailSiswa?.nama}</p>
+          <p>{detailMapel?.nama_mapel}</p>
         </div>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header_kelas}>
@@ -50,11 +36,9 @@ const DetailListSiswa = ({ detailSiswa }: PropsTypes) => {
               icon={["fas", "graduation-cap"]}
               className={`${styles.modal_content_item_header_icon} ${styles.modal_content_item_header_kelas_icon}`}
             />
-            <h3>Kelas</h3>
+            <h3>Jurusan</h3>
           </div>
-          <p>
-            {detailSiswa?.kelas} {detailSiswa?.jurusan}
-          </p>
+          <p>{detailMapel?.jurusan}</p>
         </div>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header_hp}>
@@ -62,9 +46,9 @@ const DetailListSiswa = ({ detailSiswa }: PropsTypes) => {
               icon={["fas", "phone"]}
               className={`${styles.modal_content_item_header_icon} ${styles.modal_content_item_header_hp_icon}`}
             />
-            <h3>No. Hp</h3>
+            <h3>Fase</h3>
           </div>
-          <p>{detailSiswa?.no_hp}</p>
+          <p>{detailMapel?.fase}</p>
         </div>
         <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header}>
@@ -72,13 +56,32 @@ const DetailListSiswa = ({ detailSiswa }: PropsTypes) => {
               icon={["fas", "location-dot"]}
               className={styles.modal_content_item_header_icon}
             />
-            <h3>Alamat</h3>
+            <h3>Tipe Mapel</h3>
           </div>
-          <p>{detailSiswa?.alamat}</p>
+          <p>{detailMapel?.tipe_mapel}</p>
         </div>
+        <div className={styles.modal_content_item_header}>
+          <FontAwesomeIcon
+            icon={["fas", "book-bookmark"]}
+            className={styles.modal_content_item_header_icon}
+          />
+          <h3>Guru</h3>
+        </div>
+        <ul className={styles.modal_content_item_text}>
+          {detailMapel?.guruandmapel &&
+          detailMapel?.guruandmapel?.length > 0 ? (
+            detailMapel.guruandmapel?.map((item, index) => (
+              <li key={index} className={styles.modal_content_item_text_list}>
+                {item.guru.nama}
+              </li>
+            ))
+          ) : (
+            <li>Tidak Ada Mapel</li>
+          )}
+        </ul>
       </div>
     </div>
   );
 };
 
-export default DetailListSiswa;
+export default DetailListMapel;

@@ -28,6 +28,7 @@ type PropTypes = {
     SetStateAction<{
       deleteModal: boolean;
       editModal: boolean;
+      detailModal: boolean;
     }>
   >;
   currentPage: number;
@@ -180,6 +181,7 @@ const EditListMapel = ({
       setIsModalOpen({
         deleteModal: false,
         editModal: false,
+        detailModal: false,
       });
     }
   };

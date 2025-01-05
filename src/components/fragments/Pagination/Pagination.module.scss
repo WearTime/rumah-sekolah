@@ -1,0 +1,24 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4vw;
+
+  span {
+    font-size: 15px;
+    padding: 15px;
+  }
+  &_prev,
+  &_next {
+    margin-top: 0 !important;
+    font-size: 15px !important;
+    background-color: #e88513 !important;
+  }
+}
+
+@media (max-width: 280px) {
+  .pagination {
+    flex-direction: column;
+    margin-top: 0px;
+  }
+}

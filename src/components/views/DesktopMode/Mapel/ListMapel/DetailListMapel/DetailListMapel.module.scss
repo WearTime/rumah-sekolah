@@ -1,0 +1,59 @@
+.modal {
+  width: 100%;
+  &_content {
+    &_item {
+      &_header {
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        &_kelas {
+          margin: 10px 0;
+          display: flex;
+          gap: 5px;
+          align-items: center;
+          &_icon {
+            font-size: 20px !important ;
+          }
+        }
+        &_hp {
+          margin: 10px 0;
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          &_icon {
+            font-size: 20px !important;
+          }
+        }
+        &_icon {
+          font-size: 24px;
+        }
+      }
+      p {
+        background-color: #eee;
+        padding: 8px;
+        border-radius: 10px;
+      }
+      &_text {
+        background-color: #eee;
+        padding: 8px;
+        border-radius: 10px;
+        list-style: none;
+        &_list {
+          display: flex;
+          align-items: center;
+          margin: 5px 0;
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            margin-right: 10px;
+            background-color: black;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+}

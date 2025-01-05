@@ -12,6 +12,13 @@ type PropTypes = {
   setDeletedSiswa: Dispatch<SetStateAction<Siswa | null>>;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   fetchPageData: (page: number) => Promise<void>;
+  setIsModalOpen: Dispatch<
+    SetStateAction<{
+      deleteModal: boolean;
+      editModal: boolean;
+      detailModal: boolean;
+    }>
+  >;
 };
 
 const DeleteListSiswa = ({
@@ -20,6 +27,7 @@ const DeleteListSiswa = ({
   setDeletedSiswa,
   setCurrentPage,
   fetchPageData,
+  setIsModalOpen,
 }: PropTypes) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,10 +48,20 @@ const DeleteListSiswa = ({
       setSiswaData(data.data);
       setCurrentPage(1);
       fetchPageData(1);
+      setIsModalOpen({
+        deleteModal: false,
+        editModal: false,
+        detailModal: false,
+      });
     } else {
       setIsLoading(false);
       setDeletedSiswa(null);
       toast.error("Gagal Hapus Data");
+      setIsModalOpen({
+        deleteModal: false,
+        editModal: false,
+        detailModal: false,
+      });
     }
   };
 
@@ -65,7 +83,14 @@ const DeleteListSiswa = ({
         <Button
           type="button"
           className={styles.modal_action_cancel}
-          onClick={() => setDeletedSiswa(null)}
+          onClick={() => (
+            setDeletedSiswa(null),
+            setIsModalOpen({
+              deleteModal: false,
+              editModal: false,
+              detailModal: false,
+            })
+          )}
         >
           Cancel
         </Button>

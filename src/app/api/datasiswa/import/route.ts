@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
       const formData = await req.formData();
       const file = formData.get("file") as File;
 
-      // Validate the file
       const fileValidation = ExcelFileSchema.safeParse(file);
       if (!fileValidation.success) {
         return NextResponse.json(
@@ -29,17 +28,14 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      // Read the workbook from the ArrayBuffer
       const buffer = await file.arrayBuffer();
       const workbook = read(buffer, { type: "array" });
 
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const data = utils.sheet_to_json<Record<string, any>>(worksheet);
 
-      // Clean and validate data in a single pass
       const validStudents = data
         .map((student) => {
-          // Clean Nisn by removing invalid characters and trim
           const rawNisn =
             student.NISN?.toString()
               .replace(/\u200C/g, "")
@@ -50,24 +46,24 @@ export async function POST(req: NextRequest) {
               : null;
 
           if (!nisn) return null;
-
           const validate = ExcelStudentSchema.safeParse(student);
           if (!validate.success) return null;
 
           const validatedStudent = validate.data;
-          const kelasRoman = convertToRoman(validatedStudent.Tingkat);
-          const rombel = extractRombel(validatedStudent.Rombel);
-          const jurusan = mapJurusan(rombel);
+          const rombel = validatedStudent["Rombel Saat Ini"];
+          const kelasRoman = convertToRoman(rombel);
+          const jurusan = extractJurusan(rombel);
+
           return {
             nisn: validatedStudent.NISN,
-            nis: "Kosong", // Placeholder for NIS
-            nama: validatedStudent["Nama Lengkap"],
+            nama: validatedStudent["Nama"],
             kelas: kelasRoman,
             jurusan: jurusan,
-            no_hp: "Kosong", // Placeholder for phone number
-            alamat: "Kosong", // Placeholder for address
-            tanggal_lahir: validatedStudent["Tanggal Lahir"],
-            tempat_lahir: "Kosong",
+            jenis_kelamin: validatedStudent["JK"],
+            no_hp: validatedStudent["HP"],
+            alamat: validatedStudent["Alamat"],
+            tanggal_lahir: convertToISODate(validatedStudent["Tanggal Lahir"]),
+            tempat_lahir: validatedStudent["Tempat Lahir"],
           };
         })
         .filter(
@@ -85,7 +81,7 @@ export async function POST(req: NextRequest) {
             tanggal_lahir: string;
             tempat_lahir: string;
           } => student !== null
-        ); // Filter out invalid entries
+        );
 
       if (validStudents.length === 0) {
         return NextResponse.json(
@@ -93,8 +89,6 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
       }
-
-      // Check which NIPs are already in the database
 
       const existingNisn = new Set(
         (
@@ -129,37 +123,36 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-function convertToRoman(kelas: string): "X" | "XI" | "XII" | undefined {
-  const kelasNumber = kelas.split(" ")[1];
+function convertToRoman(rombel: string): "X" | "XI" | "XII" | undefined {
+  const parts = rombel.split(" ");
+  const kelas = parts[0];
 
   const map: Record<string, "X" | "XI" | "XII"> = {
-    "10": "X",
-    "11": "XI",
-    "12": "XII",
+    X: "X",
+    XI: "XI",
+    XII: "XII",
   };
 
-  return map[kelasNumber];
+  return map[kelas];
 }
 
-function extractRombel(rombel: string): string {
+function extractJurusan(rombel: string): string {
   const parts = rombel.split(" ");
-  const rombelWithoutClass = parts.slice(1).join(" ");
-
-  const formattedRombel = rombelWithoutClass.replace(/(\D)(\d)/, "$1 $2");
-  return formattedRombel;
-}
-
-function mapJurusan(rombel: string): string {
+  const jurusanKey = parts[1]?.replace(/(\d+)/g, " $1").trim() || "";
   const jurusanMap: Record<string, string> = {
-    BR: "MPLB",
-    KUL: "KULINER",
+    PPLG: "PPLG",
+    TKJT: "TKJT",
+    MPLB: "MPLB",
+    KULINER: "KULINER",
   };
 
-  const jurusanKey = rombel.split(" ")[0];
-  const jurusanNumber = rombel.split(" ")[1];
+  return jurusanMap[jurusanKey] || jurusanKey;
+}
 
-  const jurusan = `${jurusanMap[jurusanKey] || jurusanKey} ${
-    jurusanNumber || ""
-  }`;
-  return jurusan;
+function convertToISODate(dateString: string): string {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid date format: ${dateString}`);
+  }
+  return date.toISOString();
 }

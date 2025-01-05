@@ -77,3 +77,23 @@
     }
   }
 }
+
+@media (max-width: 448px) {
+  .modal {
+    &_form {
+      &_group {
+        &_item {
+          &_image {
+            flex-direction: column;
+            margin-top: 20px;
+            margin-bottom: 0px;
+            &__preview,
+            &__placeholder {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

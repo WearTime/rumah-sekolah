@@ -5,17 +5,33 @@
   }
   p {
     margin-bottom: 10px;
+    font-size: 15px;
   }
   &_action {
     display: flex;
     flex-direction: row;
     gap: 10px;
     &_delete {
-      width: 13vw;
+      width: 150px;
       background-color: #d10505 !important;
     }
     &_cancel {
-      width: 13vw;
+      width: 150px;
+    }
+  }
+}
+
+@media (max-width: 346px) {
+  .modal {
+    &_action {
+      flex-direction: column;
+      &_delete {
+        width: 100%;
+      }
+      &_cancel {
+        margin-top: 0px !important;
+        width: 100%;
+      }
     }
   }
 }

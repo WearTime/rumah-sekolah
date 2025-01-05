@@ -11,6 +11,13 @@ type PropTypes = {
   setDeletedMapel: Dispatch<SetStateAction<Mapel | null>>;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   fetchPageData: (page: number) => Promise<void>;
+  setIsModalOpen: Dispatch<
+    SetStateAction<{
+      deleteModal: boolean;
+      editModal: boolean;
+      detailModal: boolean;
+    }>
+  >;
 };
 
 const DeleteListMapel = ({
@@ -19,6 +26,7 @@ const DeleteListMapel = ({
   setDeletedMapel,
   setCurrentPage,
   fetchPageData,
+  setIsModalOpen,
 }: PropTypes) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,10 +49,20 @@ const DeleteListMapel = ({
       setMapelData(data.data);
       setCurrentPage(1);
       fetchPageData(1);
+      setIsModalOpen({
+        deleteModal: false,
+        editModal: false,
+        detailModal: false,
+      });
     } else {
       setIsLoading(false);
       setDeletedMapel(null);
       toast.error("Gagal Hapus Data");
+      setIsModalOpen({
+        deleteModal: false,
+        editModal: false,
+        detailModal: false,
+      });
     }
   };
 
@@ -66,7 +84,14 @@ const DeleteListMapel = ({
         <Button
           type="button"
           className={styles.modal_action_cancel}
-          onClick={() => setDeletedMapel(null)}
+          onClick={() => (
+            setDeletedMapel(null),
+            setIsModalOpen({
+              deleteModal: false,
+              editModal: false,
+              detailModal: false,
+            })
+          )}
         >
           Cancel
         </Button>
