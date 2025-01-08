@@ -12,7 +12,7 @@ import { User } from "@/types/user.types";
 const allowedJurusan = [
   "akl",
   "pplg",
-  "tkjt",
+  "tjkt",
   "dkv",
   "mplb",
   "bdp",

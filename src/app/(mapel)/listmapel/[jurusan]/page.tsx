@@ -9,7 +9,7 @@ import { notFound } from "next/navigation";
 const allowedJurusan = [
   "AKL",
   "PPLG",
-  "TKJT",
+  "TJKT",
   "DKV",
   "MPLB",
   "BDP",

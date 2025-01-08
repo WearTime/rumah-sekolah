@@ -32,6 +32,7 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
+  const [totalItems, setTotalItems] = useState(total);
   const [deletedSiswa, setDeletedSiswa] = useState<Siswa | null>(null);
   const [editSiswa, setEditSiswa] = useState<Siswa | null>(null);
   const [detailSiswa, setDetailSiswa] = useState<Siswa | null>(null);
@@ -42,8 +43,10 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
   }>({ deleteModal: false, editModal: false, detailModal: false });
 
   const fetchPageData = async (page: number) => {
-    const { data } = await dataSiswaServices.getAllSiswa({ page, search });
-    setSiswaData(data.data);
+    const response = await dataSiswaServices.getAllSiswa({ page, search });
+    const { data, total: newTotal } = response.data;
+    setSiswaData(data);
+    setTotalItems(newTotal);
     setCurrentPage(page);
   };
 
@@ -52,6 +55,7 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
       fetchPageData(1);
     } else {
       setSiswaData(siswa);
+      setTotalItems(total);
     }
   };
 
@@ -127,7 +131,7 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
           actions={actions}
           setActionMenu={setActionMenu}
           actionMenu={actionMenu}
-          totalItems={total}
+          totalItems={totalItems}
           fetchPageData={fetchPageData}
         />
       </div>

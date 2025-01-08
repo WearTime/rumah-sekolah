@@ -60,7 +60,6 @@ const AddSiswaView = () => {
     const data: Siswa = {
       nama: form.nama.value,
       nisn: form.nisn.value,
-      nis: form.nis.value,
       kelas: form.kelas.value,
       jurusan: form.jurusan.value + " " + form.sub_jur.value,
       no_hp: form.no_hp.value,
@@ -132,13 +131,15 @@ const AddSiswaView = () => {
                 placeholder="Masukan Nisn Siswa"
                 className={styles.addsiswa_main_content_form_input}
               />
-              <Input
-                label="NIS"
-                type="text"
-                name="nis"
-                placeholder="Masukan Nis Siswa"
-                className={styles.addsiswa_main_content_form_input}
-              />
+              <div className={styles.addsiswa_main_content_form_item}>
+                <label htmlFor="jenis_kelamin">Jenis Kelamin</label>
+                <select name="jenis_kelamin" id="jenis_kelamin" required>
+                  <option value="">Pilih Jenis Kelamin</option>
+                  <option value="L">Laki Laki</option>
+                  <option value="P">Perempuan</option>
+                </select>
+              </div>
+
               <div className={styles.addsiswa_main_content_form_item}>
                 <label htmlFor="kelas">Kelas</label>
                 <select
@@ -204,7 +205,18 @@ const AddSiswaView = () => {
                   required
                 />
               </div>
-
+              <Input
+                label="Tempat lahir"
+                type="text"
+                name="tempat_lahir"
+                className={styles.addsiswa_main_content_form_input}
+              />
+              <Input
+                label="Tanggal lahir"
+                type="date"
+                name="tanggal_lahir"
+                className={styles.addsiswa_main_content_form_input}
+              />
               <div className={styles.addsiswa_main_content_form_item}>
                 <div className={styles.addsiswa_main_content_form_item_image}>
                   {uploadedImage ? (

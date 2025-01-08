@@ -4,7 +4,7 @@ const tipe_mapel = ["Umum", "Jurusan"] as const;
 const jurusan = [
   "AKL",
   "PPLG",
-  "TKJT",
+  "TJKT",
   "DKV",
   "MPLB",
   "BDP",

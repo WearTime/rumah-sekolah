@@ -105,6 +105,7 @@ export async function PUT(req: NextRequest, { params }: any) {
         );
       }
 
+      body.tanggal_lahir = convertToISODate(body.tanggal_lahir);
       body.image = existingData.image || "";
 
       if (file) {
@@ -143,9 +144,18 @@ export async function PUT(req: NextRequest, { params }: any) {
       return NextResponse.json({ data: updatedData }, { status: 200 });
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }
     );
   }
+}
+
+function convertToISODate(dateString: string): string {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid date format: ${dateString}`);
+  }
+  return date.toISOString();
 }

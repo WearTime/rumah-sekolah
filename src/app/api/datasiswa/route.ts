@@ -32,7 +32,6 @@ export async function GET(req: NextRequest) {
           },
         }),
       ]);
-
       return NextResponse.json({ data: allData, total }, { status: 200 });
     });
   } catch (error) {
@@ -101,6 +100,7 @@ export async function POST(req: NextRequest) {
           encryptedFileName
         )}`;
       }
+      body.tanggal_lahir = convertToISODate(body.tanggal_lahir);
 
       // Simpan data ke database
       const result = await prisma.dataSiswa.create({
@@ -116,4 +116,12 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function convertToISODate(dateString: string): string {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid date format: ${dateString}`);
+  }
+  return date.toISOString();
 }

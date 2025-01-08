@@ -31,6 +31,45 @@ type PropTypes = {
   fetchPageData: (page: number) => Promise<void>;
 };
 
+const jurusanMapping: Record<string, Record<string, string>> = {
+  X: {
+    PPLG: "PPLG",
+    TJKT: "TJKT",
+    AKL: "AK",
+    DKV: "DKV",
+    MPLB: "MPLB",
+    BDP: "BDP",
+    KULINER: "KULINER",
+    TATABUSANA: "TATABUSANA",
+    PHT: "PHT",
+    UPW: "UPW",
+  },
+  XI: {
+    PPLG: "RPL",
+    TJKT: "TKJ",
+    AKL: "AK",
+    DKV: "DKV",
+    MPLB: "MPLB",
+    BDP: "BDP",
+    KULINER: "KUL",
+    TATABUSANA: "TATABUSANA",
+    PHT: "PHT",
+    UPW: "UPW",
+  },
+  XII: {
+    PPLG: "RPL",
+    TJKT: "TKJ",
+    AKL: "AK",
+    DKV: "DKV",
+    MPLB: "MPLB",
+    BDP: "BR",
+    KULINER: "KUL",
+    TATABUSANA: "TATABUSANA",
+    PHT: "PHT",
+    UPW: "ULP",
+  },
+};
+
 const EditListSiswa = ({
   setActionMenu,
   editSiswa,
@@ -46,7 +85,10 @@ const EditListSiswa = ({
   const [kelas, setKelas] = useState(editSiswa?.kelas || "");
   const [subJurOptions, setSubJurOptions] = useState<number[]>([]);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const sub_jur = editSiswa?.jurusan.split(" ")[1] || "";
+  const [subJur, setSubJur] = useState(editSiswa?.jurusan.split(" ")[1] || "");
+  const [tanggalLahir, setTanggalLahir] = useState(
+    editSiswa?.tanggal_lahir?.split("T")[0] || ""
+  );
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -57,7 +99,6 @@ const EditListSiswa = ({
     const data: Siswa = {
       nama: form.nama.value,
       nisn: form.nisn.value,
-      nis: form.nis.value,
       kelas: form.kelas.value,
       jurusan: form.jurusan.value + " " + form.sub_jur.value,
       no_hp: form.no_hp.value,
@@ -127,30 +168,48 @@ const EditListSiswa = ({
 
   useEffect(() => {
     let options: number[] = [];
-    if (jurusan === "AKL") {
-      options = [1, 2, 3, 4, 5];
-    } else if (jurusan === "PPLG") {
-      options = [1, 2];
-    } else if (jurusan === "TJKT") {
-      options = [1, 2, 3];
-    } else if (jurusan === "DKV") {
-      options = [1, 2];
-    } else if (jurusan === "ULW") {
-      options = [1, 2];
-    } else if (jurusan === "BDP") {
-      options = [1, 2, 3];
-    } else if (jurusan === "TABUS") {
-      options = [1, 2];
-    } else if (jurusan === "KULINER") {
-      options = [1, 2];
-    } else if (jurusan === "PHT") {
-      options = [1, 2, 3];
-    } else if (jurusan === "MPLB") {
-      if (kelas === "X") {
+
+    switch (jurusan) {
+      case "AKL":
+      case "AK":
+        options = [1, 2, 3, 4, 5];
+        break;
+      case "PPLG":
+      case "RPL":
         options = [1, 2];
-      } else if (kelas === "XI") {
-        options = [1];
-      }
+        break;
+      case "TJKT":
+      case "TKJ":
+        options = [1, 2, 3];
+        break;
+      case "DKV":
+        options = [1, 2];
+        break;
+      case "ULW":
+        options = [1, 2];
+        break;
+      case "TABUS":
+        options = [1, 2];
+        break;
+      case "KULINER":
+        options = [1, 2];
+        break;
+      case "BDP":
+        options = [1, 2, 3];
+        break;
+      case "PHT":
+        options = [1, 2, 3];
+        break;
+      case "MPLB":
+        switch (kelas) {
+          case "X":
+            options = [1, 2];
+            break;
+          case "XI":
+            options = [1];
+            break;
+        }
+        break;
     }
     setSubJurOptions(options);
   }, [jurusan, kelas]);
@@ -173,13 +232,22 @@ const EditListSiswa = ({
           defaultValue={editSiswa?.nisn}
           className={styles.modal_form_input}
         />
-        <Input
-          label="NIS"
-          type="number"
-          name="nis"
-          defaultValue={editSiswa?.nis}
-          className={styles.modal_form_input}
-        />
+
+        <div className={styles.modal_form_group}>
+          <div className={styles.modal_form_group_item}>
+            <label htmlFor="jenis_kelamin">Jenis Kelamin</label>
+            <select
+              name="jenis_kelamin"
+              id="jenis_kelamin"
+              required
+              value={editSiswa?.jenis_kelamin}
+            >
+              <option value="">Pilih Jenis Kelamin</option>
+              <option value="L">Laki Laki</option>
+              <option value="P">Perempuan</option>
+            </select>
+          </div>
+        </div>
 
         <div className={styles.modal_form_group}>
           <div className={styles.modal_form_group_item}>
@@ -209,16 +277,11 @@ const EditListSiswa = ({
               value={jurusan}
             >
               <option value="">Pilih Jurusan</option>
-              <option value="AKL">AKL</option>
-              <option value="PPLG">PPLG</option>
-              <option value="TKJ">TKJ</option>
-              <option value="DKV">DKV</option>
-              <option value="MPLB">MPLB</option>
-              <option value="BDP">BDP</option>
-              <option value="KULINER">KULINER</option>
-              <option value="TATABUSANA">TATA BUSANA</option>
-              <option value="PHT">PHT</option>
-              <option value="UPW">UPW</option>
+              {Object.entries(jurusanMapping[kelas]).map(([jurusan, alias]) => (
+                <option key={jurusan} value={alias}>
+                  {alias}
+                </option>
+              ))}
             </select>
           </div>
           <div className={styles.modal_form_group_item}>
@@ -227,7 +290,8 @@ const EditListSiswa = ({
               name="sub_jur"
               id="sub_jur"
               disabled={!jurusan}
-              value={sub_jur}
+              onChange={(e) => setSubJur(e.target.value)}
+              value={subJur}
             >
               <option value="">Pilih Nomor Jurusan</option>
               {subJurOptions.map((option) => (
@@ -258,9 +322,24 @@ const EditListSiswa = ({
             />
           </div>
         </div>
+        <Input
+          label="Tempat lahir"
+          type="text"
+          name="tempat_lahir"
+          defaultValue={editSiswa?.tempat_lahir}
+          className={styles.modal_form_input}
+        />
+        <Input
+          label="Tanggal lahir"
+          type="date"
+          name="tanggal_lahir"
+          onChange={(e) => setTanggalLahir(e.target.value)}
+          value={tanggalLahir}
+          className={styles.modal_form_input}
+        />
         <div className={styles.modal_form_group_item}>
           <div className={styles.modal_form_group_item_image}>
-            {editSiswa?.image ? (
+            {editSiswa?.image || uploadedImage ? (
               <Image
                 width={100}
                 height={100}

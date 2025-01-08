@@ -57,6 +57,16 @@ const DetailListSiswa = ({ detailSiswa }: PropsTypes) => {
           </p>
         </div>
         <div className={styles.modal_content_item}>
+          <div className={styles.modal_content_item_header_kelas}>
+            <FontAwesomeIcon
+              icon={["fas", "mars-and-venus"]}
+              className={`${styles.modal_content_item_header_icon}`}
+            />
+            <h3>Jenis Kelamin</h3>
+          </div>
+          <p>{detailSiswa?.jenis_kelamin == "L" ? "Laki-laki" : "Perempuan"}</p>
+        </div>
+        <div className={styles.modal_content_item}>
           <div className={styles.modal_content_item_header_hp}>
             <FontAwesomeIcon
               icon={["fas", "phone"]}
@@ -75,6 +85,26 @@ const DetailListSiswa = ({ detailSiswa }: PropsTypes) => {
             <h3>Alamat</h3>
           </div>
           <p>{detailSiswa?.alamat}</p>
+        </div>
+        <div className={styles.modal_content_item}>
+          <div className={styles.modal_content_item_header_kelas}>
+            <FontAwesomeIcon
+              icon={["fas", "calendar-days"]}
+              className={`${styles.modal_content_item_header_icon}`}
+            />
+            <h3>Tanggal Lahir</h3>
+          </div>
+          <p>{detailSiswa?.tanggal_lahir?.split("T")[0]}</p>
+        </div>
+        <div className={styles.modal_content_item}>
+          <div className={styles.modal_content_item_header_kelas}>
+            <FontAwesomeIcon
+              icon={["fas", "house"]}
+              className={`${styles.modal_content_item_header_icon}`}
+            />
+            <h3>Tempat Lahir</h3>
+          </div>
+          <p>{detailSiswa?.tempat_lahir}</p>
         </div>
       </div>
     </div>

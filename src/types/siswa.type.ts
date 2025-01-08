@@ -1,6 +1,5 @@
 export type Siswa = {
   nisn: string;
-  nis: string;
   nama: string;
   kelas: string;
   jurusan: string;

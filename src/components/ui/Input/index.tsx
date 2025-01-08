@@ -9,7 +9,16 @@ type PropsTypes = {
   disabled?: boolean;
   onChange?: (e: any) => void;
   className?: string;
-  inputMode?: "search" | "email" | "tel" | "text" | "url" | "none" | "numeric" | "decimal"
+  inputMode?:
+    | "search"
+    | "email"
+    | "tel"
+    | "text"
+    | "url"
+    | "none"
+    | "numeric"
+    | "decimal";
+  value?: string;
 };
 const Input = ({
   label,
@@ -21,6 +30,7 @@ const Input = ({
   onChange,
   className,
   inputMode,
+  value,
 }: PropsTypes) => {
   return (
     <>
@@ -39,6 +49,7 @@ const Input = ({
           defaultValue={defaultValue}
           disabled={disabled}
           inputMode={inputMode}
+          value={value}
           onChange={onChange}
         />
       </div>

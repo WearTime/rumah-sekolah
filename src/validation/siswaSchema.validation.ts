@@ -11,10 +11,6 @@ const siswaSchema = z.object({
     .string()
     .min(1, "NISN harus diisi")
     .max(11, "NISN Tidak boleh lebih dari 10 Karakter"),
-  nis: z
-    .string()
-    .min(1, "NIS harus diisi")
-    .max(10, "Nis Tidak boleh lebih dari 10 Karakter"),
   kelas: z.enum(["X", "XI", "XII"], {
     errorMap: () => ({
       message: "Kelas harus salah satu dari 'X', 'XI', atau 'XII'",
@@ -39,7 +35,6 @@ const siswaSchema = z.object({
     .optional(),
   tempat_lahir: z.string().max(100).optional(),
   tanggal_lahir: z.string().optional(), // atau gunakan z.date() jika menggunakan tipe Date
-  agama: z.string().max(50).optional(),
   image: z
     .union([z.instanceof(File), z.string()])
     .optional()

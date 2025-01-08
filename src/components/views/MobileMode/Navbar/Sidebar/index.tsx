@@ -19,8 +19,8 @@ const listMapel = [
     url: "pplg",
   },
   {
-    title: "TKJT",
-    url: "tkjt",
+    title: "TJKT",
+    url: "tjkt",
   },
   {
     title: "DKV",

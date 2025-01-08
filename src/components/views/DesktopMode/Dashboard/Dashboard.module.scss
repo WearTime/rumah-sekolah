@@ -1,5 +1,37 @@
 .dashboard {
-  margin-top: 12vh;
+  margin-top: 75px;
+  &_title {
+    font-size: 26px;
+    text-align: center;
+  }
+  &_visinmisi {
+    display: flex;
+    gap: 10px;
+    margin: 10px 5px;
+    justify-content: center;
+    &_content {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid black;
+      width: 40%;
+      border-radius: 15px;
+      padding: 15px;
+      color: black;
+      justify-content: center;
+      align-items: center;
+      align-items: start;
+      &_misi {
+        p {
+          text-indent: -14.2pt;
+          text-align: justify;
+        }
+      }
+      p {
+        font-size: 15px;
+        margin-top: 10px;
+      }
+    }
+  }
   &_content {
     display: flex;
     flex-direction: row;

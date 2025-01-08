@@ -42,7 +42,6 @@ export async function GET(req: NextRequest) {
           },
         }),
       ]);
-
       return NextResponse.json({ data: allData, total }, { status: 200 });
     });
   } catch (error) {
