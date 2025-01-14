@@ -24,6 +24,7 @@ const allowedJurusan = [
 
 const listTitleNavbar = [
   { title: "Dashboard", url: "/" },
+  { title: "Struktur Organisasi", url: "/struktur-organisasi" },
   { title: "List Siswa", url: "/listsiswa" },
   { title: "Add Siswa", url: "/addsiswa" },
   { title: "List Guru", url: "/listguru" },

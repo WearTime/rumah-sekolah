@@ -38,3 +38,24 @@ export const guruSchema = z.object({
 export const guruMapelSchema = z.object({
   mapel: z.string().min(1, "Mapel Harus diisi"),
 });
+
+export const StructureOrganisasiSchema = z.object({
+  nip: z
+    .string()
+    .min(1, "NIP harus diisi")
+    .max(18, "NIP Tidak boleh lebih dari 18 Karakter"),
+  image: z
+    .union([z.instanceof(File), z.string()])
+    .optional()
+    .refine(
+      (file) => {
+        if (!file || typeof file === "string") return true;
+        const fileExtension = file.name.split(".").pop()?.toLowerCase();
+        return fileExtension && allowedImageExtensions.includes(fileExtension);
+      },
+      {
+        message:
+          "Hanya file dengan ekstensi .jpg, .jpeg, .png, atau .gif yang diperbolehkan.",
+      }
+    ),
+});

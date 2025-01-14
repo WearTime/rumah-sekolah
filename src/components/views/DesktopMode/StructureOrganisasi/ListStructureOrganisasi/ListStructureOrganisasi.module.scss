@@ -1,0 +1,41 @@
+.listsiswa {
+  width: 100%;
+  margin-top: 70px;
+  &_image {
+    img {
+      border-radius: 20px;
+    }
+    margin-bottom: 15px;
+  }
+  &_search {
+    &_input {
+      border-radius: 10px;
+      padding: 10px 10px;
+      width: 255px;
+      margin: 10px 0;
+      font-weight: 600;
+      font-size: 13px;
+    }
+  }
+}
+
+@media (max-width: 1022px) {
+  .listsiswa {
+    &_search {
+      &_input {
+        margin: 10px 10px;
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .listsiswa {
+    &_search {
+      &_input {
+        margin: 10px 10px -10px 10px;
+      }
+    }
+  }
+}

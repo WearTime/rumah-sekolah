@@ -83,6 +83,21 @@ const SidebarView = () => {
                 />{" "}
                 <Link href="/">Dashboard</Link>
               </li>
+              <li
+                className={`${
+                  pathname === "/struktur-organisasi"
+                    ? styles.sidebar_list_section_list_active
+                    : ""
+                }`}
+              >
+                <FontAwesomeIcon
+                  icon={["fas", "address-book"]}
+                  className={styles.sidebar_list_section_list_icon}
+                />{" "}
+                <Link href="/struktur-organisasi" style={{ fontSize: "15px" }}>
+                  Struktur Organisasi
+                </Link>
+              </li>
             </ul>
           </div>
 

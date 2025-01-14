@@ -8,6 +8,7 @@ import { Mapel } from "@/types/mapel.type";
 import { Siswa } from "@/types/siswa.type";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
+import { StructureOrganisasi } from "@/types/structureorganisasi.type";
 
 type Header = {
   key: string;
@@ -25,7 +26,7 @@ type Action = {
 function hasKey<T extends object>(obj: T | null, key: keyof any): obj is T {
   return typeof obj === "object" && obj !== null && key in obj;
 }
-type PropTypes<T extends Guru | Siswa | Mapel> = {
+type PropTypes<T extends Guru | Siswa | Mapel | StructureOrganisasi> = {
   setSelectedItem?: Dispatch<SetStateAction<T | null>>;
   setActionMenu: Dispatch<SetStateAction<T | null>>;
   actionMenu: T | null;
@@ -37,7 +38,7 @@ type PropTypes<T extends Guru | Siswa | Mapel> = {
   actions: Action[];
 };
 
-const MobileListTable = <T extends Guru | Siswa | Mapel>({
+const MobileListTable = <T extends Guru | Siswa | Mapel | StructureOrganisasi>({
   data,
   actionMenu,
   setActionMenu,

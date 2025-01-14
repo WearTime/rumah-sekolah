@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button"; // Adjust import based on your proj
 import { useMediaQuery } from "react-responsive";
 import ActionMenu from "../ActionMenu";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
+import { StructureOrganisasi } from "@/types/structureorganisasi.type";
 
 type Header = {
   key: string;
@@ -23,7 +24,7 @@ type Action = {
   icon?: IconName;
 };
 
-type ListTableProps<T extends Guru | Siswa | Mapel> = {
+type ListTableProps<T extends Guru | Siswa | Mapel | StructureOrganisasi> = {
   setActionMenu: Dispatch<SetStateAction<T | null>>;
   setSelectedItem?: Dispatch<SetStateAction<T | null>>;
   setIsItemModalOpen?: Dispatch<SetStateAction<boolean>>;
@@ -40,7 +41,7 @@ function hasKey<T extends object>(obj: T | null, key: keyof any): obj is T {
   return typeof obj === "object" && obj !== null && key in obj;
 }
 
-const ListTable = <T extends Guru | Siswa | Mapel>({
+const ListTable = <T extends Guru | Siswa | Mapel | StructureOrganisasi>({
   actionMenu,
   setActionMenu,
   setIsItemModalOpen,
@@ -149,8 +150,10 @@ const ListTable = <T extends Guru | Siswa | Mapel>({
                           styles["listguru_table_body_tabletDelete"]
                         }`}
                       >
-                        {(item as Record<string, any>)[header.key] ||
-                          "Tidak ada"}
+                        {header.key === "orgNama"
+                          ? (item as StructureOrganisasi).guru?.nama
+                          : (item as Record<string, any>)[header.key] ||
+                            "Tidak ada"}
                       </td>
                     );
                   }

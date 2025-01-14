@@ -8,7 +8,7 @@ import { Siswa } from "@/types/siswa.type";
 import MobileListTable from "@/components/fragments/MobileListTable";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import Pagination from "@/components/fragments/Pagination";
-import { $Enums } from "@prisma/client";
+import { StructureOrganisasi } from "@/types/structureorganisasi.type";
 
 type Action = {
   label: string;
@@ -21,7 +21,7 @@ type Header = {
   key: string;
   label: string;
 };
-type PropTypes<T extends Guru | Siswa | Mapel> = {
+type PropTypes<T extends Guru | Siswa | Mapel | StructureOrganisasi> = {
   setActionMenu: Dispatch<SetStateAction<T | null>>;
   setIsItemModalOpen?: Dispatch<SetStateAction<boolean>>;
   setSelectedItem?: Dispatch<SetStateAction<T | null>>;
@@ -36,7 +36,7 @@ type PropTypes<T extends Guru | Siswa | Mapel> = {
   fetchPageData: (currentPage: number) => void;
 };
 
-const ListTableLayout = <T extends Guru | Siswa | Mapel>({
+const ListTableLayout = <T extends Guru | Siswa | Mapel | StructureOrganisasi>({
   actionMenu,
   setActionMenu,
   setIsItemModalOpen,

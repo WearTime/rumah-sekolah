@@ -1,18 +1,14 @@
 "use client";
-import styles from "./Listsiswa.module.scss";
+import styles from "./ListStructureOrganisasi.module.scss";
 import { useEffect, useState } from "react";
-import { Siswa } from "@/types/siswa.type";
-import dataSiswaServices from "@/services/dataSiswa";
 import useDebounce from "@/hooks/useDebounce";
 import ListTableLayout from "@/components/layouts/ListTableLayout";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
-import Modal from "@/components/ui/Modal";
-import DeleteListSiswa from "./DeleteListSiswa";
-import DetailListSiswa from "./DetailListSiswa";
-import EditListSiswa from "./EditListSiswa";
-
+import { StructureOrganisasi } from "@/types/structureorganisasi.type";
+import dataStructureOrganisasiServices from "@/services/dataStructureOrganisasi";
+import Image from "next/image";
 type PropTypes = {
-  siswa: Siswa[];
+  data: StructureOrganisasi[];
   total: number;
 };
 
@@ -24,27 +20,39 @@ type Action = {
 };
 
 const SEARCH_DELAY = 1000; // Delay untuk debounce
-
-const ListSiswaView = ({ siswa, total }: PropTypes) => {
+const ListStructureOrganisasiView = ({ data, total }: PropTypes) => {
   const { debounce } = useDebounce();
-  const [siswaData, setSiswaData] = useState<Siswa[]>([]);
-  const [actionMenu, setActionMenu] = useState<Siswa | null>(null);
+  const [strOrgData, setStrOrgData] = useState<StructureOrganisasi[]>(data);
+  const [actionMenu, setActionMenu] = useState<StructureOrganisasi | null>(
+    null
+  );
+
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(total);
-  const [deletedSiswa, setDeletedSiswa] = useState<Siswa | null>(null);
-  const [editSiswa, setEditSiswa] = useState<Siswa | null>(null);
-  const [detailSiswa, setDetailSiswa] = useState<Siswa | null>(null);
+  const [deletedStrOrg, setDeletedStrOrg] =
+    useState<StructureOrganisasi | null>(null);
+
+  const [editStrOrg, setEditStrOrg] = useState<StructureOrganisasi | null>(
+    null
+  );
+  const [detailStrOrg, setDetailStrOrg] = useState<StructureOrganisasi | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = useState<{
     deleteModal: boolean;
     editModal: boolean;
     detailModal: boolean;
   }>({ deleteModal: false, editModal: false, detailModal: false });
+
   const fetchPageData = async (page: number) => {
-    const response = await dataSiswaServices.getAllSiswa({ page, search });
+    const response = await dataStructureOrganisasiServices.getAllStrOrg({
+      page,
+      search,
+    });
     const { data, total: newTotal } = response.data;
-    setSiswaData(data);
+    setStrOrgData(data);
     setTotalItems(newTotal);
     setCurrentPage(page);
   };
@@ -53,19 +61,22 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
     if (search !== "") {
       fetchPageData(1);
     } else {
-      setSiswaData(siswa);
+      setStrOrgData(data);
       setTotalItems(total);
     }
   };
 
   const debounceSearch = debounce(performSearch, SEARCH_DELAY);
-
+  useEffect(() => {
+    fetchPageData(1);
+    console.log("HEy");
+  }, [data, total]);
   useEffect(() => {
     debounceSearch();
   }, [search]);
 
   const handleDetail = () => {
-    setDetailSiswa(actionMenu);
+    setDetailStrOrg(actionMenu);
     setIsModalOpen({
       deleteModal: false,
       editModal: false,
@@ -73,7 +84,7 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
     });
   };
   const handleEdit = () => {
-    setEditSiswa(actionMenu);
+    setEditStrOrg(actionMenu);
     setIsModalOpen({
       deleteModal: false,
       editModal: true,
@@ -82,17 +93,18 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
   };
 
   const handleDelete = () => {
-    setDeletedSiswa(actionMenu);
+    setDeletedStrOrg(actionMenu);
     setIsModalOpen({ deleteModal: true, editModal: false, detailModal: false });
   };
+  const processedData = strOrgData.map((item) => ({
+    ...item,
+    nama: item.guru?.nama || "Tidak Ada Nama",
+  }));
 
   const headers = [
-    { key: "nama", label: "Nama" },
-    { key: "nisn", label: "NISN" },
-    { key: "kelas", label: "Kelas", mobileDelete: true },
-    { key: "jurusan", label: "Jurusan", mobileDelete: true },
-    { key: "no_hp", label: "No HP", tabletDelete: true },
-    { key: "alamat", label: "Alamat", tabletDelete: true },
+    { key: "nip", label: "NIP" },
+    { key: "orgNama", label: "Nama" },
+    { key: "jabatan", label: "Jabatan" },
   ];
   const actions: Action[] = [
     {
@@ -121,12 +133,20 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+        <div className={styles.listsiswa_image}>
+          <Image
+            src={"/structure-organisasi.png"}
+            alt="structure-organisasi"
+            width={1090}
+            height={550}
+          />
+        </div>
         <ListTableLayout
-          data={siswaData}
+          data={strOrgData}
           headers={headers}
           currentPage={currentPage}
           pageSize={pageSize}
-          identifierKey={"nisn"}
+          identifierKey={"nip"}
           actions={actions}
           setActionMenu={setActionMenu}
           actionMenu={actionMenu}
@@ -134,7 +154,7 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
           fetchPageData={fetchPageData}
         />
       </div>
-      {isModalOpen.deleteModal && (
+      {/* {isModalOpen.deleteModal && (
         <Modal
           onClose={() =>
             setIsModalOpen({
@@ -146,7 +166,7 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
         >
           <DeleteListSiswa
             deletedSiswa={deletedSiswa}
-            setSiswaData={setSiswaData}
+            setStrOrgData={setStrOrgData}
             setDeletedSiswa={setDeletedSiswa}
             setIsModalOpen={setIsModalOpen}
             setCurrentPage={setCurrentPage}
@@ -167,7 +187,7 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
           <EditListSiswa
             setActionMenu={setActionMenu}
             editSiswa={editSiswa}
-            setSiswaData={setSiswaData}
+            setStrOrgData={setStrOrgData}
             setIsModalOpen={setIsModalOpen}
             currentPage={currentPage}
             fetchPageData={fetchPageData}
@@ -186,9 +206,9 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
         >
           <DetailListSiswa detailSiswa={detailSiswa} />
         </Modal>
-      )}
+      )} */}
     </>
   );
 };
 
-export default ListSiswaView;
+export default ListStructureOrganisasiView;

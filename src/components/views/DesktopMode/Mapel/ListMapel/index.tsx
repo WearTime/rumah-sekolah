@@ -98,6 +98,8 @@ const ListMapelView = ({ mapel, total }: PropTypes) => {
     { key: "mapel", label: "Guru Pengajar" },
   ];
 
+  console.log(mapelData)
+
   const actions: Action[] = [
     {
       label: "Detail",
