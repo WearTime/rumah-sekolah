@@ -20,6 +20,7 @@ const listTotal: {
     icon: "user-graduate",
     description: false,
     color: "#07754b",
+    link: "/ekstrakurikuler",
   },
   {
     title: "Structure Organisasi",

@@ -1,0 +1,21 @@
+.ekstrakurikuler {
+  margin: 80px 10px 0 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  &_icon {
+    font-size: 50px;
+  }
+  &_content {
+    background-color: #e88513;
+    padding: 15px;
+    width: 100%;
+    color: white;
+    border-radius: 20px;
+    img {
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+  }
+}

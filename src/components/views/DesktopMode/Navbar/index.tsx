@@ -32,6 +32,7 @@ const listTitleNavbar = [
   { title: "Beranda Guru", url: "/berandaguru" },
   { title: "List Mapel", url: "/listmapel" },
   { title: "Add Mapel", url: "/addmapel" },
+  { title: "Ekstrakurikuler", url: "/ekstrakurikuler" },
 ];
 
 const NavbarView = () => {

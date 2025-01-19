@@ -98,6 +98,21 @@ const SidebarView = () => {
                   Struktur Organisasi
                 </Link>
               </li>
+              <li
+                className={`${
+                  pathname === "/ekstrakurikuler"
+                    ? styles.sidebar_list_section_list_active
+                    : ""
+                }`}
+              >
+                <FontAwesomeIcon
+                  icon={["fas", "globe"]}
+                  className={styles.sidebar_list_section_list_icon}
+                />{" "}
+                <Link href="/ekstrakurikuler" style={{ fontSize: "15px" }}>
+                  Ekstrakurikuler
+                </Link>
+              </li>
             </ul>
           </div>
 
