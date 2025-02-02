@@ -34,6 +34,7 @@ const listTotal: {
     icon: "user-graduate",
     description: true,
     color: "#e08c2b",
+    link: "/siswa",
   },
   {
     title: "Guru",

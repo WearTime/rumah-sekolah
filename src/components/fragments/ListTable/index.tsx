@@ -41,6 +41,13 @@ function hasKey<T extends object>(obj: T | null, key: keyof any): obj is T {
   return typeof obj === "object" && obj !== null && key in obj;
 }
 
+const truncateText = (text: string, wordLimit: number = 6): string => {
+  if (!text) return "";
+  const words = text.split(" ");
+  if (words.length <= wordLimit) return text;
+  return words.slice(0, wordLimit).join(" ") + "...";
+};
+
 const ListTable = <T extends Guru | Siswa | Mapel | StructureOrganisasi>({
   actionMenu,
   setActionMenu,
@@ -121,7 +128,7 @@ const ListTable = <T extends Guru | Siswa | Mapel | StructureOrganisasi>({
                               onClick={() => {
                                 if (setSelectedItem && setIsItemModalOpen) {
                                   setSelectedItem(item);
-                                  setIsItemModalOpen(true); // Open the modal
+                                  setIsItemModalOpen(true);
                                 }
                               }}
                             >
@@ -148,9 +155,21 @@ const ListTable = <T extends Guru | Siswa | Mapel | StructureOrganisasi>({
                         } ${
                           header.tabletDelete &&
                           styles["listguru_table_body_tabletDelete"]
+                        } ${
+                          header.key === "alamat" ? styles.truncate_cell : ""
                         }`}
+                        title={
+                          header.key === "alamat"
+                            ? (item as Record<string, any>)[header.key]
+                            : undefined
+                        }
                       >
-                        {header.key === "orgNama"
+                        {header.key === "alamat"
+                          ? truncateText(
+                              (item as Record<string, any>)[header.key] ||
+                                "Tidak ada"
+                            )
+                          : header.key === "orgNama"
                           ? (item as StructureOrganisasi).guru?.nama
                           : (item as Record<string, any>)[header.key] ||
                             "Tidak ada"}

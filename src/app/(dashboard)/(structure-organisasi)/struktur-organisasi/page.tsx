@@ -19,7 +19,6 @@ const StructureOrganisasi = () => {
           search: "",
         });
         setStrOrgDataResponse(data);
-        console.log("Data : ", data);
       } catch (error) {
         toast.error("An error occurred while loading data");
       }
@@ -27,7 +26,6 @@ const StructureOrganisasi = () => {
 
     getStrOrgData();
   }, []);
-  console.log("strOrgDataResponse : ", strOrgDataResponse?.data || []);
   return (
     <>
       <ListStructureOrganisasiView

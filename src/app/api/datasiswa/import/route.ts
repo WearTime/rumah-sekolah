@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
           const rombel = validatedStudent["Rombel Saat Ini"];
           const kelasRoman = convertToRoman(rombel);
           const jurusan = extractJurusan(rombel);
-
           return {
             nisn: validatedStudent.NISN,
             nama: validatedStudent["Nama"],
@@ -138,15 +137,24 @@ function convertToRoman(rombel: string): "X" | "XI" | "XII" | undefined {
 
 function extractJurusan(rombel: string): string {
   const parts = rombel.split(" ");
-  const jurusanKey = parts[1]?.replace(/(\d+)/g, " $1").trim() || "";
+  const jurusanPart = parts[1] || "";
+
+  const jurusanName = jurusanPart.replace(/[0-9]/g, "").trim();
+  const jurusanNumber = jurusanPart.match(/\d+/)?.[0] || "";
+
   const jurusanMap: Record<string, string> = {
     PPLG: "PPLG",
-    TKJT: "TKJT",
+    RPL: "PPLG",
+    TKJT: "TKJ",
+    AKL: "AK",
     MPLB: "MPLB",
-    KULINER: "KULINER",
+    BR: "PM",
+    KULINER: "KUL",
   };
 
-  return jurusanMap[jurusanKey] || jurusanKey;
+  return `${jurusanMap[jurusanName] || jurusanName}${
+    jurusanNumber ? ` ${jurusanNumber}` : ""
+  }`;
 }
 
 function convertToISODate(dateString: string): string {

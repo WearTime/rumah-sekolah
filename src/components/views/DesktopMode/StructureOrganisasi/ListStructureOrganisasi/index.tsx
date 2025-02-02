@@ -69,7 +69,6 @@ const ListStructureOrganisasiView = ({ data, total }: PropTypes) => {
   const debounceSearch = debounce(performSearch, SEARCH_DELAY);
   useEffect(() => {
     fetchPageData(1);
-    console.log("HEy");
   }, [data, total]);
   useEffect(() => {
     debounceSearch();

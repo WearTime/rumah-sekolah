@@ -42,7 +42,10 @@ const ListSiswaView = ({ siswa, total }: PropTypes) => {
     detailModal: boolean;
   }>({ deleteModal: false, editModal: false, detailModal: false });
   const fetchPageData = async (page: number) => {
-    const response = await dataSiswaServices.getAllSiswa({ page, search });
+    const response = await dataSiswaServices.getAllSiswa({
+      page,
+      search,
+    });
     const { data, total: newTotal } = response.data;
     setSiswaData(data);
     setTotalItems(newTotal);

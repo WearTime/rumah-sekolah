@@ -14,28 +14,68 @@ export async function GET(req: NextRequest) {
       const { searchParams } = new URL(req.url);
       const { search, skip, take } = getPagination(searchParams);
 
+      const sortBy = searchParams.get("sortBy") || "nama";
+      const sortOrder = (searchParams.get("sortOrder") || "asc") as
+        | "asc"
+        | "desc";
+
+      const jenisKelamin = searchParams.getAll("jenisKelamin");
+      const kelas = searchParams.get("kelas");
+      const jurusan = searchParams.get("jurusan");
+
+      const whereClause: any = {
+        OR: [{ nama: { contains: search } }],
+      };
+
+      if (jenisKelamin) {
+        whereClause.jenis_kelamin = {
+          in: jenisKelamin,
+        };
+      }
+      if (kelas) {
+        whereClause.kelas = kelas;
+      }
+      if (jurusan) {
+        whereClause.jurusan = {
+          contains: jurusan, // Menggunakan contains untuk mencocokkan jurusan
+        };
+      }
+
+      const orderBy: any = {
+        [sortBy]: sortOrder,
+      };
+
       const [allData, total] = await prisma.$transaction([
         prisma.dataSiswa.findMany({
-          where: {
-            nama: {
-              contains: search,
-            },
-          },
+          where: whereClause,
+          orderBy: orderBy,
           skip,
           take,
         }),
         prisma.dataSiswa.count({
-          where: {
-            nama: {
-              contains: search,
-            },
-          },
+          where: whereClause,
         }),
       ]);
-      console.log(allData);
-      return NextResponse.json({ data: allData, total }, { status: 200 });
+
+      return NextResponse.json(
+        {
+          data: allData,
+          total,
+          filters: {
+            jenisKelamin,
+            kelas,
+            jurusan,
+          },
+          sorting: {
+            sortBy,
+            sortOrder,
+          },
+        },
+        { status: 200 }
+      );
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { data: null, message: "Internal Server Error" },
       { status: 500 }

@@ -19,7 +19,6 @@ const ListSiswaPage = () => {
           page: 1,
           search: "",
         });
-        console.log("data :" + data);
         setGuruDataResponse(data);
       } catch (error) {
         toast.error("An error occurred while loading data");
